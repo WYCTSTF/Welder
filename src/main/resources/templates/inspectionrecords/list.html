@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
+  <link rel="stylesheet" th:href="@{/css/custom.form.css}">
+    <style id="layuimini-bg-color">
+    </style>
+<body>
+<div class="panel panel-default operation" hidden>
+  <div class="panel-heading title"></div>
+<div class="layui-card-body">
+<form class="layui-form " action="" lay-filter="info">
+  <input name="id" hidden/>
+    <div class="layui-form-item">
+      <label class="layui-form-label">姓名</label>
+      <div class="layui-input-block">
+        <input type="name" name="name" placeholder="请输入姓名" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">考试编号</label>
+      <div class="layui-input-block">
+        <input type="examNumber" name="examNumber" placeholder="请输入考试编号" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">焊接方法</label>
+      <div class="layui-input-block">
+        <input type="weldingMethod" name="weldingMethod" placeholder="请输入焊接方法" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">机动化程度</label>
+      <div class="layui-input-block">
+        <input type="degreeOfMotorization" name="degreeOfMotorization" placeholder="请输入机动化程度" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">指导书编号</label>
+      <div class="layui-input-block">
+        <input type="instructionNumber" name="instructionNumber" placeholder="请输入指导书编号" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">金属材料类别代号</label>
+      <div class="layui-input-block">
+        <input type="metalMaterialCategoryCode" name="metalMaterialCategoryCode" placeholder="请输入金属材料类别代号" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">试件板材厚度</label>
+      <div class="layui-input-block">
+        <input type="piecePlateThickness" name="piecePlateThickness" placeholder="请输入试件板材厚度" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">试件管材外径与壁厚</label>
+      <div class="layui-input-block">
+        <input type="outerDiameterAndWallThickness" name="outerDiameterAndWallThickness" placeholder="请输入试件管材外径与壁厚" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">螺柱直径</label>
+      <div class="layui-input-block">
+        <input type="studDiameter" name="studDiameter" placeholder="请输入螺柱直径" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">填充金属材料类别代号、型号</label>
+      <div class="layui-input-block">
+        <input type="materialCategoryCodeModel" name="materialCategoryCodeModel" placeholder="请输入填充金属材料类别代号、型号" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">考试项目代号</label>
+      <div class="layui-input-block">
+        <input type="examItemCode" name="examItemCode" placeholder="请输入考试项目代号" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">焊缝表面状况</label>
+      <div class="layui-input-block">
+        <input type="weldSurfaceCondition" name="weldSurfaceCondition" placeholder="请输入焊缝表面状况" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">焊缝余高</label>
+      <div class="layui-input-block">
+        <input type="weldReinforcement" name="weldReinforcement" placeholder="请输入焊缝余高" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">焊缝余高差</label>
+      <div class="layui-input-block">
+        <input type="weldSeamHeightDifference" name="weldSeamHeightDifference" placeholder="请输入焊缝余高差" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">比坡口每侧增宽</label>
+      <div class="layui-input-block">
+        <input type="eachSideWider" name="eachSideWider" placeholder="请输入比坡口每侧增宽" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">宽度差</label>
+      <div class="layui-input-block">
+        <input type="widthDifference" name="widthDifference" placeholder="请输入宽度差" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">焊缝边缘直线度</label>
+      <div class="layui-input-block">
+        <input type="edgeStraightness" name="edgeStraightness" placeholder="请输入焊缝边缘直线度" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">背面焊缝余高</label>
+      <div class="layui-input-block">
+        <input type="backWeldReinforcement" name="backWeldReinforcement" placeholder="请输入背面焊缝余高" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">裂纹</label>
+      <div class="layui-input-block">
+        <input type="crack" name="crack" placeholder="请输入裂纹" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">未熔合</label>
+      <div class="layui-input-block">
+        <input type="notFused" name="notFused" placeholder="请输入未熔合" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">夹渣</label>
+      <div class="layui-input-block">
+        <input type="slag" name="slag" placeholder="请输入夹渣" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">咬边</label>
+      <div class="layui-input-block">
+        <input type="undercut" name="undercut" placeholder="请输入咬边" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">未焊透</label>
+      <div class="layui-input-block">
+        <input type="notPenetrated" name="notPenetrated" placeholder="请输入未焊透" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">背面凹坑</label>
+      <div class="layui-input-block">
+        <input type="dimplesBack" name="dimplesBack" placeholder="请输入背面凹坑" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">气孔</label>
+      <div class="layui-input-block">
+        <input type="stomata" name="stomata" placeholder="请输入气孔" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">焊瘤</label>
+      <div class="layui-input-block">
+        <input type="weld" name="weld" placeholder="请输入焊瘤" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">变形角度</label>
+      <div class="layui-input-block">
+        <input type="deformationAngle" name="deformationAngle" placeholder="请输入变形角度" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">错边量</label>
+      <div class="layui-input-block">
+        <input type="errorMargin" name="errorMargin" placeholder="请输入错边量" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">角焊缝凹凸度</label>
+      <div class="layui-input-block">
+        <input type="filletWeldConcavityConvexity" name="filletWeldConcavityConvexity" placeholder="请输入角焊缝凹凸度" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">焊脚</label>
+      <div class="layui-input-block">
+        <input type="weldingFeet" name="weldingFeet" placeholder="请输入焊脚" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">堆焊焊道对接不平度</label>
+      <div class="layui-input-block">
+        <input type="buttUnevennessOfSurfacingWeldBead" name="buttUnevennessOfSurfacingWeldBead" placeholder="请输入堆焊焊道对接不平度" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">堆焊焊道高度差</label>
+      <div class="layui-input-block">
+        <input type="weldingBeadHeightDifference" name="weldingBeadHeightDifference" placeholder="请输入堆焊焊道高度差" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">堆焊凹下量</label>
+      <div class="layui-input-block">
+        <input type="depositSurfacingWelding" name="depositSurfacingWelding" placeholder="请输入堆焊凹下量" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">外观检查结果</label>
+      <div class="layui-input-block">
+        <input type="appearanceResult" name="appearanceResult" placeholder="请输入外观检查结果" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">检验员</label>
+      <div class="layui-input-block">
+        <input type="inspector" name="inspector" placeholder="请输入检验员" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">检验日期</label>
+      <div class="layui-input-block">
+        <input type="inspectionDate" name="inspectionDate" placeholder="请输入检验日期" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">射线透照质量等级</label>
+      <div class="layui-input-block">
+        <input type="radiographicQualityLevel" name="radiographicQualityLevel" placeholder="请输入射线透照质量等级" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">焊缝缺陷等级</label>
+      <div class="layui-input-block">
+        <input type="weldDefectGrade" name="weldDefectGrade" placeholder="请输入焊缝缺陷等级" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">焊缝缺陷检测结果</label>
+      <div class="layui-input-block">
+        <input type="weldDefectTestingResults" name="weldDefectTestingResults" placeholder="请输入焊缝缺陷检测结果" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">报告编号与日期</label>
+      <div class="layui-input-block">
+        <input type="reportNumberDate" name="reportNumberDate" placeholder="请输入报告编号与日期" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">渗透检测方法				
+</label>
+      <div class="layui-input-block">
+        <input type="penetrationDetectionMethods" name="penetrationDetectionMethods" placeholder="请输入渗透检测方法				
+" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">渗透检测结果</label>
+      <div class="layui-input-block">
+        <input type="penetrationTestingResults" name="penetrationTestingResults" placeholder="请输入渗透检测结果" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">渗透报告编号与日期</label>
+      <div class="layui-input-block">
+        <input type="penetrationTestingReportNumDate" name="penetrationTestingReportNumDate" placeholder="请输入渗透报告编号与日期" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">无损检测结果</label>
+      <div class="layui-input-block">
+        <input type="nodestructiveResult" name="nodestructiveResult" placeholder="请输入无损检测结果" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">无损检测人员</label>
+      <div class="layui-input-block">
+        <input type="nodestructiveTestingPersonnel" name="nodestructiveTestingPersonnel" placeholder="请输入无损检测人员" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">日期</label>
+      <div class="layui-input-block">
+        <input type="noDestructiveDate" name="noDestructiveDate" placeholder="请输入日期" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">  无损检测人员证书编号</label>
+      <div class="layui-input-block">
+        <input type="noDestructivePersonCertificateNumber" name="noDestructivePersonCertificateNumber" placeholder="请输入  无损检测人员证书编号" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+  <div class="layui-form-item">
+  <div class="layui-input-block">
+    <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit">保存</button>
+    <button  class="layui-btn layui-btn-primary" id="btn_cancel">返回</button>
+  </div>
+</div>
+</form>
+</div>
+</div>
+
+<div class="table_div">
+  <div id="searchParam"  shiro:hasPermission="inspectionRecords:list">
+    <form class="layui-form ">
+      <div class="layui-form-item">
+        <div class="layui-input-inline">
+          <label class="layui-form-label">名称</label>
+          <input type="text" id="key" class="layui-input"  autocomplete="off" placeholder="请输入">
+        </div>
+
+      </div>
+
+      <div class="layui-input-inline ">
+        <button class="layui-btn" onclick="search()"  id="search">查询</button>
+        <button class="layui-btn"   id="export">导出全部</button>
+      </div>
+    </form>
+  </div>
+  <table class="layui-table" id="showTable" lay-filter="showTable" ></table>
+</div>
+<script type="text/html" id="toolbar">
+  <div class="layui-btn-container oper">
+    <button class="layui-btn layui-btn-sm" lay-event="add"  shiro:hasPermission="inspectionRecords:add">添加</button>
+    <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="inspectionRecords:delete">删除</button>
+    <button class="layui-btn layui-btn-danger" lay-event="generateInspectionTable" shiro:hasPermission="inspectionRecords:generateInspectionTable">生成检验记录表</button>
+  </div>
+</script>
+<script type="text/html" id="tool">
+  <a class="layui-btn layui-btn-xs" lay-event="look">查看</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="inspectionRecords:update">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="inspectionRecords:delete">删除</a>
+</script>
+
+</body>
+</html>
+<script th:inline="javascript" type="text/javascript">
+  var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
+</script>
+<script th:src="@{/layui/layui.all.js}"></script>
+<script th:src="@{/js/core.util.js}"></script>
+<script>
+  //获取token
+  var token = CoreUtil.getData("access_token");
+  //地址栏转义token中的#号
+  var tokenQuery = token.replace("#", "%23");
+  var tableIns1;
+  var table = layui.table;
+  var form = layui.form;
+  var layer = layui.layer;
+  var $ = jQuery = layui.jquery;
+  var laydate = layui.laydate;
+
+  layui.use(['table', 'layer', 'laydate'], function () {
+
+    //加载table
+    tableIns1 = table.render({
+      elem: '#showTable'
+      , contentType: 'application/json'
+      , headers: {"authorization": token}
+      , page: true //开启分页
+      , url: ctx + 'inspectionRecords/listByPage' //数据接口
+      , method: 'POST'
+      , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+        return {
+          "code": res.code, //解析接口状态
+          "msg": res.msg, //解析提示文本
+          "count": CoreUtil.isEmpty(res.data) ? 0 : res.data.total, //解析数据长度
+          "data": CoreUtil.isEmpty(res.data) ? null : res.data.records //解析数据列表
+        }
+      }
+      , cols: [
+        [
+          {type: 'checkbox', fixed: 'left'},
+          {field: 'id', title: 'ID', sort: true},
+          {field: 'name', title: '姓名', sort: true},
+          {field: 'examNumber', title: '考试编号', sort: true},
+          {field: 'weldingMethod', title: '焊接方法', sort: true},
+          {field: 'degreeOfMotorization', title: '机动化程度', sort: true},
+          {field: 'instructionNumber', title: '指导书编号', sort: true},
+          {field: 'metalMaterialCategoryCode', title: '金属材料类别代号', sort: true},
+          {field: 'piecePlateThickness', title: '试件板材厚度', sort: true},
+          {field: 'outerDiameterAndWallThickness', title: '试件管材外径与壁厚', sort: true},
+          {field: 'studDiameter', title: '螺柱直径', sort: true},
+          {field: 'materialCategoryCodeModel', title: '填充金属材料类别代号、型号', sort: true},
+          {field: 'examItemCode', title: '考试项目代号', sort: true},
+          {field: 'weldSurfaceCondition', title: '焊缝表面状况', sort: true},
+          {field: 'weldReinforcement', title: '焊缝余高', sort: true},
+          {field: 'weldSeamHeightDifference', title: '焊缝余高差', sort: true},
+          {field: 'eachSideWider', title: '比坡口每侧增宽', sort: true},
+          {field: 'widthDifference', title: '宽度差', sort: true},
+          {field: 'edgeStraightness', title: '焊缝边缘直线度', sort: true},
+          {field: 'backWeldReinforcement', title: '背面焊缝余高', sort: true},
+          {field: 'crack', title: '裂纹', sort: true},
+          {field: 'notFused', title: '未熔合', sort: true},
+          {field: 'slag', title: '夹渣', sort: true},
+          {field: 'undercut', title: '咬边', sort: true},
+          {field: 'notPenetrated', title: '未焊透', sort: true},
+          {field: 'dimplesBack', title: '背面凹坑', sort: true},
+          {field: 'stomata', title: '气孔', sort: true},
+          {field: 'weld', title: '焊瘤', sort: true},
+          {field: 'deformationAngle', title: '变形角度', sort: true},
+          {field: 'errorMargin', title: '错边量', sort: true},
+          {field: 'filletWeldConcavityConvexity', title: '角焊缝凹凸度', sort: true},
+          {field: 'weldingFeet', title: '焊脚', sort: true},
+          {field: 'buttUnevennessOfSurfacingWeldBead', title: '堆焊焊道对接不平度', sort: true},
+          {field: 'weldingBeadHeightDifference', title: '堆焊焊道高度差', sort: true},
+          {field: 'depositSurfacingWelding', title: '堆焊凹下量', sort: true},
+          {field: 'appearanceResult', title: '外观检查结果', sort: true},
+          {field: 'inspector', title: '检验员', sort: true},
+          {field: 'inspectionDate', title: '检验日期', sort: true},
+          {field: 'radiographicQualityLevel', title: '射线透照质量等级', sort: true},
+          {field: 'weldDefectGrade', title: '焊缝缺陷等级', sort: true},
+          {field: 'weldDefectTestingResults', title: '焊缝缺陷检测结果', sort: true},
+          {field: 'reportNumberDate', title: '报告编号与日期', sort: true},
+          {field: 'penetrationDetectionMethods', title: '渗透检测方法', sort: true},
+          {field: 'penetrationTestingResults', title: '渗透检测结果', sort: true},
+          {field: 'penetrationTestingReportNumDate', title: '渗透报告编号与日期', sort: true},
+          {field: 'nodestructiveResult', title: '无损检测结果', sort: true},
+          {field: 'nodestructiveTestingPersonnel', title: '无损检测人员', sort: true},
+          {field: 'noDestructiveDate', title: '日期', sort: true},
+          {field: 'noDestructivePersonCertificateNumber', title: '无损检测人员证书编号', sort: true},
+          {width: 120, toolbar: "#tool", title: '操作'}
+        ]
+      ]
+      , toolbar: '#toolbar'
+    });
+
+
+    //表头工具
+    table.on('toolbar(showTable)', function(obj){
+      switch(obj.event){
+        case 'batchDeleted':
+          var checkStatus = table.checkStatus(obj.config.id);
+          var data = checkStatus.data;
+          if(data.length==0){
+            layer.msg("请选择要批量删除的列");
+          }else {
+            var ids = [];
+            $(data).each(function (index,item) {
+              ids.push(item.id);
+            });
+            tipDialog(ids);
+          }
+          break;
+        case 'add':
+          toUnDisabled();
+          $(".table_div").hide();
+          $(".operation").show();
+          $(".title").html("新增");
+          setTimeout(function () {
+            form.val('info', {
+              "test": "test"
+              , "id": ""
+              , "name": ""
+              , "examNumber": ""
+              , "weldingMethod": ""
+              , "degreeOfMotorization": ""
+              , "instructionNumber": ""
+              , "metalMaterialCategoryCode": ""
+              , "piecePlateThickness": ""
+              , "outerDiameterAndWallThickness": ""
+              , "studDiameter": ""
+              , "materialCategoryCodeModel": ""
+              , "examItemCode": ""
+              , "weldSurfaceCondition": ""
+              , "weldReinforcement": ""
+              , "weldSeamHeightDifference": ""
+              , "eachSideWider": ""
+              , "widthDifference": ""
+              , "edgeStraightness": ""
+              , "backWeldReinforcement": ""
+              , "crack": ""
+              , "notFused": ""
+              , "slag": ""
+              , "undercut": ""
+              , "notPenetrated": ""
+              , "dimplesBack": ""
+              , "stomata": ""
+              , "weld": ""
+              , "deformationAngle": ""
+              , "errorMargin": ""
+              , "filletWeldConcavityConvexity": ""
+              , "weldingFeet": ""
+              , "buttUnevennessOfSurfacingWeldBead": ""
+              , "weldingBeadHeightDifference": ""
+              , "depositSurfacingWelding": ""
+              , "appearanceResult": ""
+              , "inspector": ""
+              , "inspectionDate": ""
+              , "radiographicQualityLevel": ""
+              , "weldDefectGrade": ""
+              , "weldDefectTestingResults": ""
+              , "reportNumberDate": ""
+              , "penetrationDetectionMethods": ""
+              , "penetrationTestingResults": ""
+              , "penetrationTestingReportNumDate": ""
+              , "nodestructiveResult": ""
+              , "nodestructiveTestingPersonnel": ""
+              , "noDestructiveDate": ""
+              , "noDestructivePersonCertificateNumber": ""
+            });
+          }, 200);
+          break;
+          case "generateInspectionTable":
+            generateInspectionTable();
+            break;
+      };
+    });
+    //列操作
+    table.on('tool(showTable)',function (obj) {
+      var data = obj.data;
+      switch (obj.event) {
+        case 'del':
+          var ids=[];
+          ids.push(data.id);
+          tipDialog(ids);
+          break;
+        case 'look':
+          backshow(data);
+          toDisabled();
+          break;
+        case 'edit':
+          backshow(data);
+          $(".title").html("编辑");
+          toUnDisabled();
+          break;
+      }
+    });
+
+    //导出
+    $('#export').on('click', function () {
+      //原先分页limit
+      var exportParams = {
+        limit: 10000,
+        key: $("#key").val()
+      };
+      CoreUtil.sendPost(ctx + "inspectionRecords/listByPage", exportParams, function (res) {
+        //初始化渲染数据
+        if (res.data != null && res.data.records != null) {
+          table.exportFile(tableIns1.config.id, res.data.records, 'xls');
+        }
+      });
+    });
+
+    //删除
+    var tipDialog=function (ids) {
+      layer.open({
+        content: "确定要删除么?",
+        yes: function(index, layero){
+          layer.close(index); //如果设定了yes回调，需进行手工关闭
+          CoreUtil.sendDelete(ctx + "inspectionRecords/delete",ids,function (res) {
+            layer.msg(res.msg, {time:1000},function () {
+              search();
+            });
+          });
+        }
+      });
+    };
+
+    //返回
+    $("#btn_cancel").click(function() {
+      $(".table_div").show();
+      $(".operation").hide();
+      return false;
+    });
+
+    //监听保存
+    form.on('submit(submit)', function(data){
+      if(data.field.id===undefined || data.field.id===null || data.field.id===""){
+        CoreUtil.sendPost(ctx + "inspectionRecords/add",data.field,function (res) {
+          $(".table_div").show();
+          $(".operation").hide();
+          search();
+        });
+      }else {
+        CoreUtil.sendPut(ctx + "inspectionRecords/update",data.field,function (res) {
+          $(".table_div").show();
+          $(".operation").hide();
+          search();
+        });
+      }
+
+      return false;
+    });
+  });
+  function generateInspectionTable()
+  {
+    CoreUtil.sendGet(ctx + "inspectionRecords/generateInspectionTable",function (res) {
+
+    });
+  }
+
+
+
+  //执行查询
+  function search() {
+    //这里以搜索为例
+    tableIns1.reload({
+      where: { //设定异步数据接口的额外参数，任意设
+        key: $("#key").val()
+      }
+      , page: {
+        curr: 1 //重新从第 1 页开始
+      }
+    });
+  };
+
+  //回显
+  function backshow(data) {
+    $(".table_div").hide();
+    $(".operation").show();
+    $(".title").html("查看");
+    setTimeout(function () {
+      form.val('info', {
+        "test": "test"
+        , "id": data.id
+        , "name": data.name
+        , "examNumber": data.examNumber
+        , "weldingMethod": data.weldingMethod
+        , "degreeOfMotorization": data.degreeOfMotorization
+        , "instructionNumber": data.instructionNumber
+        , "metalMaterialCategoryCode": data.metalMaterialCategoryCode
+        , "piecePlateThickness": data.piecePlateThickness
+        , "outerDiameterAndWallThickness": data.outerDiameterAndWallThickness
+        , "studDiameter": data.studDiameter
+        , "materialCategoryCodeModel": data.materialCategoryCodeModel
+        , "examItemCode": data.examItemCode
+        , "weldSurfaceCondition": data.weldSurfaceCondition
+        , "weldReinforcement": data.weldReinforcement
+        , "weldSeamHeightDifference": data.weldSeamHeightDifference
+        , "eachSideWider": data.eachSideWider
+        , "widthDifference": data.widthDifference
+        , "edgeStraightness": data.edgeStraightness
+        , "backWeldReinforcement": data.backWeldReinforcement
+        , "crack": data.crack
+        , "notFused": data.notFused
+        , "slag": data.slag
+        , "undercut": data.undercut
+        , "notPenetrated": data.notPenetrated
+        , "dimplesBack": data.dimplesBack
+        , "stomata": data.stomata
+        , "weld": data.weld
+        , "deformationAngle": data.deformationAngle
+        , "errorMargin": data.errorMargin
+        , "filletWeldConcavityConvexity": data.filletWeldConcavityConvexity
+        , "weldingFeet": data.weldingFeet
+        , "buttUnevennessOfSurfacingWeldBead": data.buttUnevennessOfSurfacingWeldBead
+        , "weldingBeadHeightDifference": data.weldingBeadHeightDifference
+        , "depositSurfacingWelding": data.depositSurfacingWelding
+        , "appearanceResult": data.appearanceResult
+        , "inspector": data.inspector
+        , "inspectionDate": data.inspectionDate
+        , "radiographicQualityLevel": data.radiographicQualityLevel
+        , "weldDefectGrade": data.weldDefectGrade
+        , "weldDefectTestingResults": data.weldDefectTestingResults
+        , "reportNumberDate": data.reportNumberDate
+        , "penetrationDetectionMethods": data.penetrationDetectionMethods
+        , "penetrationTestingResults": data.penetrationTestingResults
+        , "penetrationTestingReportNumDate": data.penetrationTestingReportNumDate
+        , "nodestructiveResult": data.nodestructiveResult
+        , "nodestructiveTestingPersonnel": data.nodestructiveTestingPersonnel
+        , "noDestructiveDate": data.noDestructiveDate
+        , "noDestructivePersonCertificateNumber": data.noDestructivePersonCertificateNumber
+      });
+    }, 200);
+  }
+
+  //禁用输入
+  function toDisabled() {
+    $(".oper").hide();
+    $(".disabled").each(function (index, elem) {
+      $(elem).attr("disabled", "")
+    })
+  }
+
+  //放开输入
+  function toUnDisabled() {
+    $(".oper").show();
+    $(".disabled").each(function (index, elem) {
+      $(elem).removeAttr("disabled", "")
+    })
+  }
+</script>

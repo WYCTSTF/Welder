@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.lut.welder.mapper.InspectionRecordsMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="cn.edu.lut.welder.entity.InspectionRecordsEntity" id="inspectionRecordsMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="examNumber" column="exam_number"/>
+        <result property="weldingMethod" column="welding_method"/>
+        <result property="degreeOfMotorization" column="degree_of_motorization"/>
+        <result property="instructionNumber" column="instruction_number"/>
+        <result property="metalMaterialCategoryCode" column="metal_material_category_code"/>
+        <result property="piecePlateThickness" column="piece_plate_thickness"/>
+        <result property="outerDiameterAndWallThickness" column="outer_diameter_and_wall_thickness"/>
+        <result property="studDiameter" column="stud_diameter"/>
+        <result property="materialCategoryCodeModel" column="material_category_code_model"/>
+        <result property="examItemCode" column="exam_item_code"/>
+        <result property="weldSurfaceCondition" column="weld_surface_condition"/>
+        <result property="weldReinforcement" column="weld_reinforcement"/>
+        <result property="weldSeamHeightDifference" column="weld_seam_height_difference"/>
+        <result property="eachSideWider" column="each_side_wider"/>
+        <result property="widthDifference" column="width_difference"/>
+        <result property="edgeStraightness" column="edge_straightness"/>
+        <result property="backWeldReinforcement" column="back_weld_reinforcement"/>
+        <result property="crack" column="crack"/>
+        <result property="notFused" column="not_fused"/>
+        <result property="slag" column="slag"/>
+        <result property="undercut" column="undercut"/>
+        <result property="notPenetrated" column="not_penetrated"/>
+        <result property="dimplesBack" column="dimples_back"/>
+        <result property="stomata" column="stomata"/>
+        <result property="weld" column="weld"/>
+        <result property="deformationAngle" column="deformation_angle"/>
+        <result property="errorMargin" column="error_margin"/>
+        <result property="filletWeldConcavityConvexity" column="fillet_weld_concavity_convexity"/>
+        <result property="weldingFeet" column="welding_feet"/>
+        <result property="buttUnevennessOfSurfacingWeldBead" column="butt_unevenness_of_surfacing_weld_bead"/>
+        <result property="weldingBeadHeightDifference" column="welding_bead_height_difference"/>
+        <result property="depositSurfacingWelding" column="deposit_surfacing_welding"/>
+        <result property="appearanceResult" column="appearance_result"/>
+        <result property="inspector" column="inspector"/>
+        <result property="inspectionDate" column="inspection_date"/>
+        <result property="radiographicQualityLevel" column="radiographic_quality_level"/>
+        <result property="weldDefectGrade" column="weld_defect_grade"/>
+        <result property="weldDefectTestingResults" column="weld_defect_testing_results"/>
+        <result property="reportNumberDate" column="report_number_date"/>
+        <result property="penetrationDetectionMethods" column="penetration_detection_methods"/>
+        <result property="penetrationTestingResults" column="penetration_testing_results"/>
+        <result property="penetrationTestingReportNumDate" column="penetration_testing_report_num_date"/>
+        <result property="nodestructiveResult" column="nodestructive_result"/>
+        <result property="nodestructiveTestingPersonnel" column="nodestructive_testing_personnel"/>
+        <result property="noDestructiveDate" column="no_destructive_date"/>
+        <result property="noDestructivePersonCertificateNumber" column="no_destructive_person_certificate_number"/>
+    </resultMap>
+
+
+</mapper>

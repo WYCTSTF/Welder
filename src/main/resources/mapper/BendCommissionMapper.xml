@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.lut.welder.mapper.BendCommissionMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="cn.edu.lut.welder.entity.BendCommissionEntity" id="bendCommissionMap">
+        <result property="id" column="id"/>
+        <result property="principalID" column="principal_ID"/>
+        <result property="requester" column="requester"/>
+        <result property="sampleDeliveryTime" column="sample_delivery_time"/>
+        <result property="client" column="client"/>
+        <result property="samplesNum" column="samples_num"/>
+        <result property="productName" column="product_name"/>
+        <result property="reportForm" column="report_form"/>
+        <result property="drawing" column="drawing"/>
+        <result property="accordingStandard" column="according_standard"/>
+        <result property="pilotProjects" column="pilot_projects"/>
+        <result property="plannedCompletion" column="planned_completion"/>
+        <result property="specification" column="specification"/>
+        <result property="inspectionNum" column="inspection_num"/>
+        <result property="material" column="material"/>
+        <result property="receiver" column="receiver"/>
+        <result property="receiveDate" column="receive_date"/>
+        <result property="clientDate" column="client_date"/>
+    </resultMap>
+
+
+</mapper>

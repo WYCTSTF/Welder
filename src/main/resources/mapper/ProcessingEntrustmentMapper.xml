@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.lut.welder.mapper.ProcessingEntrustmentMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="cn.edu.lut.welder.entity.ProcessingEntrustmentEntity" id="processingEntrustmentMap">
+        <result property="id" column="id"/>
+        <result property="projectName" column="project_name"/>
+        <result property="processingTime" column="processing_time"/>
+        <result property="testPieceNum" column="test_piece_num"/>
+        <result property="material" column="material"/>
+        <result property="specification" column="specification"/>
+        <result property="onePieceFaceCurvature" column="one_piece_face_curvature"/>
+        <result property="onePieceBackBend" column="one_piece_back_bend"/>
+        <result property="sideBendTwoPieces" column="side_bend_two_pieces"/>
+        <result property="fourPiecesMacroscopicMetallography" column="four_pieces_macroscopic_metallography"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+
+</mapper>

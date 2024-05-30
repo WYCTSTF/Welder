@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.lut.welder.mapper.NonDestructiveTestingOrderMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="cn.edu.lut.welder.entity.NonDestructiveTestingOrderEntity" id="nonDestructiveTestingOrderMap">
+        <result property="id" column="id"/>
+        <result property="principalId" column="principal_id"/>
+        <result property="projectName" column="project_name"/>
+        <result property="projectNumber" column="project_number"/>
+        <result property="inspectionName" column="inspection_name"/>
+        <result property="detectionMethod" column="detection_method"/>
+        <result property="testingStandards" column="testing_standards"/>
+        <result property="eligibleLevel" column="eligible_level"/>
+        <result property="totalInspectedItems" column="total_inspected_items"/>
+        <result property="detectionRatio" column="detection_ratio"/>
+        <result property="testQuantity" column="test_quantity"/>
+        <result property="testMaterial" column="test_material"/>
+        <result property="testSpecification" column="test_specification"/>
+        <result property="weldingMethod" column="welding_method"/>
+        <result property="inspectionNumber" column="inspection_number"/>
+        <result property="client" column="client"/>
+        <result property="clientDate" column="client_date"/>
+        <result property="receiver" column="receiver"/>
+        <result property="receiverDate" column="receiver_date"/>
+    </resultMap>
+
+
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.lut.welder.mapper.CirculationCardMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="cn.edu.lut.welder.entity.CirculationCardEntity" id="circulationCardMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="examItems" column="exam_items"/>
+        <result property="testPieceCode" column="test_piece_code"/>
+        <result property="testPieceMaterial" column="test_piece_material"/>
+        <result property="testPieceSpecifications" column="test_piece_specifications"/>
+        <result property="testPieceStorageNumber" column="test_piece_storage_number"/>
+        <result property="testPiecesNum" column="test_pieces_num"/>
+        <result property="weldingConsumablesGrade" column="welding_consumables_grade"/>
+        <result property="weldingConsumablesSpecifications" column="welding_consumables_specifications"/>
+        <result property="weldingMaterialStorageNumber" column="welding_material_storage_number"/>
+        <result property="weldingConsumableNum" column="welding_consumable_num"/>
+        <result property="recruiter" column="recruiter"/>
+        <result property="weldingConsumablesId" column="welding_consumables_id"/>
+        <result property="specimenId" column="specimen_id"/>
+    </resultMap>
+
+
+</mapper>

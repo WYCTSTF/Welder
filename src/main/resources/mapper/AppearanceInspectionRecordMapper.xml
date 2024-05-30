@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.lut.welder.mapper.AppearanceInspectionRecordMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="cn.edu.lut.welder.entity.AppearanceInspectionRecordEntity" id="appearanceInspectionRecordMap">
+        <result property="id" column="id"/>
+        <result property="project" column="project"/>
+        <result property="testPieceNumber" column="test_piece_number"/>
+        <result property="surfaceCondition" column="surface_condition"/>
+        <result property="weldReinforcement" column="weld_reinforcement"/>
+        <result property="residualHeightDifference" column="residual_height_difference"/>
+        <result property="widen" column="widen"/>
+        <result property="widthDifference" column="width_difference"/>
+        <result property="straightness" column="straightness"/>
+        <result property="backWeldReinforcement" column="back_weld_reinforcement"/>
+        <result property="defectCondition" column="defect_condition"/>
+        <result property="concavity" column="concavity"/>
+        <result property="lowLeg" column="low_leg"/>
+        <result property="highLeg" column="high_leg"/>
+        <result property="buttUnevenness" column="butt_unevenness"/>
+        <result property="weldingBeadHeightDifference" column="welding_bead_height_difference"/>
+        <result property="amountOfDepression" column="amount_of_depression"/>
+        <result property="eligibility" column="eligibility"/>
+    </resultMap>
+
+
+</mapper>
