@@ -30,6 +30,24 @@ public class NonDestructiveTestingOrderEntity extends BaseEntity implements Seri
 	private Long id;
 
 	/**
+	 * 焊工姓名
+	 */
+	@TableField("welder_name")
+	private String welderName;
+
+	/**
+	 * 身份证
+	 */
+	@TableField("id_card")
+	private String idCard;
+
+	/**
+	 * 取证项目
+	 */
+	@TableField("forensic_projects")
+	private String forensicProjects;
+
+	/**
 	 * 委托编号
 	 */
 	@TableField("principal_id")
@@ -136,6 +154,12 @@ public class NonDestructiveTestingOrderEntity extends BaseEntity implements Seri
 	 */
 	@TableField("receiver_date")
 	private Date receiverDate;
+
+	/**
+	 * 编号
+	 */
+	@TableField("code")
+	private String code;
 
 
 }

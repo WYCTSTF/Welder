@@ -93,4 +93,15 @@ public class NonDestructiveTestingOrderController {
         return null;
     }
 
+    @ApiOperation(value = "带N堆焊的检测方法设置为PT")
+    @PostMapping("nonDestructiveTestingOrder/update-detection")
+    @RequiresPermissions("nonDestructiveTestingOrder:update-detection")
+    @ResponseBody
+    public DataResult updateDetection() {
+        nonDestructiveTestingOrderService.updataDetectionForDataContainingN();
+        nonDestructiveTestingOrderService.updataDetectionForDataContainingFAndFG();
+        nonDestructiveTestingOrderService.updataDetectionForDataContainingDiameterLessThan76();
+        return DataResult.success();
+    }
+
 }
