@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 127.0.0.1
- Source Server Type    : MySQL
- Source Server Version : 50722
- Source Host           : 127.0.0.1:3306
- Source Schema         : welder_examination_materials
+ Source Server         : 赵宏-MySQL
+ Source Server Type    : MariaDB
+ Source Server Version : 101106 (10.11.6-MariaDB-0+deb12u1)
+ Source Host           : cq.vps.bllxl.com:23306
+ Source Schema         : zh
 
- Target Server Type    : MySQL
- Target Server Version : 50722
+ Target Server Type    : MariaDB
+ Target Server Version : 101106 (10.11.6-MariaDB-0+deb12u1)
  File Encoding         : 65001
 
- Date: 30/05/2024 20:51:15
+ Date: 05/06/2024 22:50:43
 */
 
 SET NAMES utf8mb4;
@@ -39,7 +39,7 @@ CREATE TABLE `appearance_inspection_record`  (
   `butt_unevenness` double NULL DEFAULT NULL COMMENT '对接不平度',
   `welding_bead_height_difference` double NULL DEFAULT NULL COMMENT '堆焊焊道高度差',
   `amount_of_depression` double NULL DEFAULT NULL COMMENT '凹下量',
-  `eligibility` int(1) NULL DEFAULT 1 COMMENT '是否合格',
+  `eligibility` int(11) NULL DEFAULT 1 COMMENT '是否合格',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 343 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -2321,6 +2321,9 @@ INSERT INTO `macro_commission` VALUES (94, '刘波', NULL, NULL, NULL, NULL, NUL
 DROP TABLE IF EXISTS `non_destructive_testing_order`;
 CREATE TABLE `non_destructive_testing_order`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `welder_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '焊工姓名',
+  `id_card` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '身份证',
+  `forensic_projects` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '取证项目',
   `principal_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '委托编号',
   `project_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '工程名称',
   `project_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '工程编号',
@@ -2339,102 +2342,103 @@ CREATE TABLE `non_destructive_testing_order`  (
   `client_date` datetime NULL DEFAULT NULL COMMENT '委托日期',
   `receiver` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接收人',
   `receiver_date` datetime NULL DEFAULT NULL COMMENT '接收日期',
+  `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '编号',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 91 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of non_destructive_testing_order
 -- ----------------------------
-INSERT INTO `non_destructive_testing_order` VALUES (1, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=0.6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (2, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=1.0', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (3, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'GTAW-1G', 'δ=1.0', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (4, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=2', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (5, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (6, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (7, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=10', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (8, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (9, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (10, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'SAW-', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (11, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'EGW-', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (12, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=14', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (13, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (14, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'δ=16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (15, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ8×1.5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (16, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ10×2', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (17, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ10×2', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (18, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ10.3×2.41', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (19, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ10×2.5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (20, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ12×2.5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (21, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ12×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (22, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ14×1', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (23, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ14×2', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (24, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ14×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (25, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ14×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (26, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ16×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (27, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ16×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (28, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ18×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (29, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ18×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (30, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ18×5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (31, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ18×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (32, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ18×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (33, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ19×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (34, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ22×5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (35, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ24×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (36, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ32×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (37, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ32×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (38, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ45×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (39, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ48×5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (40, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ57×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (41, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ57×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (42, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ57×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (43, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ60.3×5.54', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (44, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ60.3×5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (45, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ60×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (46, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ60×7', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (47, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ60×7', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (48, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ57×8', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (49, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ60×10', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (50, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ60.3×10', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (51, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ57×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (52, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ57×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (53, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ73×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (54, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ73×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (55, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ73×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (56, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ76×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (57, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ76×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (58, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ76×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (59, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ73×16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (60, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ73×16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (61, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ89×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (62, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ108×8', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (63, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ108×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (64, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ114×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (65, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ114.3×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (66, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ159×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (67, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ159×16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (68, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ168×14', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (69, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ273×15', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (70, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ325×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (71, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ325×16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (72, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ508×12.7', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (73, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ273×25', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (74, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (75, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ15×2.5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
-INSERT INTO `non_destructive_testing_order` VALUES (76, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ18×3', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
-INSERT INTO `non_destructive_testing_order` VALUES (77, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ57×5', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
-INSERT INTO `non_destructive_testing_order` VALUES (78, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ57×6', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
-INSERT INTO `non_destructive_testing_order` VALUES (79, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ57×8', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
-INSERT INTO `non_destructive_testing_order` VALUES (80, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ57×12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
-INSERT INTO `non_destructive_testing_order` VALUES (81, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ60×5', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
-INSERT INTO `non_destructive_testing_order` VALUES (82, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ60×12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
-INSERT INTO `non_destructive_testing_order` VALUES (83, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-AlⅠ', 'Φ57×5', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
-INSERT INTO `non_destructive_testing_order` VALUES (84, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-AlⅤ', 'Φ60.3×10', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
-INSERT INTO `non_destructive_testing_order` VALUES (85, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-AlⅤ', 'δ=16', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
-INSERT INTO `non_destructive_testing_order` VALUES (86, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-AIⅢ', 'Φ75×15', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
-INSERT INTO `non_destructive_testing_order` VALUES (87, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-CuⅣ', 'Φ60.3×5.54', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
-INSERT INTO `non_destructive_testing_order` VALUES (88, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'CuⅠ', 'Φ73×12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
-INSERT INTO `non_destructive_testing_order` VALUES (89, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'GTAW-1G', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
-INSERT INTO `non_destructive_testing_order` VALUES (90, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'GMAW-1G', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (1, '张正宇', '320823197510013237', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'HCPT23-', '南京华聪焊工考试第 批', NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=0.6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-31 15:49:01', 'RE1-1');
+INSERT INTO `non_destructive_testing_order` VALUES (2, '张正宇', '320823197510013237', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=1.0', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE1-2');
+INSERT INTO `non_destructive_testing_order` VALUES (3, '朱恒良', '321321198706016814', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'GTAW-1G', 'δ=1.0', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE2-1');
+INSERT INTO `non_destructive_testing_order` VALUES (4, '朱恒良', '321321198706016814', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=2', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE2-2');
+INSERT INTO `non_destructive_testing_order` VALUES (5, '李会斌', '610330198803200618', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE3-1');
+INSERT INTO `non_destructive_testing_order` VALUES (6, '李会斌', '610330198803200618', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE3-2');
+INSERT INTO `non_destructive_testing_order` VALUES (7, '梁志荣', '522529198010101615', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=10', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE4-1');
+INSERT INTO `non_destructive_testing_order` VALUES (8, '梁志荣', '522529198010101615', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE4-2');
+INSERT INTO `non_destructive_testing_order` VALUES (9, '张淑海', '370982198701281356', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE5');
+INSERT INTO `non_destructive_testing_order` VALUES (10, '王春涛', '341225197207200210', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'SAW-', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE6');
+INSERT INTO `non_destructive_testing_order` VALUES (11, '王春超', '342127197702190230', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'EGW-', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE7');
+INSERT INTO `non_destructive_testing_order` VALUES (12, '樊其阳', '321088198201044670', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=14', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE8-1');
+INSERT INTO `non_destructive_testing_order` VALUES (13, '樊其阳', '321088198201044670', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE8-2');
+INSERT INTO `non_destructive_testing_order` VALUES (14, '李德成', '320123198803032032', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'δ=16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE9');
+INSERT INTO `non_destructive_testing_order` VALUES (15, '罗猛', '320113199811260432', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ8×1.5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE10-1');
+INSERT INTO `non_destructive_testing_order` VALUES (16, '罗猛', '320113199811260432', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ10×2', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE10-2');
+INSERT INTO `non_destructive_testing_order` VALUES (17, '彭明', '321088197510204311', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ10×2', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE11-1');
+INSERT INTO `non_destructive_testing_order` VALUES (18, '彭明', '321088197510204311', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ10.3×2.41', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE11-2');
+INSERT INTO `non_destructive_testing_order` VALUES (19, '李奇', '412922197001304514', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ10×2.5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE12-1');
+INSERT INTO `non_destructive_testing_order` VALUES (20, '李奇', '412922197001304514', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ12×2.5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE12-2');
+INSERT INTO `non_destructive_testing_order` VALUES (21, '徐国镇', '321081197104242430', 'SMAW-FeⅡ-3G-16-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ12×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE13');
+INSERT INTO `non_destructive_testing_order` VALUES (22, '史学武', '320123198006221818', 'SMAW-FeⅡ-3G-16-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ14×1', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE14');
+INSERT INTO `non_destructive_testing_order` VALUES (23, '杨小双', '320481198510181018', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ14×2', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE15-1');
+INSERT INTO `non_destructive_testing_order` VALUES (24, '杨小双', '320481198510181018', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ14×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE15-2');
+INSERT INTO `non_destructive_testing_order` VALUES (25, '陈元华', '512922197104280678', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ14×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE16-1');
+INSERT INTO `non_destructive_testing_order` VALUES (26, '陈元华', '512922197104280678', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ16×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE16-2');
+INSERT INTO `non_destructive_testing_order` VALUES (27, '姚建坤', '320423197306086234', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ16×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE17-1');
+INSERT INTO `non_destructive_testing_order` VALUES (28, '姚建坤', '320423197306086234', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ18×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE17-2');
+INSERT INTO `non_destructive_testing_order` VALUES (29, '姚建坤', '320423197306086234', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ18×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE17-3');
+INSERT INTO `non_destructive_testing_order` VALUES (30, '彭桥生', '321088198810174331', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ18×5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE18-1');
+INSERT INTO `non_destructive_testing_order` VALUES (31, '彭桥生', '321088198810174331', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ18×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE18-2');
+INSERT INTO `non_destructive_testing_order` VALUES (32, '张传梁', '320706198302101518', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ18×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE19-1');
+INSERT INTO `non_destructive_testing_order` VALUES (33, '张传梁', '320706198302101518', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ19×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE19-2');
+INSERT INTO `non_destructive_testing_order` VALUES (34, '时贝', '320322199110136890', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ22×5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE20-1');
+INSERT INTO `non_destructive_testing_order` VALUES (35, '时贝', '320322199110136890', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ24×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE20-2');
+INSERT INTO `non_destructive_testing_order` VALUES (36, '燕群群', '320322199002280174', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ32×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE21-1');
+INSERT INTO `non_destructive_testing_order` VALUES (37, '燕群群', '320322199002280174', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ32×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE21-2');
+INSERT INTO `non_destructive_testing_order` VALUES (38, '吴玉龙', '320322198312257637', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ45×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE22-1');
+INSERT INTO `non_destructive_testing_order` VALUES (39, '吴玉龙', '320322198312257637', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ48×5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE22-2');
+INSERT INTO `non_destructive_testing_order` VALUES (40, '孟繁明', '320322199904183613', 'SMAW-FeⅡ-2G-12-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ57×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE23');
+INSERT INTO `non_destructive_testing_order` VALUES (41, '张明亮', '320322199903053614', 'SMAW-FeⅡ-2G-12-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ57×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE24');
+INSERT INTO `non_destructive_testing_order` VALUES (42, '徐德伟', '32108119910421421X', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ57×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE25-1');
+INSERT INTO `non_destructive_testing_order` VALUES (43, '徐德伟', '32108119910421421X', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ60.3×5.54', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE25-2');
+INSERT INTO `non_destructive_testing_order` VALUES (44, '张银川', '320323198310280012', 'SMAW-FeⅡ-2G-12-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ60.3×5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE26-1');
+INSERT INTO `non_destructive_testing_order` VALUES (45, '张银川', '320323198310280012', 'SMAW-FeⅡ-3G-12-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ60×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE26-2');
+INSERT INTO `non_destructive_testing_order` VALUES (46, '张磊', '34222219850207089X', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ60×7', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE27');
+INSERT INTO `non_destructive_testing_order` VALUES (47, '张勇', '321088198006145273', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ60×7', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE28-1');
+INSERT INTO `non_destructive_testing_order` VALUES (48, '张勇', '321088198006145273', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ57×8', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE28-2');
+INSERT INTO `non_destructive_testing_order` VALUES (49, '刘苏宇', '32108819901106275X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ60×10', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE29');
+INSERT INTO `non_destructive_testing_order` VALUES (50, '杨兵', '321323198405115715', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ60.3×10', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE30-1');
+INSERT INTO `non_destructive_testing_order` VALUES (51, '杨兵', '321323198405115715', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ57×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE30-2');
+INSERT INTO `non_destructive_testing_order` VALUES (52, '戴建', '321088197612143812', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ57×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE31-1');
+INSERT INTO `non_destructive_testing_order` VALUES (53, '戴建', '321088197612143812', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ73×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE31-2');
+INSERT INTO `non_destructive_testing_order` VALUES (54, '朱立', '321088198709143434', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ73×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE32-1');
+INSERT INTO `non_destructive_testing_order` VALUES (55, '朱立', '321088198709143434', 'SMAW-FeⅡ-3G-12-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ73×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE32-2');
+INSERT INTO `non_destructive_testing_order` VALUES (56, '沈佳佳', '321088198704302731', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ76×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE33-1');
+INSERT INTO `non_destructive_testing_order` VALUES (57, '沈佳佳', '321088198704302731', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ76×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE33-2');
+INSERT INTO `non_destructive_testing_order` VALUES (58, '刘加有', '32072319900110365X', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ76×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE34-1');
+INSERT INTO `non_destructive_testing_order` VALUES (59, '刘加有', '32072319900110365X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ73×16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE34-2');
+INSERT INTO `non_destructive_testing_order` VALUES (60, '朱言升', '342222198506100830', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ73×16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE35-1');
+INSERT INTO `non_destructive_testing_order` VALUES (61, '朱言升', '342222198506100830', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ89×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE35-2');
+INSERT INTO `non_destructive_testing_order` VALUES (62, '朱言升', '342222198506100830', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ108×8', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE35-3');
+INSERT INTO `non_destructive_testing_order` VALUES (63, '王保超', '341122199109132036', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ108×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE36-1');
+INSERT INTO `non_destructive_testing_order` VALUES (64, '王保超', '341122199109132036', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ114×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE36-2');
+INSERT INTO `non_destructive_testing_order` VALUES (65, '欧永丰', '320830198204201035', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ114.3×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE37-1');
+INSERT INTO `non_destructive_testing_order` VALUES (66, '欧永丰', '320830198204201035', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ159×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE37-2');
+INSERT INTO `non_destructive_testing_order` VALUES (67, '李昌昌', '320322199110116515', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ159×16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE38-1');
+INSERT INTO `non_destructive_testing_order` VALUES (68, '李昌昌', '320322199110116515', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ168×14', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE38-2');
+INSERT INTO `non_destructive_testing_order` VALUES (69, '张冲', '321323198202267575', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ273×15', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE39-1');
+INSERT INTO `non_destructive_testing_order` VALUES (70, '张冲', '321323198202267575', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ325×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE39-2');
+INSERT INTO `non_destructive_testing_order` VALUES (71, '张冲', '321323198202267575', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ325×16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE39-3');
+INSERT INTO `non_destructive_testing_order` VALUES (72, '葛传亮', '320723197111273036', 'SMAW-FeⅡ-3G-12-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ508×12.7', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE40');
+INSERT INTO `non_destructive_testing_order` VALUES (73, '尹正标', '320123196909114811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ273×25', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE41-1');
+INSERT INTO `non_destructive_testing_order` VALUES (74, '尹正标', '320123196909114811', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE41-2');
+INSERT INTO `non_destructive_testing_order` VALUES (75, '杨琦辉', '320423197506231811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ15×2.5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01', 'RE42');
+INSERT INTO `non_destructive_testing_order` VALUES (76, '偰浩', '320481198804221038', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ18×3', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE43-1');
+INSERT INTO `non_destructive_testing_order` VALUES (77, '偰浩', '320481198804221038', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ57×5', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE43-2');
+INSERT INTO `non_destructive_testing_order` VALUES (78, '陈家富', '341122197112274212', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ57×6', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE44-1');
+INSERT INTO `non_destructive_testing_order` VALUES (79, '陈家富', '341122197112274212', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ57×8', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE44-2');
+INSERT INTO `non_destructive_testing_order` VALUES (80, '盛文明', '342322197106164211', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ57×12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE45-1');
+INSERT INTO `non_destructive_testing_order` VALUES (81, '盛文明', '342322197106164211', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ60×5', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE45-2');
+INSERT INTO `non_destructive_testing_order` VALUES (82, '陈邦', '320123199009191612', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ60×12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE46-1');
+INSERT INTO `non_destructive_testing_order` VALUES (83, '陈邦', '320123199009191612', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-AlⅠ', 'Φ57×5', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE46-2');
+INSERT INTO `non_destructive_testing_order` VALUES (84, '赵广林', '321088197009121213', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-AlⅤ', 'Φ60.3×10', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE47-1');
+INSERT INTO `non_destructive_testing_order` VALUES (85, '赵广林', '321088197009121213', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-AlⅤ', 'δ=16', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE47-2');
+INSERT INTO `non_destructive_testing_order` VALUES (86, '李俊', '321088199110034850', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-AIⅢ', 'Φ75×15', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE48-1');
+INSERT INTO `non_destructive_testing_order` VALUES (87, '李俊', '321088199110034850', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-CuⅣ', 'Φ60.3×5.54', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE48-2');
+INSERT INTO `non_destructive_testing_order` VALUES (88, '徐兵', '321084197209056537', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'CuⅠ', 'Φ73×12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE49-1');
+INSERT INTO `non_destructive_testing_order` VALUES (89, '徐兵', '321084197209056537', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'GTAW-1G', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE49-2');
+INSERT INTO `non_destructive_testing_order` VALUES (90, '张保光', '320321196906101212', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'HCPT23-', NULL, NULL, NULL, '', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'GMAW-1G', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02', 'RE50');
 
 -- ----------------------------
 -- Table structure for processing_entrustment
@@ -2510,7 +2514,7 @@ CREATE TABLE `sample_disposal_records`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `score_summary`;
 CREATE TABLE `score_summary`  (
-  `id` bigint(11) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `examination_institution_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Examination institution qualification` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `certificate_number` int(11) NULL DEFAULT NULL,
@@ -2539,7 +2543,7 @@ CREATE TABLE `score_summary`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `specimen`;
 CREATE TABLE `specimen`  (
-  `id` bigint(11) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `material` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `specification` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `warehouse_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
@@ -2556,17 +2560,17 @@ CREATE TABLE `specimen`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_content`;
 CREATE TABLE `sys_content`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '主键',
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '标题',
-  `one_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '单图url',
-  `multiple_img` varchar(500) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '多图url',
-  `keywords` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '关键字',
+  `id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '主键',
+  `title` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '标题',
+  `one_img` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '单图url',
+  `multiple_img` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '多图url',
+  `keywords` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '关键字',
   `type` int(11) NULL DEFAULT NULL COMMENT '文章类型',
-  `content` longtext CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '内容',
+  `content` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '内容',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `create_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '创建人',
+  `create_id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '创建人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '文章管理' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '文章管理' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_content
@@ -2577,20 +2581,20 @@ CREATE TABLE `sys_content`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept`;
 CREATE TABLE `sys_dept`  (
-  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-  `dept_no` varchar(18) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门编号(规则：父级关系编码+自己的编码)',
-  `name` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门名称',
-  `pid` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '父级id',
+  `id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '主键',
+  `dept_no` varchar(18) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '部门编号(规则：父级关系编码+自己的编码)',
+  `name` varchar(300) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '部门名称',
+  `pid` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '父级id',
   `status` tinyint(4) NULL DEFAULT NULL COMMENT '状态(1:正常；0:弃用)',
-  `relation_code` varchar(3000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '为了维护更深层级关系',
-  `dept_manager_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门经理user_id',
-  `manager_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门经理名称',
-  `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门经理联系电话',
+  `relation_code` varchar(3000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '为了维护更深层级关系',
+  `dept_manager_id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '部门经理user_id',
+  `manager_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '部门经理名称',
+  `phone` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '部门经理联系电话',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(4) NULL DEFAULT NULL COMMENT '是否删除(1未删除；0已删除)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统部门' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '系统部门' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dept
@@ -2602,12 +2606,12 @@ INSERT INTO `sys_dept` VALUES ('1', 'D000001', '总公司', '0', 1, 'D000001', N
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict`;
 CREATE TABLE `sys_dict`  (
-  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典名称',
-  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '字典名称',
+  `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '描述',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '数据字典表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_dict
@@ -2621,14 +2625,14 @@ INSERT INTO `sys_dict` VALUES ('1282504369620430849', 'content_type', '文章类
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict_detail`;
 CREATE TABLE `sys_dict_detail`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `label` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典标签',
-  `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典值',
+  `id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `label` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '字典标签',
+  `value` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '字典值',
   `sort` smallint(6) NULL DEFAULT NULL COMMENT '排序',
-  `dict_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典id',
+  `dict_id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '字典id',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典详情' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '数据字典详情' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_dict_detail
@@ -2646,13 +2650,13 @@ INSERT INTO `sys_dict_detail` VALUES ('1282846022950842371', 'mysql', '2', 2, '1
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_files`;
 CREATE TABLE `sys_files`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'URL地址',
+  `id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `url` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT 'URL地址',
   `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件名称',
-  `file_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `file_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '文件名称',
+  `file_path` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '文件上传' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '文件上传' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_files
@@ -2663,15 +2667,15 @@ CREATE TABLE `sys_files`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_job`;
 CREATE TABLE `sys_job`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务id',
-  `bean_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
-  `params` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数',
-  `cron_expression` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'cron表达式',
+  `id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '任务id',
+  `bean_name` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
+  `params` varchar(2000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '参数',
+  `cron_expression` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT 'cron表达式',
   `status` tinyint(4) NULL DEFAULT NULL COMMENT '任务状态  0：正常  1：暂停',
-  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `remark` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '定时任务' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_job
@@ -2683,17 +2687,17 @@ INSERT INTO `sys_job` VALUES ('1252884495040782337', 'testTask', '1', '0 0 0 L *
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_job_log`;
 CREATE TABLE `sys_job_log`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务日志id',
-  `job_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务id',
-  `bean_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
-  `params` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数',
+  `id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '任务日志id',
+  `job_id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '任务id',
+  `bean_name` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
+  `params` varchar(2000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '参数',
   `status` tinyint(4) NOT NULL COMMENT '任务状态    0：成功    1：失败',
-  `error` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '失败信息',
+  `error` varchar(2000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '失败信息',
   `times` int(11) NOT NULL COMMENT '耗时(单位：毫秒)',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `job_id`(`job_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '定时任务日志' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_job_log
@@ -3307,17 +3311,17 @@ INSERT INTO `sys_job_log` VALUES ('1790330967300829186', '1252884495040782337', 
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_log`;
 CREATE TABLE `sys_log`  (
-  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `user_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户id',
-  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名',
-  `operation` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户操作',
+  `id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `user_id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '用户id',
+  `username` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '用户名',
+  `operation` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '用户操作',
   `time` int(11) NULL DEFAULT NULL COMMENT '响应时间',
-  `method` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求方法',
-  `params` varchar(5000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求参数',
-  `ip` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'IP地址',
+  `method` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '请求方法',
+  `params` varchar(5000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '请求参数',
+  `ip` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT 'IP地址',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_log
@@ -3678,7 +3682,7 @@ INSERT INTO `sys_log` VALUES ('1791758500995461122', '1', 'admin', '菜单权限
 INSERT INTO `sys_log` VALUES ('1791763093498306562', '1', 'admin', '菜单权限管理-获取所有菜单权限', 147, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 17:29:45');
 INSERT INTO `sys_log` VALUES ('1791763160762359810', '1', 'admin', '菜单权限管理-获取所有菜单权限', 79, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 17:30:02');
 INSERT INTO `sys_log` VALUES ('1791763192504852481', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 85, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791761708090343425\"]', '172.24.0.1', '2024-05-18 17:30:09');
-INSERT INTO `sys_log` VALUES ('1791763270904782850', '1', 'admin', '菜单权限管理-更新菜单权限', 8, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1791761708090343425\",\"name\":\"加工委托\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791439755732008962\",\"pidName\":\"委托数据管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1716024627793,\"url\":\"index/processingEntrustment\"}]', '172.24.0.1', '2024-05-18 17:30:28');
+INSERT INTO `sys_log` VALUES ('1791763270904782850', '1', 'admin', '菜单权限管理-更新菜单权限', 8, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1791761708090343425\",\"name\":\"加工委托管理\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791439755732008962\",\"pidName\":\"委托数据管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1716024627793,\"url\":\"index/processingEntrustment\"}]', '172.24.0.1', '2024-05-18 17:30:28');
 INSERT INTO `sys_log` VALUES ('1791763271236132865', '1', 'admin', '菜单权限管理-获取所有菜单权限', 63, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 17:30:28');
 INSERT INTO `sys_log` VALUES ('1791763287191265282', '1', 'admin', '角色管理-分页获取角色信息', 10, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 17:30:32');
 INSERT INTO `sys_log` VALUES ('1791763292341870594', '1', 'admin', '角色管理-查询角色详情', 68, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.0.1', '2024-05-18 17:30:33');
@@ -3689,7 +3693,7 @@ INSERT INTO `sys_log` VALUES ('1791763339750088706', '1', 'admin', '角色管理
 INSERT INTO `sys_log` VALUES ('1791763339817197569', '1', 'admin', '角色管理-分页获取角色信息', 3, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 17:30:44');
 INSERT INTO `sys_log` VALUES ('1791763370708246529', '1', 'admin', '菜单权限管理-获取所有菜单权限', 41, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 17:30:52');
 INSERT INTO `sys_log` VALUES ('1791763402442350593', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 39, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791761708090343425\"]', '172.24.0.1', '2024-05-18 17:30:59');
-INSERT INTO `sys_log` VALUES ('1791763433069158402', '1', 'admin', '菜单权限管理-更新菜单权限', 3, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-snowflake\",\"id\":\"1791761708090343425\",\"name\":\"加工委托\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791439755732008962\",\"pidName\":\"委托数据管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1716024666459,\"url\":\"index/processingEntrustment\"}]', '172.24.0.1', '2024-05-18 17:31:06');
+INSERT INTO `sys_log` VALUES ('1791763433069158402', '1', 'admin', '菜单权限管理-更新菜单权限', 3, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-snowflake\",\"id\":\"1791761708090343425\",\"name\":\"加工委托管理\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791439755732008962\",\"pidName\":\"委托数据管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1716024666459,\"url\":\"index/processingEntrustment\"}]', '172.24.0.1', '2024-05-18 17:31:06');
 INSERT INTO `sys_log` VALUES ('1791763433262096385', '1', 'admin', '菜单权限管理-获取所有菜单权限', 35, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 17:31:07');
 INSERT INTO `sys_log` VALUES ('1791763563340046338', NULL, NULL, '用户管理-退出', 4, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.24.0.1', '2024-05-18 17:31:38');
 INSERT INTO `sys_log` VALUES ('1791784392748675074', '1', 'admin', '菜单权限管理-获取所有菜单权限', 141, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 18:54:24');
@@ -3808,19 +3812,58 @@ INSERT INTO `sys_log` VALUES ('1796096848990138370', '1', 'admin', '角色管理
 INSERT INTO `sys_log` VALUES ('1796096889804910593', '1', 'admin', '角色管理-更新角色信息', 49, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791796173021839361\",\"1791796173021839362\",\"1791796173021839363\",\"1791796173021839364\",\"1791796173021839365\",\"1792909324342255617\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1796090284447125505\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"1791783234189557761\",\"1791783234189557762\",\"1791783234189557763\",\"1791783234189557764\",\"1791783234189557765\",\"1796096805277102082\",\"1791786404361953281\",\"1791786404361953282\",\"1791786404361953283\",\"1791786404361953284\",\"1791786404361953285\",\"1796096527932944385\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1717057843025}]', '192.168.63.1', '2024-05-30 16:30:43');
 INSERT INTO `sys_log` VALUES ('1796096889939128321', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '192.168.63.1', '2024-05-30 16:30:43');
 INSERT INTO `sys_log` VALUES ('1796096985166561282', NULL, NULL, '用户管理-退出', 4, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '192.168.63.1', '2024-05-30 16:31:06');
+INSERT INTO `sys_log` VALUES ('1796492429907996673', '1', 'admin', '菜单权限管理-获取所有菜单权限', 191, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.141.166', '2024-05-31 18:42:27');
+INSERT INTO `sys_log` VALUES ('1796493213131444225', '1', 'admin', '用户管理-分页获取用户列表', 18, 'cn.edu.lut.welder.controller.UserController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.141.166', '2024-05-31 18:45:34');
+INSERT INTO `sys_log` VALUES ('1796493213131444226', '1', 'admin', '机构管理-树型组织列表', 16, 'cn.edu.lut.welder.controller.DeptController.getTree()', '[null]', '172.24.141.166', '2024-05-31 18:45:34');
+INSERT INTO `sys_log` VALUES ('1796493220454699010', '1', 'admin', '菜单权限管理-获取所有菜单权限', 186, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.141.166', '2024-05-31 18:45:36');
+INSERT INTO `sys_log` VALUES ('1796496056664010754', '1', 'admin', '菜单权限管理-获取所有菜单权限', 183, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.141.166', '2024-05-31 18:56:52');
+INSERT INTO `sys_log` VALUES ('1796496069523746817', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 168, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.24.141.166', '2024-05-31 18:56:55');
+INSERT INTO `sys_log` VALUES ('1796497339126984705', '1', 'admin', '菜单权限管理-新增菜单权限', 70, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1717153317554,\"deleted\":1,\"icon\":\"\",\"id\":\"1796497338871132162\",\"name\":\"刷新\",\"orderNum\":100,\"perms\":\"nonDestructiveTestingOrder:updateDetection\",\"pid\":\"1791438559361294337\",\"pidName\":\"委托管理\",\"status\":1,\"target\":\"_self\",\"type\":3,\"updateTime\":1717153317554,\"url\":\"nonDestructiveTestingOrder/updateDetection\"}]', '172.24.141.166', '2024-05-31 19:01:58');
+INSERT INTO `sys_log` VALUES ('1796497340251058177', '1', 'admin', '菜单权限管理-获取所有菜单权限', 167, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.141.166', '2024-05-31 19:01:58');
+INSERT INTO `sys_log` VALUES ('1796497350556463106', '1', 'admin', '角色管理-分页获取角色信息', 9, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.141.166', '2024-05-31 19:02:00');
+INSERT INTO `sys_log` VALUES ('1796497356231356418', '1', 'admin', '角色管理-查询角色详情', 191, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.141.166', '2024-05-31 19:02:02');
+INSERT INTO `sys_log` VALUES ('1796497375466434561', '1', 'admin', '机构管理-树型组织列表', 4, 'cn.edu.lut.welder.controller.DeptController.getTree()', '[null]', '172.24.141.166', '2024-05-31 19:02:06');
+INSERT INTO `sys_log` VALUES ('1796497375529349121', '1', 'admin', '用户管理-分页获取用户列表', 13, 'cn.edu.lut.welder.controller.UserController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.141.166', '2024-05-31 19:02:06');
+INSERT INTO `sys_log` VALUES ('1796497379945951234', '1', 'admin', '菜单权限管理-获取所有菜单权限', 141, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.141.166', '2024-05-31 19:02:07');
+INSERT INTO `sys_log` VALUES ('1796499858532085762', NULL, NULL, '用户管理-退出', 4, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.24.141.166', '2024-05-31 19:11:58');
+INSERT INTO `sys_log` VALUES ('1796500707090202626', '1', 'admin', '菜单权限管理-获取所有菜单权限', 198, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.141.166', '2024-05-31 19:15:21');
+INSERT INTO `sys_log` VALUES ('1796500737243054081', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 170, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1796497338871132162\"]', '172.24.141.166', '2024-05-31 19:15:28');
+INSERT INTO `sys_log` VALUES ('1796500918357295106', '1', 'admin', '菜单权限管理-更新菜单权限', 52, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1796497338871132162\",\"name\":\"刷新\",\"orderNum\":100,\"perms\":\"nonDestructiveTestingOrder:updateDetection\",\"pid\":\"1791438559361294337\",\"pidName\":\"委托管理\",\"status\":1,\"target\":\"_self\",\"type\":3,\"updateTime\":1717154170925,\"url\":\"nonDestructiveTestingOrder/updateDetection\"}]', '172.24.141.166', '2024-05-31 19:16:11');
+INSERT INTO `sys_log` VALUES ('1796500919477174273', '1', 'admin', '菜单权限管理-获取所有菜单权限', 184, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.141.166', '2024-05-31 19:16:11');
+INSERT INTO `sys_log` VALUES ('1796500935235174402', '1', 'admin', '角色管理-分页获取角色信息', 12, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.141.166', '2024-05-31 19:16:15');
+INSERT INTO `sys_log` VALUES ('1796500940721324033', '1', 'admin', '角色管理-查询角色详情', 189, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.141.166', '2024-05-31 19:16:16');
+INSERT INTO `sys_log` VALUES ('1796500971822088193', '1', 'admin', '角色管理-更新角色信息', 218, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791796173021839361\",\"1791796173021839362\",\"1791796173021839363\",\"1791796173021839364\",\"1791796173021839365\",\"1792909324342255617\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1796090284447125505\",\"1796497338871132162\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"1791783234189557761\",\"1791783234189557762\",\"1791783234189557763\",\"1791783234189557764\",\"1791783234189557765\",\"1796096805277102082\",\"1791786404361953281\",\"1791786404361953282\",\"1791786404361953283\",\"1791786404361953284\",\"1791786404361953285\",\"1796096527932944385\",\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"19\",\"3\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"12\",\"22\",\"38\",\"5\",\"9\",\"54\",\"15\",\"1\",\"16\",\"20\",\"4\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"58\",\"7\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1717154183507}]', '172.24.141.166', '2024-05-31 19:16:24');
+INSERT INTO `sys_log` VALUES ('1796500972216352769', '1', 'admin', '角色管理-分页获取角色信息', 5, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.141.166', '2024-05-31 19:16:24');
+INSERT INTO `sys_log` VALUES ('1796501003489083394', NULL, NULL, '用户管理-退出', 4, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.24.141.166', '2024-05-31 19:16:31');
+INSERT INTO `sys_log` VALUES ('1796502237973413890', '1', 'admin', '菜单权限管理-获取所有菜单权限', 115, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.141.166', '2024-05-31 19:21:26');
+INSERT INTO `sys_log` VALUES ('1796502287650750465', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 125, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1796090284447125505\"]', '172.24.141.166', '2024-05-31 19:21:37');
+INSERT INTO `sys_log` VALUES ('1796502336656998401', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 124, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1796497338871132162\"]', '172.24.141.166', '2024-05-31 19:21:49');
+INSERT INTO `sys_log` VALUES ('1796502356558970881', '1', 'admin', '菜单权限管理-更新菜单权限', 46, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1796497338871132162\",\"name\":\"带N堆焊的检测方法设置为PT\",\"orderNum\":100,\"perms\":\"nonDestructiveTestingOrder:updateDetection\",\"pid\":\"1791438559361294337\",\"pidName\":\"委托管理\",\"status\":1,\"target\":\"_self\",\"type\":3,\"updateTime\":1717154513818,\"url\":\"nonDestructiveTestingOrder/updateDetection\"}]', '172.24.141.166', '2024-05-31 19:21:54');
+INSERT INTO `sys_log` VALUES ('1796502357481717761', '1', 'admin', '菜单权限管理-获取所有菜单权限', 138, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.141.166', '2024-05-31 19:21:54');
+INSERT INTO `sys_log` VALUES ('1796502374913245186', NULL, NULL, '用户管理-退出', 2, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.24.141.166', '2024-05-31 19:21:58');
+INSERT INTO `sys_log` VALUES ('1796504069940543490', '1', 'admin', '菜单权限管理-获取所有菜单权限', 193, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.141.166', '2024-05-31 19:28:42');
+INSERT INTO `sys_log` VALUES ('1796504100546379778', '1', 'admin', '角色管理-分页获取角色信息', 12, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.141.166', '2024-05-31 19:28:50');
+INSERT INTO `sys_log` VALUES ('1796504108079349761', '1', 'admin', '角色管理-查询角色详情', 204, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.141.166', '2024-05-31 19:28:51');
+INSERT INTO `sys_log` VALUES ('1796508670521597954', '1', 'admin', '菜单权限管理-获取所有菜单权限', 195, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.141.166', '2024-05-31 19:46:59');
+INSERT INTO `sys_log` VALUES ('1796508701119045634', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 153, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1792909324342255617\"]', '172.24.141.166', '2024-05-31 19:47:07');
+INSERT INTO `sys_log` VALUES ('1796508767141584898', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 160, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1796497338871132162\"]', '172.24.141.166', '2024-05-31 19:47:22');
+INSERT INTO `sys_log` VALUES ('1796508921420668929', '1', 'admin', '菜单权限管理-更新菜单权限', 52, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1796497338871132162\",\"name\":\"带N堆焊的检测方法设置为PT\",\"orderNum\":100,\"perms\":\"nonDestructiveTestingOrder:update-detection\",\"pid\":\"1791438559361294337\",\"pidName\":\"委托管理\",\"status\":1,\"target\":\"_self\",\"type\":3,\"updateTime\":1717156079004,\"url\":\"nonDestructiveTestingOrder/update-detection\"}]', '172.24.141.166', '2024-05-31 19:47:59');
+INSERT INTO `sys_log` VALUES ('1796508922410524673', '1', 'admin', '菜单权限管理-获取所有菜单权限', 174, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.141.166', '2024-05-31 19:47:59');
+INSERT INTO `sys_log` VALUES ('1796714825419157506', '1', 'admin', '菜单权限管理-获取所有菜单权限', 273, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '10.198.223.244', '2024-06-01 09:26:10');
+INSERT INTO `sys_log` VALUES ('1796714853302890497', '1', 'admin', '角色管理-分页获取角色信息', 11, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '10.198.223.244', '2024-06-01 09:26:17');
 
 -- ----------------------------
 -- Table structure for sys_permission
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_permission`;
 CREATE TABLE `sys_permission`  (
-  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-  `name` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单权限名称',
-  `perms` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '授权(多个用逗号分隔，如：sys:user:add,sys:user:edit)',
-  `icon` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标',
-  `url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '访问地址URL',
-  `target` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'a target属性:_self _blank',
-  `pid` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父级菜单权限名称',
+  `id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '主键',
+  `name` varchar(300) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '菜单权限名称',
+  `perms` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '授权(多个用逗号分隔，如：sys:user:add,sys:user:edit)',
+  `icon` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '图标',
+  `url` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '访问地址URL',
+  `target` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT 'a target属性:_self _blank',
+  `pid` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '父级菜单权限名称',
   `order_num` int(11) NULL DEFAULT NULL COMMENT '排序',
   `type` tinyint(4) NULL DEFAULT NULL COMMENT '菜单权限类型(1:目录;2:菜单;3:按钮)',
   `status` tinyint(4) NULL DEFAULT NULL COMMENT '状态1:正常 0：禁用',
@@ -3828,7 +3871,7 @@ CREATE TABLE `sys_permission`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(4) NULL DEFAULT NULL COMMENT '是否删除(1未删除；0已删除)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统权限' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '系统权限' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_permission
@@ -3881,7 +3924,7 @@ INSERT INTO `sys_permission` VALUES ('1791438559361294339', '修改', 'nonDestru
 INSERT INTO `sys_permission` VALUES ('1791438559361294340', '删除', 'nonDestructiveTestingOrder:delete', NULL, 'nonDestructiveTestingOrder/delete', NULL, '1791438559361294337', NULL, 3, 1, NULL, NULL, 1);
 INSERT INTO `sys_permission` VALUES ('1791438559361294341', '列表', 'nonDestructiveTestingOrder:list', NULL, 'nonDestructiveTestingOrder/listByPage', NULL, '1791438559361294337', NULL, 3, 1, NULL, NULL, 1);
 INSERT INTO `sys_permission` VALUES ('1791439755732008962', '委托数据管理', '', 'layui-icon-home', '', '_self', '0', 1, 1, 1, '2024-05-17 20:04:56', '2024-05-18 17:11:30', 1);
-INSERT INTO `sys_permission` VALUES ('1791761708090343425', '加工委托', '', 'layui-icon-snowflake', 'index/processingEntrustment', '_self', '1791439755732008962', 10, 2, 1, NULL, '2024-05-18 17:31:06', 1);
+INSERT INTO `sys_permission` VALUES ('1791761708090343425', '加工委托管理', '', 'layui-icon-snowflake', 'index/processingEntrustment', '_self', '1791439755732008962', 10, 2, 1, NULL, '2024-05-18 17:31:06', 1);
 INSERT INTO `sys_permission` VALUES ('1791761708090343426', '新增', 'processingEntrustment:add', NULL, 'processingEntrustment/add', NULL, '1791761708090343425', NULL, 3, 1, NULL, NULL, 1);
 INSERT INTO `sys_permission` VALUES ('1791761708090343427', '修改', 'processingEntrustment:update', NULL, 'processingEntrustment/update', NULL, '1791761708090343425', NULL, 3, 1, NULL, NULL, 1);
 INSERT INTO `sys_permission` VALUES ('1791761708090343428', '删除', 'processingEntrustment:delete', NULL, 'processingEntrustment/delete', NULL, '1791761708090343425', NULL, 3, 1, NULL, NULL, 1);
@@ -3907,6 +3950,7 @@ INSERT INTO `sys_permission` VALUES ('1793251201336782850', 'demo', 'examination
 INSERT INTO `sys_permission` VALUES ('1796090284447125505', '委托报告生成', 'nonDestructiveTestingOrder:generateReport', '', 'nonDestructiveTestingOrder/generateReport', '_self', '1791438559361294337', 100, 3, 1, '2024-05-30 16:04:28', '2024-05-30 16:04:28', 1);
 INSERT INTO `sys_permission` VALUES ('1796096527932944385', '宏观报告生成', 'macroCommission:generateReport', '', 'macroCommission/generateReport', '_self', '1791786404361953281', 100, 3, 1, '2024-05-30 16:29:17', '2024-05-30 16:29:17', 1);
 INSERT INTO `sys_permission` VALUES ('1796096805277102082', '弯曲报告生成', 'bendCommission:generateReport', '', 'bendCommission/generateReport', '_self', '1791783234189557761', 100, 3, 1, '2024-05-30 16:30:23', '2024-05-30 16:30:23', 1);
+INSERT INTO `sys_permission` VALUES ('1796497338871132162', '带N堆焊的检测方法设置为PT', 'nonDestructiveTestingOrder:update-detection', '', 'nonDestructiveTestingOrder/update-detection', '_self', '1791438559361294337', 100, 3, 1, '2024-05-31 19:01:58', '2024-05-31 19:47:59', 1);
 INSERT INTO `sys_permission` VALUES ('18', '定时任务恢复', 'sysJob:resume', NULL, 'sysJob/resume', '_self', '59', 4, 3, 1, '2020-04-22 15:48:40', NULL, 1);
 INSERT INTO `sys_permission` VALUES ('19', '列表', 'sys:role:list', NULL, 'sys/roles', NULL, '53', 0, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
 INSERT INTO `sys_permission` VALUES ('2', 'SQL 监控', '', '', 'druid/sql.html', '_self', '21', 98, 2, 1, '2020-03-19 13:29:40', '2020-05-07 13:36:59', 1);
@@ -3966,33 +4010,33 @@ INSERT INTO `sys_permission` VALUES ('9', '新增', 'sys:dept:add', NULL, 'sys/d
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role`  (
-  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色名称',
-  `description` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '主键',
+  `name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '角色名称',
+  `description` varchar(300) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   `status` tinyint(4) NULL DEFAULT NULL COMMENT '状态(1:正常0:弃用)',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(4) NULL DEFAULT NULL COMMENT '是否删除(1未删除；0已删除)',
   `data_scope` int(11) NULL DEFAULT NULL COMMENT '数据范围（1：所有 2：自定义 3： 本部门及以下部门 4：仅本部门 5:自己）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统角色' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '系统角色' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES ('1', '超级管理员', '拥有所有权限-不能删除', 1, '2019-11-01 19:26:29', '2024-05-30 16:30:43', 1, 1);
+INSERT INTO `sys_role` VALUES ('1', '超级管理员', '拥有所有权限-不能删除', 1, '2019-11-01 19:26:29', '2024-05-31 19:16:24', 1, 1);
 
 -- ----------------------------
 -- Table structure for sys_role_dept
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_dept`;
 CREATE TABLE `sys_role_dept`  (
-  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-  `role_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色id',
-  `dept_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门id',
+  `id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '主键',
+  `role_id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '角色id',
+  `dept_id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '部门id',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色部门' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '角色部门' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_role_dept
@@ -4003,154 +4047,155 @@ CREATE TABLE `sys_role_dept`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_permission`;
 CREATE TABLE `sys_role_permission`  (
-  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-  `role_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色id',
-  `permission_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单权限id',
+  `id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '主键',
+  `role_id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '角色id',
+  `permission_id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '菜单权限id',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_permission
 -- ----------------------------
-INSERT INTO `sys_role_permission` VALUES ('1796096889670692866', '1', '51', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801729', '1', '11', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801730', '1', '17', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801731', '1', '26', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801732', '1', '40', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801733', '1', '43', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801734', '1', '44', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801735', '1', '53', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801736', '1', '3', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801737', '1', '19', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801738', '1', '36', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801739', '1', '1311115974068449281', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801740', '1', '13', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801741', '1', '39', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801742', '1', '24', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801743', '1', '10', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801744', '1', '23', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801745', '1', '25', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801746', '1', '42', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801747', '1', '52', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801748', '1', '56', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801749', '1', '57', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801750', '1', '41', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801751', '1', '5', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801752', '1', '9', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801753', '1', '12', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801754', '1', '22', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801755', '1', '38', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801756', '1', '1790296429132517378', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801757', '1', '1790221597925158914', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801758', '1', '1790221597925158915', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801759', '1', '1790221597925158916', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801760', '1', '1790221597925158917', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801761', '1', '1790221597925158918', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801762', '1', '1790328183004393474', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801763', '1', '1790669456553254913', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801764', '1', '1790669773055434753', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801765', '1', '1790669773055434754', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801766', '1', '1790669773055434755', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801767', '1', '1790669773055434756', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801768', '1', '1790669773055434757', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801769', '1', '1791392135730946050', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801770', '1', '1791796173021839361', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801771', '1', '1791796173021839362', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801772', '1', '1791796173021839363', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801773', '1', '1791796173021839364', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801774', '1', '1791796173021839365', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801775', '1', '1792909324342255617', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801776', '1', '1791109342357401601', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801777', '1', '1791109342357401602', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801778', '1', '1791109342357401603', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801779', '1', '1791109342357401604', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801780', '1', '1791109342357401605', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801781', '1', '1791401485870485505', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801782', '1', '1791439755732008962', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801783', '1', '1791438559361294337', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801784', '1', '1791438559361294338', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801785', '1', '1791438559361294339', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801786', '1', '1791438559361294340', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801787', '1', '1791438559361294341', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801788', '1', '1796090284447125505', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801789', '1', '1791761708090343425', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801790', '1', '1791761708090343426', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801791', '1', '1791761708090343427', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801792', '1', '1791761708090343428', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801793', '1', '1791761708090343429', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801794', '1', '1791783234189557761', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801795', '1', '1791783234189557762', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801796', '1', '1791783234189557763', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801797', '1', '1791783234189557764', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801798', '1', '1791783234189557765', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801799', '1', '1796096805277102082', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801800', '1', '1791786404361953281', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801801', '1', '1791786404361953282', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801802', '1', '1791786404361953283', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801803', '1', '1791786404361953284', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801804', '1', '1791786404361953285', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801805', '1', '1796096527932944385', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801806', '1', '54', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801807', '1', '15', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801808', '1', '1', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801809', '1', '4', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801810', '1', '16', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801811', '1', '20', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801812', '1', '27', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801813', '1', '28', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801814', '1', '29', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801815', '1', '30', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801816', '1', '31', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801817', '1', '32', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801818', '1', '33', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801819', '1', '34', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801820', '1', '35', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801821', '1', '45', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801822', '1', '46', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801823', '1', '47', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801824', '1', '48', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801825', '1', '49', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801826', '1', '59', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801827', '1', '60', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801828', '1', '61', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801829', '1', '62', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801830', '1', '63', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801831', '1', '55', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801832', '1', '18', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801833', '1', '14', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801834', '1', '8', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801835', '1', '7', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801836', '1', '58', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801837', '1', '21', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801838', '1', '50', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801839', '1', '2', '2024-05-30 16:30:43');
-INSERT INTO `sys_role_permission` VALUES ('1796096889737801840', '1', '6', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796500970974838786', '1', '1790296429132517378', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947649', '1', '1790221597925158914', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947650', '1', '1790221597925158915', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947651', '1', '1790221597925158916', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947652', '1', '1790221597925158917', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947653', '1', '1790221597925158918', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947654', '1', '1790328183004393474', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947655', '1', '1790669456553254913', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947656', '1', '1790669773055434753', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947657', '1', '1790669773055434754', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947658', '1', '1790669773055434755', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947659', '1', '1790669773055434756', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947660', '1', '1790669773055434757', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947661', '1', '1791392135730946050', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947662', '1', '1791796173021839361', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947663', '1', '1791796173021839362', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947664', '1', '1791796173021839363', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947665', '1', '1791796173021839364', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947666', '1', '1791796173021839365', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947667', '1', '1792909324342255617', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947668', '1', '1791109342357401601', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947669', '1', '1791109342357401602', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947670', '1', '1791109342357401603', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947671', '1', '1791109342357401604', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947672', '1', '1791109342357401605', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947673', '1', '1791401485870485505', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947674', '1', '1791439755732008962', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947675', '1', '1791438559361294337', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947676', '1', '1791438559361294338', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947677', '1', '1791438559361294339', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947678', '1', '1791438559361294340', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947679', '1', '1791438559361294341', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947680', '1', '1796090284447125505', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947681', '1', '1796497338871132162', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947682', '1', '1791761708090343425', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947683', '1', '1791761708090343426', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947684', '1', '1791761708090343427', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947685', '1', '1791761708090343428', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947686', '1', '1791761708090343429', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947687', '1', '1791783234189557761', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947688', '1', '1791783234189557762', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947689', '1', '1791783234189557763', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947690', '1', '1791783234189557764', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947691', '1', '1791783234189557765', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947692', '1', '1796096805277102082', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947693', '1', '1791786404361953281', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947694', '1', '1791786404361953282', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947695', '1', '1791786404361953283', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947696', '1', '1791786404361953284', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947697', '1', '1791786404361953285', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947698', '1', '1796096527932944385', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947699', '1', '51', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947700', '1', '11', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947701', '1', '17', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947702', '1', '26', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947703', '1', '40', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947704', '1', '43', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971041947705', '1', '44', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056513', '1', '53', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056514', '1', '19', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056515', '1', '3', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056516', '1', '36', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056517', '1', '1311115974068449281', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056518', '1', '13', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056519', '1', '39', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056520', '1', '24', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056521', '1', '10', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056522', '1', '23', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056523', '1', '25', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056524', '1', '42', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056525', '1', '52', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056526', '1', '56', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056527', '1', '57', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056528', '1', '41', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056529', '1', '12', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056530', '1', '22', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056531', '1', '38', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056532', '1', '5', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056533', '1', '9', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056534', '1', '54', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056535', '1', '15', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056536', '1', '1', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056537', '1', '16', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056538', '1', '20', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056539', '1', '4', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056540', '1', '27', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056541', '1', '28', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056542', '1', '29', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056543', '1', '30', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056544', '1', '31', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056545', '1', '32', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056546', '1', '33', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056547', '1', '34', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056548', '1', '35', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056549', '1', '45', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056550', '1', '46', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056551', '1', '47', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056552', '1', '48', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056553', '1', '49', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056554', '1', '59', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056555', '1', '60', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056556', '1', '61', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056557', '1', '62', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056558', '1', '63', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056559', '1', '55', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056560', '1', '18', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056561', '1', '14', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056562', '1', '8', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056563', '1', '58', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056564', '1', '7', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056565', '1', '21', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056566', '1', '50', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056567', '1', '2', '2024-05-31 19:16:24');
+INSERT INTO `sys_role_permission` VALUES ('1796500971109056568', '1', '6', '2024-05-31 19:16:24');
 
 -- ----------------------------
 -- Table structure for sys_user
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`  (
-  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户id',
-  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账户名称',
-  `salt` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '加密盐值',
-  `password` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户密码密文',
-  `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机号码',
-  `dept_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门id',
-  `real_name` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '真实名称',
-  `nick_name` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '昵称',
-  `email` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱(唯一)',
+  `id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '用户id',
+  `username` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '账户名称',
+  `salt` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '加密盐值',
+  `password` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '用户密码密文',
+  `phone` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '手机号码',
+  `dept_id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '部门id',
+  `real_name` varchar(60) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '真实名称',
+  `nick_name` varchar(60) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '昵称',
+  `email` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '邮箱(唯一)',
   `status` tinyint(4) NULL DEFAULT NULL COMMENT '账户状态(1.正常 0.锁定 )',
   `sex` tinyint(4) NULL DEFAULT NULL COMMENT '性别(1.男 2.女)',
   `deleted` tinyint(4) NULL DEFAULT NULL COMMENT '是否删除(1未删除；0已删除)',
-  `create_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `update_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `create_id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `update_id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '更新人',
   `create_where` tinyint(4) NULL DEFAULT NULL COMMENT '创建来源(1.web 2.android 3.ios )',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '系统用户' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
@@ -4162,12 +4207,12 @@ INSERT INTO `sys_user` VALUES ('1', 'admin', '324ce32d86224b00a02b', '2102b59a75
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role`  (
-  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户id',
-  `user_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `role_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色id',
+  `id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '用户id',
+  `user_id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
+  `role_id` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '角色id',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户角色' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '系统用户角色' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_role
@@ -4209,7 +4254,7 @@ CREATE TABLE `test_order`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `welding_consumables`;
 CREATE TABLE `welding_consumables`  (
-  `id` bigint(11) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `material` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `specification` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `warehouse_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
