@@ -1,351 +1,4224 @@
--- 部门
-DROP TABLE IF EXISTS sys_dept;
-CREATE TABLE sys_dept (
-  id varchar(64) NOT NULL COMMENT '主键',
-  dept_no varchar(18) DEFAULT NULL COMMENT '部门编号(规则：父级关系编码+自己的编码)',
-  name varchar(300) DEFAULT NULL COMMENT '部门名称',
-  pid varchar(64) NOT NULL COMMENT '父级id',
-  status tinyint(4) COMMENT '状态(1:正常；0:弃用)',
-  relation_code varchar(3000) DEFAULT NULL COMMENT '为了维护更深层级关系',
-  dept_manager_id varchar(64) DEFAULT NULL COMMENT '部门经理user_id',
-  manager_name varchar(255) DEFAULT NULL COMMENT '部门经理名称',
-  phone varchar(20) DEFAULT NULL COMMENT '部门经理联系电话',
-  create_time datetime DEFAULT NULL COMMENT '创建时间',
-  update_time datetime DEFAULT NULL COMMENT '更新时间',
-  deleted tinyint(4) COMMENT '是否删除(1未删除；0已删除)',
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统部门';
+/*
+ Navicat Premium Data Transfer
 
--- 系统日志
-DROP TABLE IF EXISTS sys_log;
-CREATE TABLE sys_log (
-  id varchar(64) NOT NULL,
-  user_id varchar(64) DEFAULT NULL COMMENT '用户id',
-  username varchar(50) DEFAULT NULL COMMENT '用户名',
-  operation varchar(50) DEFAULT NULL COMMENT '用户操作',
-  time int(11) DEFAULT NULL COMMENT '响应时间',
-  method varchar(200) DEFAULT NULL COMMENT '请求方法',
-  params varchar(5000) DEFAULT NULL COMMENT '请求参数',
-  ip varchar(64) DEFAULT NULL COMMENT 'IP地址',
-  create_time datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统日志';
+ Source Server         : 127.0.0.1
+ Source Server Type    : MySQL
+ Source Server Version : 50722
+ Source Host           : 127.0.0.1:3306
+ Source Schema         : welder_examination_materials
 
--- 菜单权限
-DROP TABLE IF EXISTS sys_permission;
-CREATE TABLE sys_permission  (
-  id varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-  name varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单权限名称',
-  perms varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '授权(多个用逗号分隔，如：sys:user:add,sys:user:edit)',
-  icon varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标',
-  url varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '访问地址URL',
-  target varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'a target属性:_self _blank',
-  pid varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父级菜单权限名称',
-  order_num int(11) NULL COMMENT '排序',
-  type tinyint(4) NULL DEFAULT NULL COMMENT '菜单权限类型(1:目录;2:菜单;3:按钮)',
-  status tinyint(4) NULL COMMENT '状态1:正常 0：禁用',
-  create_time datetime NULL DEFAULT NULL COMMENT '创建时间',
-  update_time datetime NULL DEFAULT NULL COMMENT '更新时间',
-  deleted tinyint(4) NULL  COMMENT '是否删除(1未删除；0已删除)',
-  PRIMARY KEY (id) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统权限' ROW_FORMAT = Compact;
+ Target Server Type    : MySQL
+ Target Server Version : 50722
+ File Encoding         : 65001
 
--- 角色
-DROP TABLE IF EXISTS sys_role;
-CREATE TABLE sys_role (
-  id varchar(64) NOT NULL COMMENT '主键',
-  name varchar(255) DEFAULT NULL COMMENT '角色名称',
-  description varchar(300) DEFAULT NULL,
-  status tinyint(4) COMMENT '状态(1:正常0:弃用)',
-  create_time datetime DEFAULT NULL COMMENT '创建时间',
-  update_time datetime DEFAULT NULL COMMENT '更新时间',
-  deleted tinyint(4) COMMENT '是否删除(1未删除；0已删除)',
-  data_scope int COMMENT '数据范围（1：所有 2：自定义 3： 本部门及以下部门 4：仅本部门 5:自己）',
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统角色';
+ Date: 30/05/2024 20:51:15
+*/
 
--- 角色部门
-DROP TABLE IF EXISTS sys_role_dept;
-CREATE TABLE sys_role_dept  (
-  id varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-  role_id varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色id',
-  dept_id varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门id',
-  create_time datetime NULL DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (id) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色部门' ROW_FORMAT = Compact;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for appearance_inspection_record
+-- ----------------------------
+DROP TABLE IF EXISTS `appearance_inspection_record`;
+CREATE TABLE `appearance_inspection_record`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `project` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '项目',
+  `test_piece_number` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '试件编号',
+  `surface_condition` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表面状态',
+  `weld_reinforcement` double NULL DEFAULT NULL COMMENT '焊缝余高',
+  `residual_height_difference` double NULL DEFAULT NULL COMMENT '余高差',
+  `widen` double NULL DEFAULT NULL COMMENT '增宽',
+  `width_difference` double NULL DEFAULT NULL COMMENT '宽度差',
+  `straightness` double NULL DEFAULT NULL COMMENT '直线度',
+  `back_weld_reinforcement` double NULL DEFAULT NULL COMMENT '背面焊缝余高',
+  `defect_condition` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '缺陷情况',
+  `concavity` double NULL DEFAULT NULL COMMENT '角焊缝凹凸度',
+  `low_leg` double NULL DEFAULT NULL COMMENT '焊脚最低',
+  `high_leg` double NULL DEFAULT NULL COMMENT '焊脚最高',
+  `butt_unevenness` double NULL DEFAULT NULL COMMENT '对接不平度',
+  `welding_bead_height_difference` double NULL DEFAULT NULL COMMENT '堆焊焊道高度差',
+  `amount_of_depression` double NULL DEFAULT NULL COMMENT '凹下量',
+  `eligibility` int(1) NULL DEFAULT 1 COMMENT '是否合格',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 343 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of appearance_inspection_record
+-- ----------------------------
+INSERT INTO `appearance_inspection_record` VALUES (1, 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE1-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (2, 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE1-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (3, 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE1-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (4, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE1-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (5, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE1-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (6, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE1-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (7, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE2-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (8, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE2-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (9, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE2-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (10, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE2-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (11, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE2-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (12, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE2-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (13, 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE3-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (14, 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE3-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (15, 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE3-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (16, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE3-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (17, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE3-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (18, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE3-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (19, 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'RE4-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (20, 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'RE4-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (21, 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'RE4-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (22, 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'RE4-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (23, 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE5-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (24, 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE5-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (25, 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE5-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (26, 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (27, 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE7', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (28, 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'RE8-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (29, 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'RE8-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (30, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE8-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (31, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE8-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (32, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE8-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (33, 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE9-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (34, 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE9-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (35, 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE9-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (36, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE10-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (37, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE10-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (38, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE10-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (39, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE10-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (40, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE10-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (41, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE10-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (42, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE11-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (43, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE11-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (44, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE11-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (45, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE11-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (46, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE11-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (47, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE11-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (48, 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE12-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (49, 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE12-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (50, 'SMAW-FeⅡ-3G-16-Fef3J', 'RE13', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (51, 'SMAW-FeⅡ-3G-16-Fef3J', 'RE14', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (52, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE15-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (53, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE15-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (54, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE15-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (55, 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE15-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (56, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE16-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (57, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE16-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (58, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE16-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (59, 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE16-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (60, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE17-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (61, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE17-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (62, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE17-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (63, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE17-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (64, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE17-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (65, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE17-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (66, 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE17-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (67, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE18-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (68, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE18-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (69, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE18-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (70, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE18-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (71, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE18-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (72, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE18-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (73, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE19-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (74, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE19-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (75, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE19-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (76, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE19-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (77, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE19-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (78, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE19-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (79, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE20-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (80, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE20-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (81, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE20-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (82, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE20-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (83, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE20-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (84, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE20-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (85, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE21-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (86, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE21-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (87, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE21-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (88, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE21-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (89, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE21-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (90, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE21-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (91, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE22-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (92, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE22-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (93, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE22-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (94, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE22-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (95, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE22-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (96, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE22-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (97, 'SMAW-FeⅡ-2G-12-Fef3J', 'RE23', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (98, 'SMAW-FeⅡ-2G-12-Fef3J', 'RE24', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (99, 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE25-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (100, 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE25-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (101, 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE25-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (102, 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE25-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (103, 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE25-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (104, 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE25-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (105, 'SMAW-FeⅡ-2G-12-Fef3J', 'RE26-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (106, 'SMAW-FeⅡ-3G-12-Fef3J', 'RE26-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (107, 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (108, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE28-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (109, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE28-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (110, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE28-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (111, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE28-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (112, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE28-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (113, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE28-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (114, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE29-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (115, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE29-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (116, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE29-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (117, 'SMAW-FeⅡ-6G-12/76-Fef3J', 'RE30-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (118, 'SMAW-FeⅣ-6G-12/76-Fef4J', 'RE30-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (119, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE31-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (120, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE31-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (121, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE31-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (122, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE31-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (123, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE31-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (124, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE31-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (125, 'GMAW-FeⅡ-3G-12-FefS-11/15', 'RE32-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (126, 'SMAW-FeⅡ-3G-12-Fef3J', 'RE32-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (127, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE33-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (128, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE33-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (129, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE33-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (130, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE34-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (131, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE34-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (132, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE34-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (133, 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE35-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (134, 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE35-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (135, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE36-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (136, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE36-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (137, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE36-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (138, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE37-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (139, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE37-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (140, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE37-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (141, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE37-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (142, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE37-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (143, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE37-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (144, 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE38-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (145, 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE38-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (146, 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE38-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (147, 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE38-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (148, 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE38-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (149, 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE38-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (150, 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'RE39-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (151, 'SMAW-FeⅡ-3G-12-Fef3J', 'RE40', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (152, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE41-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (153, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE41-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (154, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE41-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (155, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE43-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (156, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE43-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (157, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE43-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (158, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE43-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (159, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE43-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (160, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE33-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (161, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE33-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (162, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE33-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (163, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE34-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (164, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE34-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (165, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE34-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (166, 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE35-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (167, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE36-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (168, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE36-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (169, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE36-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (170, 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', 'RE39-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (171, 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'RE39-3-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (172, 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'RE39-3-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (173, 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'RE39-3-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (174, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE41-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (175, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE41-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (176, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE41-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (177, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE44-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (178, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE44-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (179, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE44-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (180, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE44-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (181, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE44-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (182, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE44-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (183, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE45-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (184, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE45-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (185, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE45-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (186, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE45-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (187, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE45-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (188, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE45-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (189, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE46-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (190, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE46-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (191, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE46-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (192, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE46-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (193, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE46-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (194, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE46-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (195, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE47-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (196, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE47-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (197, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE47-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (198, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE47-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (199, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE47-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (200, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE47-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (201, 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE48-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (202, 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE48-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (203, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE49-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (204, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE49-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (205, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE49-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (206, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE49-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (207, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE49-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (208, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE49-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (209, 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (210, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE51-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (211, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE51-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (212, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE51-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (213, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE51-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (214, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE51-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (215, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE51-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (216, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE52-1-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (217, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE52-1-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (218, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE52-1-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (219, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE52-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (220, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE52-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (221, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE52-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (222, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE52-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (223, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE52-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (224, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE52-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (225, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE42-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (226, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE42-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (227, 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE42-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (228, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (229, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (230, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (231, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (232, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (233, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (234, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (235, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (236, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (237, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (238, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (239, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (240, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (241, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (242, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (243, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (244, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (245, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (246, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (247, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (248, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (249, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (250, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (251, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (252, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (253, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (254, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (255, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (256, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (257, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (258, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (259, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (260, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (261, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (262, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (263, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (264, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (265, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (266, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (267, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (268, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (269, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (270, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (271, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (272, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (273, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (274, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (275, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (276, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (277, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (278, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (279, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (280, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (281, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (282, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (283, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (284, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (285, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (286, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (287, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (288, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (289, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (290, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (291, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (292, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (293, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (294, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (295, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (296, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (297, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (298, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (299, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (300, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (301, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (302, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (303, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (304, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (305, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (306, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (307, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (308, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (309, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (310, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (311, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (312, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (313, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (314, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (315, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (316, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (317, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (318, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (319, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (320, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (321, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (322, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (323, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (324, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (325, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (326, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (327, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (328, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (329, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (330, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (331, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (332, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (333, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (334, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (335, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (336, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (337, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (338, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (339, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (340, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (341, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `appearance_inspection_record` VALUES (342, 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+
+-- ----------------------------
+-- Table structure for bend_commission
+-- ----------------------------
+DROP TABLE IF EXISTS `bend_commission`;
+CREATE TABLE `bend_commission`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `principal_ID` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '姓名',
+  `requester` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '委托单位',
+  `sample_delivery_time` datetime NULL DEFAULT NULL COMMENT '送样时间',
+  `client` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '委托人',
+  `samples_num` int(11) NULL DEFAULT NULL COMMENT '样品数量',
+  `product_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '品名',
+  `report_form` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '报告形式',
+  `drawing` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图面',
+  `according_standard` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '依据标准',
+  `pilot_projects` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '试验项目',
+  `planned_completion` datetime NULL DEFAULT NULL COMMENT '计划完成日期',
+  `specification` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规格',
+  `inspection_num` int(11) NULL DEFAULT NULL COMMENT '检件编号',
+  `material` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '材质',
+  `receiver` bigint(20) NULL DEFAULT NULL COMMENT '接收人',
+  `receive_date` datetime NULL DEFAULT NULL COMMENT '接收日期',
+  `client_date` bigint(20) NULL DEFAULT NULL COMMENT '委托日期',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 155 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of bend_commission
+-- ----------------------------
+INSERT INTO `bend_commission` VALUES (95, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=1.0', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (96, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=2', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (97, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=6', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (98, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=12', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (99, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=12', NULL, 'SAW', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (100, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=12', NULL, 'EGW-', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (101, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=16', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (102, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=20', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (103, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ14×3', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (104, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ18×3', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (105, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ57×6', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (106, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ57×12', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (107, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ76×12', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (108, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ108×8', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (109, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ108×12', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (110, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ159×16', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (111, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ273×25', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (112, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ325×12', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (113, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ325×16', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (114, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=12', NULL, '-NiⅢ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (115, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ14×3', NULL, '-NiⅢ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (116, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ18×3', NULL, '-NiⅢ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (117, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ57×6', NULL, '-NiⅢ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (118, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ57×12', NULL, '-NiⅢ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (119, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=12', NULL, '-TiⅡ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (120, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ57×6', NULL, '-TiⅡ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (121, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=1.0', NULL, 'GTAW-1G', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (122, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=12', NULL, 'GTAW(N12)', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (123, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ60.3×10', NULL, '-AlⅤ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (124, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=16', NULL, '-AlⅤ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (125, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=1.0', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (126, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=2', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (127, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=6', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (128, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=12', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (129, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=12', NULL, 'SAW', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (130, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=12', NULL, 'EGW-', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (131, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=16', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (132, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=20', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (133, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ14×3', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (134, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ18×3', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (135, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ57×6', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (136, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ57×12', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (137, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ76×12', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (138, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ108×8', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (139, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ108×12', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (140, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ159×16', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (141, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ273×25', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (142, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ325×12', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (143, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ325×16', NULL, '-Fe', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (144, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=12', NULL, '-NiⅢ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (145, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ14×3', NULL, '-NiⅢ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (146, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ18×3', NULL, '-NiⅢ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (147, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ57×6', NULL, '-NiⅢ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (148, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ57×12', NULL, '-NiⅢ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (149, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=12', NULL, '-TiⅡ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (150, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ57×6', NULL, '-TiⅡ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (151, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=1.0', NULL, 'GTAW-1G', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (152, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=12', NULL, 'GTAW(N12)', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (153, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Φ60.3×10', NULL, '-AlⅤ', NULL, NULL, NULL);
+INSERT INTO `bend_commission` VALUES (154, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'δ=16', NULL, '-AlⅤ', NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for circulation_card
+-- ----------------------------
+DROP TABLE IF EXISTS `circulation_card`;
+CREATE TABLE `circulation_card`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '姓名',
+  `exam_items` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '考试项目',
+  `test_piece_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '试件编号',
+  `test_piece_material` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '试件材质',
+  `test_piece_specifications` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '试件规格',
+  `test_piece_storage_number` int(11) NULL DEFAULT NULL COMMENT '试件入库号',
+  `test_pieces_num` int(11) NULL DEFAULT NULL COMMENT '试件数量',
+  `welding_consumables_grade` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '焊材牌号	',
+  `welding_consumables_specifications` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '焊材规格',
+  `welding_material_storage_number` int(11) NULL DEFAULT NULL COMMENT '焊材入库号	',
+  `welding_consumable_num` int(11) NULL DEFAULT NULL COMMENT '焊材数量',
+  `recruiter` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '领用人',
+  `welding_consumables_id` bigint(20) NULL DEFAULT NULL COMMENT '焊材id',
+  `specimen_id` bigint(20) NULL DEFAULT NULL COMMENT '试件id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 868 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of circulation_card
+-- ----------------------------
+INSERT INTO `circulation_card` VALUES (95, '张正宇', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE1-1', 'RE1-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (96, '张正宇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE1-2', 'RE1-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (97, '朱恒良', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE2-1', 'RE2-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (98, '朱恒良', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE2-2', 'RE2-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (99, '李会斌', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE3-1', 'RE3-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (100, '李会斌', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE3-2', 'RE3-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (101, '梁志荣', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'RE4-1', 'RE4-1', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (102, '梁志荣', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'RE4-2', 'RE4-2', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (103, '张淑海', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE5', 'RE5', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (104, '王春涛', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE6', 'RE6', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (105, '王春超', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE7', 'RE7', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (106, '樊其阳', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'RE8-1', 'RE8-1', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (107, '樊其阳', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE8-2', 'RE8-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (108, '李德成', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE9', 'RE9', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (109, '罗猛', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE10-1', 'RE10-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (110, '罗猛', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE10-2', 'RE10-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (111, '彭明', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE11-1', 'RE11-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (112, '彭明', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE11-2', 'RE11-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (113, '李奇', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE12-1', 'RE12-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (114, '李奇', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE12-2', 'RE12-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (115, '徐国镇', 'SMAW-FeⅡ-3G-16-Fef3J', 'RE13', 'RE13', 'δ=16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (116, '史学武', 'SMAW-FeⅡ-3G-16-Fef3J', 'RE14', 'RE14', 'δ=16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (117, '杨小双', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE15-1', 'RE15-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (118, '杨小双', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE15-2', 'RE15-2', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (119, '陈元华', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE16-1', 'RE16-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (120, '陈元华', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE16-2', 'RE16-2', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (121, '姚建坤', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE17-1', 'RE17-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (122, '姚建坤', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE17-2', 'RE17-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (123, '姚建坤', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE17-3', 'RE17-3', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (124, '彭桥生', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE18-1', 'RE18-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (125, '彭桥生', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE18-2', 'RE18-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (126, '张传梁', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE19-1', 'RE19-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (127, '张传梁', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE19-2', 'RE19-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (128, '时贝', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE20-1', 'RE20-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (129, '时贝', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE20-2', 'RE20-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (130, '燕群群', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE21-1', 'RE21-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (131, '燕群群', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE21-2', 'RE21-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (132, '吴玉龙', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE22-1', 'RE22-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (133, '吴玉龙', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE22-2', 'RE22-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (134, '孟繁明', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE23', 'RE23', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (135, '张明亮', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE24', 'RE24', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (136, '徐德伟', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE25-1', 'RE25-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (137, '徐德伟', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE25-2', 'RE25-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (138, '张银川', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE26-1', 'RE26-1', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (139, '张银川', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE26-2', 'RE26-2', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (140, '张磊', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE27', 'RE27', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (141, '张勇', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE28-1', 'RE28-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (142, '张勇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE28-2', 'RE28-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (143, '刘苏宇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE29', 'RE29', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (144, '杨兵', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'RE30-1', 'RE30-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (145, '杨兵', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'RE30-2', 'RE30-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (146, '戴建', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE31-1', 'RE31-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (147, '戴建', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE31-2', 'RE31-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (148, '朱立', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'RE32-1', 'RE32-1', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (149, '朱立', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE32-2', 'RE32-2', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (150, '沈佳佳', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE33-1', 'RE33-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (151, '沈佳佳', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE33-2', 'RE33-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (152, '刘加有', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE34-1', 'RE34-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (153, '刘加有', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE34-2', 'RE34-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (154, '朱言升', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE35-1', 'RE35-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (155, '朱言升', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE35-2', 'RE35-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (156, '朱言升', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE35-3', 'RE35-3', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (157, '王保超', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE36-1', 'RE36-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (158, '王保超', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE36-2', 'RE36-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (159, '欧永丰', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE37-1', 'RE37-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (160, '欧永丰', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE37-2', 'RE37-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (161, '李昌昌', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE38-1', 'RE38-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (162, '李昌昌', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE38-2', 'RE38-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (163, '张冲', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'RE39-1', 'RE39-1', 'Φ159×16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (164, '张冲', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', 'RE39-2', 'RE39-2', 'Φ159×16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (165, '张冲', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'RE39-3', 'RE39-3', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (166, '葛传亮', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE40', 'RE40', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (167, '尹正标', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE41-1', 'RE41-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (168, '尹正标', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE41-2', 'RE41-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (169, '杨琦辉', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE42', 'RE42', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (170, '偰浩', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE43-1', 'RE43-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (171, '偰浩', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2', 'RE43-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (172, '陈家富', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE44-1', 'RE44-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (173, '陈家富', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE44-2', 'RE44-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (174, '盛文明', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE45-1', 'RE45-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (175, '盛文明', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE45-2', 'RE45-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (176, '陈邦', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE46-1', 'RE46-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (177, '陈邦', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE46-2', 'RE46-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (178, '赵广林', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE47-1', 'RE47-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (179, '赵广林', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE47-2', 'RE47-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (180, '李俊', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE48-1', 'RE48-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (181, '李俊', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE48-2', 'RE48-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (182, '徐兵', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE49-1', 'RE49-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (183, '徐兵', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE49-2', 'RE49-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (184, '张保光', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE50', 'RE50', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (185, '丁成永', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE51-1', 'RE51-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (186, '丁成永', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE51-2', 'RE51-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (187, '刘波', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE52-1', 'RE52-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (188, '刘波', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE52-2', 'RE52-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (189, '张正宇', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE1-1', 'RE1-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (190, '张正宇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE1-2', 'RE1-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (191, '朱恒良', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE2-1', 'RE2-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (192, '朱恒良', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE2-2', 'RE2-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (193, '李会斌', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE3-1', 'RE3-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (194, '李会斌', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE3-2', 'RE3-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (195, '梁志荣', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'RE4-1', 'RE4-1', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (196, '梁志荣', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'RE4-2', 'RE4-2', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (197, '张淑海', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE5', 'RE5', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (198, '王春涛', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE6', 'RE6', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (199, '王春超', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE7', 'RE7', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (200, '樊其阳', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'RE8-1', 'RE8-1', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (201, '樊其阳', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE8-2', 'RE8-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (202, '李德成', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE9', 'RE9', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (203, '罗猛', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE10-1', 'RE10-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (204, '罗猛', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE10-2', 'RE10-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (205, '彭明', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE11-1', 'RE11-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (206, '彭明', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE11-2', 'RE11-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (207, '李奇', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE12-1', 'RE12-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (208, '李奇', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE12-2', 'RE12-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (209, '徐国镇', 'SMAW-FeⅡ-3G-16-Fef3J', 'RE13', 'RE13', 'δ=16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (210, '史学武', 'SMAW-FeⅡ-3G-16-Fef3J', 'RE14', 'RE14', 'δ=16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (211, '杨小双', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE15-1', 'RE15-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (212, '杨小双', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE15-2', 'RE15-2', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (213, '陈元华', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE16-1', 'RE16-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (214, '陈元华', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE16-2', 'RE16-2', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (215, '姚建坤', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE17-1', 'RE17-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (216, '姚建坤', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE17-2', 'RE17-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (217, '姚建坤', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE17-3', 'RE17-3', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (218, '彭桥生', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE18-1', 'RE18-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (219, '彭桥生', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE18-2', 'RE18-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (220, '张传梁', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE19-1', 'RE19-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (221, '张传梁', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE19-2', 'RE19-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (222, '时贝', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE20-1', 'RE20-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (223, '时贝', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE20-2', 'RE20-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (224, '燕群群', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE21-1', 'RE21-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (225, '燕群群', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE21-2', 'RE21-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (226, '吴玉龙', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE22-1', 'RE22-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (227, '吴玉龙', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE22-2', 'RE22-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (228, '孟繁明', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE23', 'RE23', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (229, '张明亮', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE24', 'RE24', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (230, '徐德伟', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE25-1', 'RE25-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (231, '徐德伟', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE25-2', 'RE25-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (232, '张银川', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE26-1', 'RE26-1', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (233, '张银川', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE26-2', 'RE26-2', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (234, '张磊', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE27', 'RE27', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (235, '张勇', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE28-1', 'RE28-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (236, '张勇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE28-2', 'RE28-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (237, '刘苏宇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE29', 'RE29', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (238, '杨兵', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'RE30-1', 'RE30-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (239, '杨兵', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'RE30-2', 'RE30-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (240, '戴建', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE31-1', 'RE31-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (241, '戴建', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE31-2', 'RE31-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (242, '朱立', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'RE32-1', 'RE32-1', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (243, '朱立', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE32-2', 'RE32-2', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (244, '沈佳佳', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE33-1', 'RE33-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (245, '沈佳佳', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE33-2', 'RE33-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (246, '刘加有', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE34-1', 'RE34-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (247, '刘加有', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE34-2', 'RE34-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (248, '朱言升', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE35-1', 'RE35-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (249, '朱言升', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE35-2', 'RE35-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (250, '朱言升', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE35-3', 'RE35-3', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (251, '王保超', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE36-1', 'RE36-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (252, '王保超', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE36-2', 'RE36-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (253, '欧永丰', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE37-1', 'RE37-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (254, '欧永丰', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE37-2', 'RE37-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (255, '李昌昌', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE38-1', 'RE38-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (256, '李昌昌', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE38-2', 'RE38-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (257, '张冲', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'RE39-1', 'RE39-1', 'Φ159×16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (258, '张冲', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', 'RE39-2', 'RE39-2', 'Φ159×16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (259, '张冲', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'RE39-3', 'RE39-3', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (260, '葛传亮', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE40', 'RE40', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (261, '尹正标', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE41-1', 'RE41-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (262, '尹正标', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE41-2', 'RE41-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (263, '杨琦辉', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE42', 'RE42', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (264, '偰浩', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE43-1', 'RE43-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (265, '偰浩', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2', 'RE43-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (266, '陈家富', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE44-1', 'RE44-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (267, '陈家富', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE44-2', 'RE44-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (268, '盛文明', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE45-1', 'RE45-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (269, '盛文明', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE45-2', 'RE45-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (270, '陈邦', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE46-1', 'RE46-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (271, '陈邦', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE46-2', 'RE46-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (272, '赵广林', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE47-1', 'RE47-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (273, '赵广林', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE47-2', 'RE47-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (274, '李俊', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE48-1', 'RE48-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (275, '李俊', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE48-2', 'RE48-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (276, '徐兵', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE49-1', 'RE49-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (277, '徐兵', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE49-2', 'RE49-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (278, '张保光', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE50', 'RE50', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (279, '丁成永', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE51-1', 'RE51-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (280, '丁成永', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE51-2', 'RE51-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (281, '刘波', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE52-1', 'RE52-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (282, '刘波', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE52-2', 'RE52-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (283, '张正宇', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE1-1', 'RE1-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (284, '张正宇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE1-2', 'RE1-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (285, '朱恒良', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE2-1', 'RE2-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (286, '朱恒良', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE2-2', 'RE2-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (287, '李会斌', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE3-1', 'RE3-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (288, '李会斌', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE3-2', 'RE3-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (289, '梁志荣', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'RE4-1', 'RE4-1', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (290, '梁志荣', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'RE4-2', 'RE4-2', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (291, '张淑海', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE5', 'RE5', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (292, '王春涛', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE6', 'RE6', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (293, '王春超', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE7', 'RE7', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (294, '樊其阳', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'RE8-1', 'RE8-1', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (295, '樊其阳', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE8-2', 'RE8-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (296, '李德成', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE9', 'RE9', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (297, '罗猛', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE10-1', 'RE10-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (298, '罗猛', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE10-2', 'RE10-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (299, '彭明', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE11-1', 'RE11-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (300, '彭明', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE11-2', 'RE11-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (301, '李奇', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE12-1', 'RE12-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (302, '李奇', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE12-2', 'RE12-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (303, '徐国镇', 'SMAW-FeⅡ-3G-16-Fef3J', 'RE13', 'RE13', 'δ=16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (304, '史学武', 'SMAW-FeⅡ-3G-16-Fef3J', 'RE14', 'RE14', 'δ=16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (305, '杨小双', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE15-1', 'RE15-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (306, '杨小双', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE15-2', 'RE15-2', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (307, '陈元华', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE16-1', 'RE16-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (308, '陈元华', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE16-2', 'RE16-2', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (309, '姚建坤', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE17-1', 'RE17-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (310, '姚建坤', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE17-2', 'RE17-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (311, '姚建坤', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE17-3', 'RE17-3', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (312, '彭桥生', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE18-1', 'RE18-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (313, '彭桥生', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE18-2', 'RE18-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (314, '张传梁', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE19-1', 'RE19-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (315, '张传梁', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE19-2', 'RE19-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (316, '时贝', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE20-1', 'RE20-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (317, '时贝', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE20-2', 'RE20-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (318, '燕群群', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE21-1', 'RE21-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (319, '燕群群', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE21-2', 'RE21-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (320, '吴玉龙', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE22-1', 'RE22-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (321, '吴玉龙', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE22-2', 'RE22-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (322, '孟繁明', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE23', 'RE23', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (323, '张明亮', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE24', 'RE24', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (324, '徐德伟', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE25-1', 'RE25-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (325, '徐德伟', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE25-2', 'RE25-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (326, '张银川', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE26-1', 'RE26-1', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (327, '张银川', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE26-2', 'RE26-2', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (328, '张磊', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE27', 'RE27', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (329, '张勇', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE28-1', 'RE28-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (330, '张勇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE28-2', 'RE28-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (331, '刘苏宇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE29', 'RE29', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (332, '杨兵', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'RE30-1', 'RE30-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (333, '杨兵', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'RE30-2', 'RE30-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (334, '戴建', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE31-1', 'RE31-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (335, '戴建', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE31-2', 'RE31-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (336, '朱立', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'RE32-1', 'RE32-1', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (337, '朱立', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE32-2', 'RE32-2', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (338, '沈佳佳', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE33-1', 'RE33-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (339, '沈佳佳', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE33-2', 'RE33-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (340, '刘加有', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE34-1', 'RE34-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (341, '刘加有', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE34-2', 'RE34-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (342, '朱言升', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE35-1', 'RE35-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (343, '朱言升', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE35-2', 'RE35-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (344, '朱言升', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE35-3', 'RE35-3', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (345, '王保超', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE36-1', 'RE36-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (346, '王保超', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE36-2', 'RE36-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (347, '欧永丰', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE37-1', 'RE37-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (348, '欧永丰', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE37-2', 'RE37-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (349, '李昌昌', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE38-1', 'RE38-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (350, '李昌昌', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE38-2', 'RE38-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (351, '张冲', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'RE39-1', 'RE39-1', 'Φ159×16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (352, '张冲', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', 'RE39-2', 'RE39-2', 'Φ159×16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (353, '张冲', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'RE39-3', 'RE39-3', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (354, '葛传亮', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE40', 'RE40', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (355, '尹正标', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE41-1', 'RE41-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (356, '尹正标', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE41-2', 'RE41-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (357, '杨琦辉', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE42', 'RE42', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (358, '偰浩', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE43-1', 'RE43-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (359, '偰浩', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2', 'RE43-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (360, '陈家富', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE44-1', 'RE44-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (361, '陈家富', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE44-2', 'RE44-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (362, '盛文明', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE45-1', 'RE45-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (363, '盛文明', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE45-2', 'RE45-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (364, '陈邦', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE46-1', 'RE46-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (365, '陈邦', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE46-2', 'RE46-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (366, '赵广林', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE47-1', 'RE47-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (367, '赵广林', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE47-2', 'RE47-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (368, '李俊', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE48-1', 'RE48-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (369, '李俊', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE48-2', 'RE48-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (370, '徐兵', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE49-1', 'RE49-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (371, '徐兵', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE49-2', 'RE49-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (372, '张保光', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE50', 'RE50', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (373, '丁成永', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE51-1', 'RE51-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (374, '丁成永', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE51-2', 'RE51-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (375, '刘波', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE52-1', 'RE52-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (376, '刘波', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE52-2', 'RE52-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (377, '张正宇', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE1-1', 'RE1-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (378, '张正宇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE1-2', 'RE1-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (379, '朱恒良', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE2-1', 'RE2-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (380, '朱恒良', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE2-2', 'RE2-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (381, '李会斌', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE3-1', 'RE3-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (382, '李会斌', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE3-2', 'RE3-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (383, '梁志荣', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'RE4-1', 'RE4-1', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (384, '梁志荣', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'RE4-2', 'RE4-2', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (385, '张淑海', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE5', 'RE5', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (386, '王春涛', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE6', 'RE6', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (387, '王春超', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE7', 'RE7', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (388, '樊其阳', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'RE8-1', 'RE8-1', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (389, '樊其阳', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE8-2', 'RE8-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (390, '李德成', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE9', 'RE9', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (391, '罗猛', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE10-1', 'RE10-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (392, '罗猛', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE10-2', 'RE10-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (393, '彭明', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE11-1', 'RE11-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (394, '彭明', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE11-2', 'RE11-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (395, '李奇', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE12-1', 'RE12-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (396, '李奇', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE12-2', 'RE12-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (397, '徐国镇', 'SMAW-FeⅡ-3G-16-Fef3J', 'RE13', 'RE13', 'δ=16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (398, '史学武', 'SMAW-FeⅡ-3G-16-Fef3J', 'RE14', 'RE14', 'δ=16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (399, '杨小双', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE15-1', 'RE15-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (400, '杨小双', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE15-2', 'RE15-2', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (401, '陈元华', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE16-1', 'RE16-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (402, '陈元华', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE16-2', 'RE16-2', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (403, '姚建坤', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE17-1', 'RE17-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (404, '姚建坤', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE17-2', 'RE17-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (405, '姚建坤', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE17-3', 'RE17-3', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (406, '彭桥生', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE18-1', 'RE18-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (407, '彭桥生', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE18-2', 'RE18-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (408, '张传梁', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE19-1', 'RE19-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (409, '张传梁', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE19-2', 'RE19-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (410, '时贝', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE20-1', 'RE20-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (411, '时贝', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE20-2', 'RE20-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (412, '燕群群', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE21-1', 'RE21-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (413, '燕群群', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE21-2', 'RE21-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (414, '吴玉龙', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE22-1', 'RE22-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (415, '吴玉龙', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE22-2', 'RE22-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (416, '孟繁明', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE23', 'RE23', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (417, '张明亮', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE24', 'RE24', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (418, '徐德伟', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE25-1', 'RE25-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (419, '徐德伟', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE25-2', 'RE25-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (420, '张银川', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE26-1', 'RE26-1', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (421, '张银川', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE26-2', 'RE26-2', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (422, '张磊', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE27', 'RE27', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (423, '张勇', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE28-1', 'RE28-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (424, '张勇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE28-2', 'RE28-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (425, '刘苏宇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE29', 'RE29', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (426, '杨兵', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'RE30-1', 'RE30-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (427, '杨兵', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'RE30-2', 'RE30-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (428, '戴建', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE31-1', 'RE31-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (429, '戴建', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE31-2', 'RE31-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (430, '朱立', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'RE32-1', 'RE32-1', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (431, '朱立', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE32-2', 'RE32-2', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (432, '沈佳佳', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE33-1', 'RE33-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (433, '沈佳佳', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE33-2', 'RE33-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (434, '刘加有', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE34-1', 'RE34-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (435, '刘加有', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE34-2', 'RE34-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (436, '朱言升', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE35-1', 'RE35-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (437, '朱言升', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE35-2', 'RE35-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (438, '朱言升', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE35-3', 'RE35-3', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (439, '王保超', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE36-1', 'RE36-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (440, '王保超', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE36-2', 'RE36-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (441, '欧永丰', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE37-1', 'RE37-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (442, '欧永丰', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE37-2', 'RE37-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (443, '李昌昌', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE38-1', 'RE38-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (444, '李昌昌', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE38-2', 'RE38-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (445, '张冲', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'RE39-1', 'RE39-1', 'Φ159×16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (446, '张冲', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', 'RE39-2', 'RE39-2', 'Φ159×16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (447, '张冲', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'RE39-3', 'RE39-3', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (448, '葛传亮', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE40', 'RE40', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (449, '尹正标', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE41-1', 'RE41-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (450, '尹正标', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE41-2', 'RE41-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (451, '杨琦辉', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE42', 'RE42', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (452, '偰浩', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE43-1', 'RE43-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (453, '偰浩', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2', 'RE43-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (454, '陈家富', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE44-1', 'RE44-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (455, '陈家富', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE44-2', 'RE44-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (456, '盛文明', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE45-1', 'RE45-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (457, '盛文明', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE45-2', 'RE45-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (458, '陈邦', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE46-1', 'RE46-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (459, '陈邦', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE46-2', 'RE46-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (460, '赵广林', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE47-1', 'RE47-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (461, '赵广林', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE47-2', 'RE47-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (462, '李俊', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE48-1', 'RE48-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (463, '李俊', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE48-2', 'RE48-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (464, '徐兵', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE49-1', 'RE49-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (465, '徐兵', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE49-2', 'RE49-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (466, '张保光', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE50', 'RE50', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (467, '丁成永', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE51-1', 'RE51-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (468, '丁成永', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE51-2', 'RE51-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (469, '刘波', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE52-1', 'RE52-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (470, '刘波', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE52-2', 'RE52-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (471, '张正宇', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE1-1', 'RE1-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (472, '张正宇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE1-2', 'RE1-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (473, '朱恒良', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE2-1', 'RE2-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (474, '朱恒良', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE2-2', 'RE2-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (475, '李会斌', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE3-1', 'RE3-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (476, '李会斌', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE3-2', 'RE3-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (477, '梁志荣', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'RE4-1', 'RE4-1', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (478, '梁志荣', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'RE4-2', 'RE4-2', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (479, '张淑海', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE5', 'RE5', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (480, '王春涛', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE6', 'RE6', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (481, '王春超', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE7', 'RE7', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (482, '樊其阳', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'RE8-1', 'RE8-1', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (483, '樊其阳', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE8-2', 'RE8-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (484, '李德成', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE9', 'RE9', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (485, '罗猛', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE10-1', 'RE10-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (486, '罗猛', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE10-2', 'RE10-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (487, '彭明', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE11-1', 'RE11-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (488, '彭明', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE11-2', 'RE11-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (489, '李奇', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE12-1', 'RE12-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (490, '李奇', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE12-2', 'RE12-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (491, '徐国镇', 'SMAW-FeⅡ-3G-16-Fef3J', 'RE13', 'RE13', 'δ=16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (492, '史学武', 'SMAW-FeⅡ-3G-16-Fef3J', 'RE14', 'RE14', 'δ=16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (493, '杨小双', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE15-1', 'RE15-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (494, '杨小双', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE15-2', 'RE15-2', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (495, '陈元华', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE16-1', 'RE16-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (496, '陈元华', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE16-2', 'RE16-2', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (497, '姚建坤', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE17-1', 'RE17-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (498, '姚建坤', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE17-2', 'RE17-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (499, '姚建坤', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE17-3', 'RE17-3', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (500, '彭桥生', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE18-1', 'RE18-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (501, '彭桥生', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE18-2', 'RE18-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (502, '张传梁', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE19-1', 'RE19-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (503, '张传梁', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE19-2', 'RE19-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (504, '时贝', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE20-1', 'RE20-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (505, '时贝', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE20-2', 'RE20-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (506, '燕群群', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE21-1', 'RE21-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (507, '燕群群', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE21-2', 'RE21-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (508, '吴玉龙', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE22-1', 'RE22-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (509, '吴玉龙', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE22-2', 'RE22-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (510, '孟繁明', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE23', 'RE23', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (511, '张明亮', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE24', 'RE24', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (512, '徐德伟', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE25-1', 'RE25-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (513, '徐德伟', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE25-2', 'RE25-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (514, '张银川', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE26-1', 'RE26-1', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (515, '张银川', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE26-2', 'RE26-2', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (516, '张磊', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE27', 'RE27', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (517, '张勇', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE28-1', 'RE28-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (518, '张勇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE28-2', 'RE28-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (519, '刘苏宇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE29', 'RE29', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (520, '杨兵', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'RE30-1', 'RE30-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (521, '杨兵', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'RE30-2', 'RE30-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (522, '戴建', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE31-1', 'RE31-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (523, '戴建', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE31-2', 'RE31-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (524, '朱立', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'RE32-1', 'RE32-1', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (525, '朱立', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE32-2', 'RE32-2', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (526, '沈佳佳', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE33-1', 'RE33-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (527, '沈佳佳', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE33-2', 'RE33-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (528, '刘加有', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE34-1', 'RE34-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (529, '刘加有', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE34-2', 'RE34-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (530, '朱言升', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE35-1', 'RE35-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (531, '朱言升', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE35-2', 'RE35-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (532, '朱言升', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE35-3', 'RE35-3', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (533, '王保超', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE36-1', 'RE36-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (534, '王保超', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE36-2', 'RE36-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (535, '欧永丰', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE37-1', 'RE37-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (536, '欧永丰', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE37-2', 'RE37-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (537, '李昌昌', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE38-1', 'RE38-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (538, '李昌昌', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE38-2', 'RE38-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (539, '张冲', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'RE39-1', 'RE39-1', 'Φ159×16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (540, '张冲', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', 'RE39-2', 'RE39-2', 'Φ159×16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (541, '张冲', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'RE39-3', 'RE39-3', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (542, '葛传亮', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE40', 'RE40', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (543, '尹正标', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE41-1', 'RE41-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (544, '尹正标', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE41-2', 'RE41-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (545, '杨琦辉', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE42', 'RE42', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (546, '偰浩', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE43-1', 'RE43-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (547, '偰浩', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2', 'RE43-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (548, '陈家富', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE44-1', 'RE44-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (549, '陈家富', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE44-2', 'RE44-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (550, '盛文明', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE45-1', 'RE45-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (551, '盛文明', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE45-2', 'RE45-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (552, '陈邦', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE46-1', 'RE46-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (553, '陈邦', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE46-2', 'RE46-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (554, '赵广林', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE47-1', 'RE47-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (555, '赵广林', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE47-2', 'RE47-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (556, '李俊', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE48-1', 'RE48-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (557, '李俊', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE48-2', 'RE48-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (558, '徐兵', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE49-1', 'RE49-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (559, '徐兵', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE49-2', 'RE49-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (560, '张保光', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE50', 'RE50', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (561, '丁成永', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE51-1', 'RE51-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (562, '丁成永', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE51-2', 'RE51-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (563, '刘波', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE52-1', 'RE52-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (564, '刘波', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE52-2', 'RE52-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (565, NULL, '背弯', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (566, NULL, '/', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (567, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (568, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (569, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (570, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (571, NULL, '', '金相面Ⅳ', '金相面Ⅳ', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (572, NULL, '', '一件', '一件', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (573, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (574, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (575, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (576, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (577, NULL, '', '试件Ⅲ', '试件Ⅲ', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (578, NULL, '', '/', '/', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (579, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (580, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (581, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (582, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (583, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (584, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (585, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (586, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (587, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (588, '张正宇', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE1-1', 'RE1-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (589, '张正宇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE1-2', 'RE1-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (590, '朱恒良', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE2-1', 'RE2-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (591, '朱恒良', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE2-2', 'RE2-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (592, '李会斌', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE3-1', 'RE3-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (593, '李会斌', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE3-2', 'RE3-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (594, '梁志荣', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'RE4-1', 'RE4-1', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (595, '梁志荣', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'RE4-2', 'RE4-2', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (596, '张淑海', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE5', 'RE5', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (597, '王春涛', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE6', 'RE6', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (598, '王春超', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE7', 'RE7', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (599, '樊其阳', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'RE8-1', 'RE8-1', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (600, '樊其阳', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE8-2', 'RE8-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (601, '李德成', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE9', 'RE9', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (602, '罗猛', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE10-1', 'RE10-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (603, '罗猛', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE10-2', 'RE10-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (604, '彭明', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE11-1', 'RE11-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (605, '彭明', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE11-2', 'RE11-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (606, '李奇', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE12-1', 'RE12-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (607, '李奇', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE12-2', 'RE12-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (608, '徐国镇', 'SMAW-FeⅡ-3G-16-Fef3J', 'RE13', 'RE13', 'δ=16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (609, '史学武', 'SMAW-FeⅡ-3G-16-Fef3J', 'RE14', 'RE14', 'δ=16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (610, '杨小双', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE15-1', 'RE15-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (611, '杨小双', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE15-2', 'RE15-2', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (612, '陈元华', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE16-1', 'RE16-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (613, '陈元华', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE16-2', 'RE16-2', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (614, '姚建坤', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE17-1', 'RE17-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (615, '姚建坤', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE17-2', 'RE17-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (616, '姚建坤', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE17-3', 'RE17-3', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (617, '彭桥生', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE18-1', 'RE18-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (618, '彭桥生', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE18-2', 'RE18-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (619, '张传梁', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE19-1', 'RE19-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (620, '张传梁', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE19-2', 'RE19-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (621, '时贝', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE20-1', 'RE20-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (622, '时贝', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE20-2', 'RE20-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (623, '燕群群', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE21-1', 'RE21-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (624, '燕群群', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE21-2', 'RE21-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (625, '吴玉龙', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE22-1', 'RE22-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (626, '吴玉龙', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE22-2', 'RE22-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (627, '孟繁明', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE23', 'RE23', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (628, '张明亮', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE24', 'RE24', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (629, '徐德伟', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE25-1', 'RE25-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (630, '徐德伟', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE25-2', 'RE25-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (631, '张银川', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE26-1', 'RE26-1', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (632, '张银川', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE26-2', 'RE26-2', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (633, '张磊', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE27', 'RE27', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (634, '张勇', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE28-1', 'RE28-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (635, '张勇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE28-2', 'RE28-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (636, '刘苏宇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE29', 'RE29', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (637, '杨兵', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'RE30-1', 'RE30-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (638, '杨兵', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'RE30-2', 'RE30-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (639, '戴建', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE31-1', 'RE31-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (640, '戴建', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE31-2', 'RE31-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (641, '朱立', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'RE32-1', 'RE32-1', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (642, '朱立', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE32-2', 'RE32-2', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (643, '沈佳佳', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE33-1', 'RE33-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (644, '沈佳佳', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE33-2', 'RE33-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (645, '刘加有', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE34-1', 'RE34-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (646, '刘加有', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE34-2', 'RE34-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (647, '朱言升', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE35-1', 'RE35-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (648, '朱言升', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE35-2', 'RE35-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (649, '朱言升', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE35-3', 'RE35-3', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (650, '王保超', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE36-1', 'RE36-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (651, '王保超', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE36-2', 'RE36-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (652, '欧永丰', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE37-1', 'RE37-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (653, '欧永丰', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE37-2', 'RE37-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (654, '李昌昌', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE38-1', 'RE38-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (655, '李昌昌', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE38-2', 'RE38-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (656, '张冲', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'RE39-1', 'RE39-1', 'Φ159×16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (657, '张冲', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', 'RE39-2', 'RE39-2', 'Φ159×16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (658, '张冲', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'RE39-3', 'RE39-3', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (659, '葛传亮', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE40', 'RE40', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (660, '尹正标', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE41-1', 'RE41-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (661, '尹正标', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE41-2', 'RE41-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (662, '杨琦辉', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE42', 'RE42', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (663, '偰浩', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE43-1', 'RE43-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (664, '偰浩', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2', 'RE43-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (665, '陈家富', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE44-1', 'RE44-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (666, '陈家富', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE44-2', 'RE44-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (667, '盛文明', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE45-1', 'RE45-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (668, '盛文明', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE45-2', 'RE45-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (669, '陈邦', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE46-1', 'RE46-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (670, '陈邦', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE46-2', 'RE46-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (671, '赵广林', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE47-1', 'RE47-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (672, '赵广林', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE47-2', 'RE47-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (673, '李俊', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE48-1', 'RE48-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (674, '李俊', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE48-2', 'RE48-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (675, '徐兵', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE49-1', 'RE49-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (676, '徐兵', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE49-2', 'RE49-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (677, '张保光', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE50', 'RE50', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (678, '丁成永', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE51-1', 'RE51-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (679, '丁成永', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE51-2', 'RE51-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (680, '刘波', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE52-1', 'RE52-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (681, '刘波', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE52-2', 'RE52-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (682, NULL, '背弯', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (683, NULL, '/', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (684, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (685, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (686, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (687, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (688, NULL, '', '金相面Ⅳ', '金相面Ⅳ', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (689, NULL, '', '一件', '一件', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (690, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (691, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (692, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (693, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (694, NULL, '', '试件Ⅲ', '试件Ⅲ', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (695, NULL, '', '/', '/', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (696, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (697, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (698, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (699, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (700, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (701, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (702, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (703, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (704, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (705, NULL, '背弯', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (706, NULL, '/', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (707, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (708, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (709, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (710, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (711, NULL, '', '金相面Ⅳ', '金相面Ⅳ', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (712, NULL, '', '一件', '一件', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (713, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (714, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (715, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (716, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (717, NULL, '', '试件Ⅲ', '试件Ⅲ', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (718, NULL, '', '/', '/', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (719, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (720, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (721, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (722, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (723, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (724, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (725, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (726, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (727, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (728, NULL, '背弯', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (729, NULL, '/', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (730, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (731, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (732, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (733, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (734, NULL, '', '金相面Ⅳ', '金相面Ⅳ', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (735, NULL, '', '一件', '一件', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (736, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (737, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (738, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (739, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (740, NULL, '', '试件Ⅲ', '试件Ⅲ', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (741, NULL, '', '/', '/', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (742, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (743, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (744, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (745, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (746, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (747, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (748, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (749, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (750, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (751, NULL, '背弯', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (752, NULL, '/', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (753, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (754, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (755, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (756, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (757, NULL, '', '金相面Ⅳ', '金相面Ⅳ', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (758, NULL, '', '一件', '一件', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (759, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (760, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (761, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (762, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (763, NULL, '', '试件Ⅲ', '试件Ⅲ', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (764, NULL, '', '/', '/', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (765, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (766, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (767, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (768, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (769, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (770, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (771, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (772, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (773, NULL, '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (774, '张正宇', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE1-1', 'RE1-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (775, '张正宇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE1-2', 'RE1-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (776, '朱恒良', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE2-1', 'RE2-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (777, '朱恒良', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE2-2', 'RE2-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (778, '李会斌', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', 'RE3-1', 'RE3-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (779, '李会斌', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE3-2', 'RE3-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (780, '梁志荣', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'RE4-1', 'RE4-1', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (781, '梁志荣', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'RE4-2', 'RE4-2', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (782, '张淑海', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE5', 'RE5', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (783, '王春涛', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE6', 'RE6', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (784, '王春超', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'RE7', 'RE7', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (785, '樊其阳', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'RE8-1', 'RE8-1', 'δ=12+Φ18×3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (786, '樊其阳', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE8-2', 'RE8-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (787, '李德成', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'RE9', 'RE9', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (788, '罗猛', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE10-1', 'RE10-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (789, '罗猛', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE10-2', 'RE10-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (790, '彭明', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE11-1', 'RE11-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (791, '彭明', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE11-2', 'RE11-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (792, '李奇', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE12-1', 'RE12-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (793, '李奇', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE12-2', 'RE12-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (794, '徐国镇', 'SMAW-FeⅡ-3G-16-Fef3J', 'RE13', 'RE13', 'δ=16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (795, '史学武', 'SMAW-FeⅡ-3G-16-Fef3J', 'RE14', 'RE14', 'δ=16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (796, '杨小双', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE15-1', 'RE15-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (797, '杨小双', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE15-2', 'RE15-2', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (798, '陈元华', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE16-1', 'RE16-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (799, '陈元华', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE16-2', 'RE16-2', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (800, '姚建坤', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE17-1', 'RE17-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (801, '姚建坤', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE17-2', 'RE17-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (802, '姚建坤', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE17-3', 'RE17-3', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (803, '彭桥生', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE18-1', 'RE18-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (804, '彭桥生', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE18-2', 'RE18-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (805, '张传梁', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE19-1', 'RE19-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (806, '张传梁', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE19-2', 'RE19-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (807, '时贝', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE20-1', 'RE20-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (808, '时贝', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE20-2', 'RE20-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (809, '燕群群', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE21-1', 'RE21-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (810, '燕群群', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE21-2', 'RE21-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (811, '吴玉龙', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE22-1', 'RE22-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (812, '吴玉龙', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE22-2', 'RE22-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (813, '孟繁明', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE23', 'RE23', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (814, '张明亮', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE24', 'RE24', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (815, '徐德伟', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE25-1', 'RE25-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (816, '徐德伟', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE25-2', 'RE25-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (817, '张银川', 'SMAW-FeⅡ-2G-12-Fef3J', 'RE26-1', 'RE26-1', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (818, '张银川', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE26-2', 'RE26-2', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (819, '张磊', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE27', 'RE27', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (820, '张勇', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE28-1', 'RE28-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (821, '张勇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE28-2', 'RE28-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (822, '刘苏宇', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE29', 'RE29', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (823, '杨兵', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'RE30-1', 'RE30-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (824, '杨兵', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'RE30-2', 'RE30-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (825, '戴建', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE31-1', 'RE31-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (826, '戴建', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE31-2', 'RE31-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (827, '朱立', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'RE32-1', 'RE32-1', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (828, '朱立', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE32-2', 'RE32-2', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (829, '沈佳佳', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE33-1', 'RE33-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (830, '沈佳佳', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE33-2', 'RE33-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (831, '刘加有', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE34-1', 'RE34-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (832, '刘加有', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE34-2', 'RE34-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (833, '朱言升', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE35-1', 'RE35-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (834, '朱言升', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE35-2', 'RE35-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (835, '朱言升', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'RE35-3', 'RE35-3', 'Φ325×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (836, '王保超', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE36-1', 'RE36-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (837, '王保超', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE36-2', 'RE36-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (838, '欧永丰', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE37-1', 'RE37-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (839, '欧永丰', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE37-2', 'RE37-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (840, '李昌昌', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'RE38-1', 'RE38-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (841, '李昌昌', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'RE38-2', 'RE38-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (842, '张冲', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'RE39-1', 'RE39-1', 'Φ159×16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (843, '张冲', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', 'RE39-2', 'RE39-2', 'Φ159×16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (844, '张冲', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'RE39-3', 'RE39-3', 'Φ57×6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (845, '葛传亮', 'SMAW-FeⅡ-3G-12-Fef3J', 'RE40', 'RE40', 'δ=12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (846, '尹正标', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE41-1', 'RE41-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (847, '尹正标', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE41-2', 'RE41-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (848, '杨琦辉', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE42', 'RE42', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (849, '偰浩', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE43-1', 'RE43-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (850, '偰浩', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE43-2', 'RE43-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (851, '陈家富', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE44-1', 'RE44-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (852, '陈家富', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE44-2', 'RE44-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (853, '盛文明', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE45-1', 'RE45-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (854, '盛文明', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE45-2', 'RE45-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (855, '陈邦', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE46-1', 'RE46-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (856, '陈邦', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE46-2', 'RE46-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (857, '赵广林', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE47-1', 'RE47-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (858, '赵广林', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE47-2', 'RE47-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (859, '李俊', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE48-1', 'RE48-1', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (860, '李俊', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'RE48-2', 'RE48-2', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (861, '徐兵', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE49-1', 'RE49-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (862, '徐兵', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE49-2', 'RE49-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (863, '张保光', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'RE50', 'RE50', 'Φ76×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (864, '丁成永', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE51-1', 'RE51-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (865, '丁成永', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE51-2', 'RE51-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (866, '刘波', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'RE52-1', 'RE52-1', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `circulation_card` VALUES (867, '刘波', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'RE52-2', 'RE52-2', 'Φ57×12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for exam_guide
+-- ----------------------------
+DROP TABLE IF EXISTS `exam_guide`;
+CREATE TABLE `exam_guide`  (
+  `id` bigint(20) NOT NULL,
+  `exam_items_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '考试项目代号',
+  `instruction_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '指导书编号',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of exam_guide
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for exam_scores
+-- ----------------------------
+DROP TABLE IF EXISTS `exam_scores`;
+CREATE TABLE `exam_scores`  (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '姓名',
+  `gender` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '性别',
+  `id_card` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '身份证号码',
+  `homework_items` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '作业项目',
+  `theory_exam_time` datetime NULL DEFAULT NULL COMMENT '理论考试时间',
+  `theoretical_scores` double NULL DEFAULT NULL COMMENT '理论成绩',
+  `operation_skills_exam_time` datetime NULL DEFAULT NULL COMMENT '操作技能考试时间',
+  `operation_skills_score` int(11) NULL DEFAULT NULL COMMENT '操作技能成绩',
+  `exam_score_assessment` int(11) NULL DEFAULT NULL COMMENT '考试成绩评定',
+  `employing_unit` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '聘用单位',
+  `remark` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of exam_scores
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for examination_ledger
+-- ----------------------------
+DROP TABLE IF EXISTS `examination_ledger`;
+CREATE TABLE `examination_ledger`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `welder_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '焊工姓名',
+  `id_card` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '身份证',
+  `forensic_projects` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '取证项目',
+  `material` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '材质',
+  `specification` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规格',
+  `code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '编号',
+  `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1056 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of examination_ledger
+-- ----------------------------
+INSERT INTO `examination_ledger` VALUES (283, '张正宇', '320823197510013237', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', '12Cr5Mo', 'Φ57×12', 'RE1-1', NULL);
+INSERT INTO `examination_ledger` VALUES (284, '张正宇', '320823197510013237', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE1-2', NULL);
+INSERT INTO `examination_ledger` VALUES (285, '朱恒良', '321321198706016814', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE2-1', NULL);
+INSERT INTO `examination_ledger` VALUES (286, '朱恒良', '321321198706016814', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE2-2', NULL);
+INSERT INTO `examination_ledger` VALUES (287, '李会斌', '610330198803200618', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', '12Cr5Mo', 'Φ57×12', 'RE3-1', NULL);
+INSERT INTO `examination_ledger` VALUES (288, '李会斌', '610330198803200618', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE3-2', NULL);
+INSERT INTO `examination_ledger` VALUES (289, '梁志荣', '522529198010101615', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'S30408', 'δ=12+Φ18×3', 'RE4-1', NULL);
+INSERT INTO `examination_ledger` VALUES (290, '梁志荣', '522529198010101615', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'S30408', 'δ=12+Φ18×3', 'RE4-2', NULL);
+INSERT INTO `examination_ledger` VALUES (291, '张淑海', '370982198701281356', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'Q345B', 'Φ57×6', 'RE5', NULL);
+INSERT INTO `examination_ledger` VALUES (292, '王春涛', '341225197207200210', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'Q345R', 'δ=12', 'RE6', NULL);
+INSERT INTO `examination_ledger` VALUES (293, '王春超', '342127197702190230', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'Q345R', 'δ=12', 'RE7', NULL);
+INSERT INTO `examination_ledger` VALUES (294, '樊其阳', '321088198201044670', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'Q345R+Q345B', 'δ=12+Φ18×3', 'RE8-1', NULL);
+INSERT INTO `examination_ledger` VALUES (295, '樊其阳', '321088198201044670', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE8-2', NULL);
+INSERT INTO `examination_ledger` VALUES (296, '李德成', '320123198803032032', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'Q345B', 'Φ57×6', 'RE9', NULL);
+INSERT INTO `examination_ledger` VALUES (297, '罗猛', '320113199811260432', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE10-1', NULL);
+INSERT INTO `examination_ledger` VALUES (298, '罗猛', '320113199811260432', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE10-2', NULL);
+INSERT INTO `examination_ledger` VALUES (299, '彭明', '321088197510204311', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE11-1', NULL);
+INSERT INTO `examination_ledger` VALUES (300, '彭明', '321088197510204311', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE11-2', NULL);
+INSERT INTO `examination_ledger` VALUES (301, '李奇', '412922197001304514', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE12-1', NULL);
+INSERT INTO `examination_ledger` VALUES (302, '李奇', '412922197001304514', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE12-2', NULL);
+INSERT INTO `examination_ledger` VALUES (303, '徐国镇', '321081197104242430', 'SMAW-FeⅡ-3G-16-Fef3J', 'Q345R', 'δ=16', 'RE13', NULL);
+INSERT INTO `examination_ledger` VALUES (304, '史学武', '320123198006221818', 'SMAW-FeⅡ-3G-16-Fef3J', 'Q345R', 'δ=16', 'RE14', NULL);
+INSERT INTO `examination_ledger` VALUES (305, '杨小双', '320481198510181018', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE15-1', NULL);
+INSERT INTO `examination_ledger` VALUES (306, '杨小双', '320481198510181018', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE15-2', NULL);
+INSERT INTO `examination_ledger` VALUES (307, '陈元华', '512922197104280678', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE16-1', NULL);
+INSERT INTO `examination_ledger` VALUES (308, '陈元华', '512922197104280678', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE16-2', NULL);
+INSERT INTO `examination_ledger` VALUES (309, '姚建坤', '320423197306086234', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE17-1', NULL);
+INSERT INTO `examination_ledger` VALUES (310, '姚建坤', '320423197306086234', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE17-2', NULL);
+INSERT INTO `examination_ledger` VALUES (311, '姚建坤', '320423197306086234', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE17-3', NULL);
+INSERT INTO `examination_ledger` VALUES (312, '彭桥生', '321088198810174331', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE18-1', NULL);
+INSERT INTO `examination_ledger` VALUES (313, '彭桥生', '321088198810174331', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE18-2', NULL);
+INSERT INTO `examination_ledger` VALUES (314, '张传梁', '320706198302101518', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE19-1', NULL);
+INSERT INTO `examination_ledger` VALUES (315, '张传梁', '320706198302101518', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE19-2', NULL);
+INSERT INTO `examination_ledger` VALUES (316, '时贝', '320322199110136890', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE20-1', NULL);
+INSERT INTO `examination_ledger` VALUES (317, '时贝', '320322199110136890', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE20-2', NULL);
+INSERT INTO `examination_ledger` VALUES (318, '燕群群', '320322199002280174', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE21-1', NULL);
+INSERT INTO `examination_ledger` VALUES (319, '燕群群', '320322199002280174', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE21-2', NULL);
+INSERT INTO `examination_ledger` VALUES (320, '吴玉龙', '320322198312257637', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE22-1', NULL);
+INSERT INTO `examination_ledger` VALUES (321, '吴玉龙', '320322198312257637', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE22-2', NULL);
+INSERT INTO `examination_ledger` VALUES (322, '孟繁明', '320322199904183613', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE23', NULL);
+INSERT INTO `examination_ledger` VALUES (323, '张明亮', '320322199903053614', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE24', NULL);
+INSERT INTO `examination_ledger` VALUES (324, '徐德伟', '32108119910421421X', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'Q345B', 'Φ57×12', 'RE25-1', NULL);
+INSERT INTO `examination_ledger` VALUES (325, '徐德伟', '32108119910421421X', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'S30408', 'Φ57×12', 'RE25-2', NULL);
+INSERT INTO `examination_ledger` VALUES (326, '张银川', '320323198310280012', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE26-1', NULL);
+INSERT INTO `examination_ledger` VALUES (327, '张银川', '320323198310280012', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE26-2', NULL);
+INSERT INTO `examination_ledger` VALUES (328, '张磊', '34222219850207089X', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE27', NULL);
+INSERT INTO `examination_ledger` VALUES (329, '张勇', '321088198006145273', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE28-1', NULL);
+INSERT INTO `examination_ledger` VALUES (330, '张勇', '321088198006145273', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE28-2', NULL);
+INSERT INTO `examination_ledger` VALUES (331, '刘苏宇', '32108819901106275X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE29', NULL);
+INSERT INTO `examination_ledger` VALUES (332, '杨兵', '321323198405115715', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'Q345B', 'Φ76×12', 'RE30-1', NULL);
+INSERT INTO `examination_ledger` VALUES (333, '杨兵', '321323198405115715', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'S30408', 'Φ76×12', 'RE30-2', NULL);
+INSERT INTO `examination_ledger` VALUES (334, '戴建', '321088197612143812', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE31-1', NULL);
+INSERT INTO `examination_ledger` VALUES (335, '戴建', '321088197612143812', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE31-2', NULL);
+INSERT INTO `examination_ledger` VALUES (336, '朱立', '321088198709143434', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'Q345R', 'δ=12', 'RE32-1', NULL);
+INSERT INTO `examination_ledger` VALUES (337, '朱立', '321088198709143434', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE32-2', NULL);
+INSERT INTO `examination_ledger` VALUES (338, '沈佳佳', '321088198704302731', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE33-1', NULL);
+INSERT INTO `examination_ledger` VALUES (339, '沈佳佳', '321088198704302731', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE33-2', NULL);
+INSERT INTO `examination_ledger` VALUES (340, '刘加有', '32072319900110365X', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE34-1', NULL);
+INSERT INTO `examination_ledger` VALUES (341, '刘加有', '32072319900110365X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE34-2', NULL);
+INSERT INTO `examination_ledger` VALUES (342, '朱言升', '342222198506100830', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE35-1', NULL);
+INSERT INTO `examination_ledger` VALUES (343, '朱言升', '342222198506100830', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE35-2', NULL);
+INSERT INTO `examination_ledger` VALUES (344, '朱言升', '342222198506100830', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE35-3', NULL);
+INSERT INTO `examination_ledger` VALUES (345, '王保超', '341122199109132036', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE36-1', NULL);
+INSERT INTO `examination_ledger` VALUES (346, '王保超', '341122199109132036', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE36-2', NULL);
+INSERT INTO `examination_ledger` VALUES (347, '欧永丰', '320830198204201035', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE37-1', NULL);
+INSERT INTO `examination_ledger` VALUES (348, '欧永丰', '320830198204201035', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE37-2', NULL);
+INSERT INTO `examination_ledger` VALUES (349, '李昌昌', '320322199110116515', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'Q345B', 'Φ57×12', 'RE38-1', NULL);
+INSERT INTO `examination_ledger` VALUES (350, '李昌昌', '320322199110116515', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'S30408', 'Φ57×12', 'RE38-2', NULL);
+INSERT INTO `examination_ledger` VALUES (351, '张冲', '321323198202267575', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'Q345B', 'Φ159×16', 'RE39-1', NULL);
+INSERT INTO `examination_ledger` VALUES (352, '张冲', '321323198202267575', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', '12Cr5Mo', 'Φ159×16', 'RE39-2', NULL);
+INSERT INTO `examination_ledger` VALUES (353, '张冲', '321323198202267575', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'S30408', 'Φ57×6', 'RE39-3', NULL);
+INSERT INTO `examination_ledger` VALUES (354, '葛传亮', '320723197111273036', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE40', NULL);
+INSERT INTO `examination_ledger` VALUES (355, '尹正标', '320123196909114811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE41-1', NULL);
+INSERT INTO `examination_ledger` VALUES (356, '尹正标', '320123196909114811', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE41-2', NULL);
+INSERT INTO `examination_ledger` VALUES (357, '杨琦辉', '320423197506231811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE42', NULL);
+INSERT INTO `examination_ledger` VALUES (358, '偰浩', '320481198804221038', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE43-1', NULL);
+INSERT INTO `examination_ledger` VALUES (359, '偰浩', '320481198804221038', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE43-2', NULL);
+INSERT INTO `examination_ledger` VALUES (360, '陈家富', '341122197112274212', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE44-1', NULL);
+INSERT INTO `examination_ledger` VALUES (361, '陈家富', '341122197112274212', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE44-2', NULL);
+INSERT INTO `examination_ledger` VALUES (362, '盛文明', '342322197106164211', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE45-1', NULL);
+INSERT INTO `examination_ledger` VALUES (363, '盛文明', '342322197106164211', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE45-2', NULL);
+INSERT INTO `examination_ledger` VALUES (364, '陈邦', '320123199009191612', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE46-1', NULL);
+INSERT INTO `examination_ledger` VALUES (365, '陈邦', '320123199009191612', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE46-2', NULL);
+INSERT INTO `examination_ledger` VALUES (366, '赵广林', '321088197009121213', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE47-1', NULL);
+INSERT INTO `examination_ledger` VALUES (367, '赵广林', '321088197009121213', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE47-2', NULL);
+INSERT INTO `examination_ledger` VALUES (368, '李俊', '321088199110034850', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE48-1', NULL);
+INSERT INTO `examination_ledger` VALUES (369, '李俊', '321088199110034850', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE48-2', NULL);
+INSERT INTO `examination_ledger` VALUES (370, '徐兵', '321084197209056537', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE49-1', NULL);
+INSERT INTO `examination_ledger` VALUES (371, '徐兵', '321084197209056537', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE49-2', NULL);
+INSERT INTO `examination_ledger` VALUES (372, '张保光', '320321196906101212', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE50', NULL);
+INSERT INTO `examination_ledger` VALUES (373, '丁成永', '321321198706283613', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE51-1', NULL);
+INSERT INTO `examination_ledger` VALUES (374, '丁成永', '321321198706283613', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE51-2', NULL);
+INSERT INTO `examination_ledger` VALUES (375, '刘波', '320825197801074534', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE52-1', NULL);
+INSERT INTO `examination_ledger` VALUES (376, '刘波', '320825197801074534', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE52-2', NULL);
+INSERT INTO `examination_ledger` VALUES (377, '张正宇', '320823197510013237', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', '12Cr5Mo', 'Φ57×12', 'RE1-1', NULL);
+INSERT INTO `examination_ledger` VALUES (378, '张正宇', '320823197510013237', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE1-2', NULL);
+INSERT INTO `examination_ledger` VALUES (379, '朱恒良', '321321198706016814', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE2-1', NULL);
+INSERT INTO `examination_ledger` VALUES (380, '朱恒良', '321321198706016814', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE2-2', NULL);
+INSERT INTO `examination_ledger` VALUES (381, '李会斌', '610330198803200618', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', '12Cr5Mo', 'Φ57×12', 'RE3-1', NULL);
+INSERT INTO `examination_ledger` VALUES (382, '李会斌', '610330198803200618', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE3-2', NULL);
+INSERT INTO `examination_ledger` VALUES (383, '梁志荣', '522529198010101615', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'S30408', 'δ=12+Φ18×3', 'RE4-1', NULL);
+INSERT INTO `examination_ledger` VALUES (384, '梁志荣', '522529198010101615', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'S30408', 'δ=12+Φ18×3', 'RE4-2', NULL);
+INSERT INTO `examination_ledger` VALUES (385, '张淑海', '370982198701281356', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'Q345B', 'Φ57×6', 'RE5', NULL);
+INSERT INTO `examination_ledger` VALUES (386, '王春涛', '341225197207200210', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'Q345R', 'δ=12', 'RE6', NULL);
+INSERT INTO `examination_ledger` VALUES (387, '王春超', '342127197702190230', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'Q345R', 'δ=12', 'RE7', NULL);
+INSERT INTO `examination_ledger` VALUES (388, '樊其阳', '321088198201044670', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'Q345R+Q345B', 'δ=12+Φ18×3', 'RE8-1', NULL);
+INSERT INTO `examination_ledger` VALUES (389, '樊其阳', '321088198201044670', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE8-2', NULL);
+INSERT INTO `examination_ledger` VALUES (390, '李德成', '320123198803032032', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'Q345B', 'Φ57×6', 'RE9', NULL);
+INSERT INTO `examination_ledger` VALUES (391, '罗猛', '320113199811260432', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE10-1', NULL);
+INSERT INTO `examination_ledger` VALUES (392, '罗猛', '320113199811260432', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE10-2', NULL);
+INSERT INTO `examination_ledger` VALUES (393, '彭明', '321088197510204311', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE11-1', NULL);
+INSERT INTO `examination_ledger` VALUES (394, '彭明', '321088197510204311', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE11-2', NULL);
+INSERT INTO `examination_ledger` VALUES (395, '李奇', '412922197001304514', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE12-1', NULL);
+INSERT INTO `examination_ledger` VALUES (396, '李奇', '412922197001304514', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE12-2', NULL);
+INSERT INTO `examination_ledger` VALUES (397, '徐国镇', '321081197104242430', 'SMAW-FeⅡ-3G-16-Fef3J', 'Q345R', 'δ=16', 'RE13', NULL);
+INSERT INTO `examination_ledger` VALUES (398, '史学武', '320123198006221818', 'SMAW-FeⅡ-3G-16-Fef3J', 'Q345R', 'δ=16', 'RE14', NULL);
+INSERT INTO `examination_ledger` VALUES (399, '杨小双', '320481198510181018', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE15-1', NULL);
+INSERT INTO `examination_ledger` VALUES (400, '杨小双', '320481198510181018', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE15-2', NULL);
+INSERT INTO `examination_ledger` VALUES (401, '陈元华', '512922197104280678', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE16-1', NULL);
+INSERT INTO `examination_ledger` VALUES (402, '陈元华', '512922197104280678', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE16-2', NULL);
+INSERT INTO `examination_ledger` VALUES (403, '姚建坤', '320423197306086234', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE17-1', NULL);
+INSERT INTO `examination_ledger` VALUES (404, '姚建坤', '320423197306086234', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE17-2', NULL);
+INSERT INTO `examination_ledger` VALUES (405, '姚建坤', '320423197306086234', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE17-3', NULL);
+INSERT INTO `examination_ledger` VALUES (406, '彭桥生', '321088198810174331', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE18-1', NULL);
+INSERT INTO `examination_ledger` VALUES (407, '彭桥生', '321088198810174331', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE18-2', NULL);
+INSERT INTO `examination_ledger` VALUES (408, '张传梁', '320706198302101518', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE19-1', NULL);
+INSERT INTO `examination_ledger` VALUES (409, '张传梁', '320706198302101518', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE19-2', NULL);
+INSERT INTO `examination_ledger` VALUES (410, '时贝', '320322199110136890', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE20-1', NULL);
+INSERT INTO `examination_ledger` VALUES (411, '时贝', '320322199110136890', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE20-2', NULL);
+INSERT INTO `examination_ledger` VALUES (412, '燕群群', '320322199002280174', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE21-1', NULL);
+INSERT INTO `examination_ledger` VALUES (413, '燕群群', '320322199002280174', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE21-2', NULL);
+INSERT INTO `examination_ledger` VALUES (414, '吴玉龙', '320322198312257637', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE22-1', NULL);
+INSERT INTO `examination_ledger` VALUES (415, '吴玉龙', '320322198312257637', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE22-2', NULL);
+INSERT INTO `examination_ledger` VALUES (416, '孟繁明', '320322199904183613', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE23', NULL);
+INSERT INTO `examination_ledger` VALUES (417, '张明亮', '320322199903053614', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE24', NULL);
+INSERT INTO `examination_ledger` VALUES (418, '徐德伟', '32108119910421421X', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'Q345B', 'Φ57×12', 'RE25-1', NULL);
+INSERT INTO `examination_ledger` VALUES (419, '徐德伟', '32108119910421421X', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'S30408', 'Φ57×12', 'RE25-2', NULL);
+INSERT INTO `examination_ledger` VALUES (420, '张银川', '320323198310280012', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE26-1', NULL);
+INSERT INTO `examination_ledger` VALUES (421, '张银川', '320323198310280012', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE26-2', NULL);
+INSERT INTO `examination_ledger` VALUES (422, '张磊', '34222219850207089X', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE27', NULL);
+INSERT INTO `examination_ledger` VALUES (423, '张勇', '321088198006145273', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE28-1', NULL);
+INSERT INTO `examination_ledger` VALUES (424, '张勇', '321088198006145273', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE28-2', NULL);
+INSERT INTO `examination_ledger` VALUES (425, '刘苏宇', '32108819901106275X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE29', NULL);
+INSERT INTO `examination_ledger` VALUES (426, '杨兵', '321323198405115715', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'Q345B', 'Φ76×12', 'RE30-1', NULL);
+INSERT INTO `examination_ledger` VALUES (427, '杨兵', '321323198405115715', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'S30408', 'Φ76×12', 'RE30-2', NULL);
+INSERT INTO `examination_ledger` VALUES (428, '戴建', '321088197612143812', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE31-1', NULL);
+INSERT INTO `examination_ledger` VALUES (429, '戴建', '321088197612143812', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE31-2', NULL);
+INSERT INTO `examination_ledger` VALUES (430, '朱立', '321088198709143434', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'Q345R', 'δ=12', 'RE32-1', NULL);
+INSERT INTO `examination_ledger` VALUES (431, '朱立', '321088198709143434', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE32-2', NULL);
+INSERT INTO `examination_ledger` VALUES (432, '沈佳佳', '321088198704302731', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE33-1', NULL);
+INSERT INTO `examination_ledger` VALUES (433, '沈佳佳', '321088198704302731', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE33-2', NULL);
+INSERT INTO `examination_ledger` VALUES (434, '刘加有', '32072319900110365X', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE34-1', NULL);
+INSERT INTO `examination_ledger` VALUES (435, '刘加有', '32072319900110365X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE34-2', NULL);
+INSERT INTO `examination_ledger` VALUES (436, '朱言升', '342222198506100830', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE35-1', NULL);
+INSERT INTO `examination_ledger` VALUES (437, '朱言升', '342222198506100830', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE35-2', NULL);
+INSERT INTO `examination_ledger` VALUES (438, '朱言升', '342222198506100830', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE35-3', NULL);
+INSERT INTO `examination_ledger` VALUES (439, '王保超', '341122199109132036', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE36-1', NULL);
+INSERT INTO `examination_ledger` VALUES (440, '王保超', '341122199109132036', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE36-2', NULL);
+INSERT INTO `examination_ledger` VALUES (441, '欧永丰', '320830198204201035', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE37-1', NULL);
+INSERT INTO `examination_ledger` VALUES (442, '欧永丰', '320830198204201035', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE37-2', NULL);
+INSERT INTO `examination_ledger` VALUES (443, '李昌昌', '320322199110116515', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'Q345B', 'Φ57×12', 'RE38-1', NULL);
+INSERT INTO `examination_ledger` VALUES (444, '李昌昌', '320322199110116515', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'S30408', 'Φ57×12', 'RE38-2', NULL);
+INSERT INTO `examination_ledger` VALUES (445, '张冲', '321323198202267575', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'Q345B', 'Φ159×16', 'RE39-1', NULL);
+INSERT INTO `examination_ledger` VALUES (446, '张冲', '321323198202267575', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', '12Cr5Mo', 'Φ159×16', 'RE39-2', NULL);
+INSERT INTO `examination_ledger` VALUES (447, '张冲', '321323198202267575', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'S30408', 'Φ57×6', 'RE39-3', NULL);
+INSERT INTO `examination_ledger` VALUES (448, '葛传亮', '320723197111273036', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE40', NULL);
+INSERT INTO `examination_ledger` VALUES (449, '尹正标', '320123196909114811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE41-1', NULL);
+INSERT INTO `examination_ledger` VALUES (450, '尹正标', '320123196909114811', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE41-2', NULL);
+INSERT INTO `examination_ledger` VALUES (451, '杨琦辉', '320423197506231811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE42', NULL);
+INSERT INTO `examination_ledger` VALUES (452, '偰浩', '320481198804221038', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE43-1', NULL);
+INSERT INTO `examination_ledger` VALUES (453, '偰浩', '320481198804221038', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE43-2', NULL);
+INSERT INTO `examination_ledger` VALUES (454, '陈家富', '341122197112274212', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE44-1', NULL);
+INSERT INTO `examination_ledger` VALUES (455, '陈家富', '341122197112274212', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE44-2', NULL);
+INSERT INTO `examination_ledger` VALUES (456, '盛文明', '342322197106164211', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE45-1', NULL);
+INSERT INTO `examination_ledger` VALUES (457, '盛文明', '342322197106164211', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE45-2', NULL);
+INSERT INTO `examination_ledger` VALUES (458, '陈邦', '320123199009191612', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE46-1', NULL);
+INSERT INTO `examination_ledger` VALUES (459, '陈邦', '320123199009191612', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE46-2', NULL);
+INSERT INTO `examination_ledger` VALUES (460, '赵广林', '321088197009121213', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE47-1', NULL);
+INSERT INTO `examination_ledger` VALUES (461, '赵广林', '321088197009121213', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE47-2', NULL);
+INSERT INTO `examination_ledger` VALUES (462, '李俊', '321088199110034850', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE48-1', NULL);
+INSERT INTO `examination_ledger` VALUES (463, '李俊', '321088199110034850', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE48-2', NULL);
+INSERT INTO `examination_ledger` VALUES (464, '徐兵', '321084197209056537', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE49-1', NULL);
+INSERT INTO `examination_ledger` VALUES (465, '徐兵', '321084197209056537', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE49-2', NULL);
+INSERT INTO `examination_ledger` VALUES (466, '张保光', '320321196906101212', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE50', NULL);
+INSERT INTO `examination_ledger` VALUES (467, '丁成永', '321321198706283613', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE51-1', NULL);
+INSERT INTO `examination_ledger` VALUES (468, '丁成永', '321321198706283613', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE51-2', NULL);
+INSERT INTO `examination_ledger` VALUES (469, '刘波', '320825197801074534', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE52-1', NULL);
+INSERT INTO `examination_ledger` VALUES (470, '刘波', '320825197801074534', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE52-2', NULL);
+INSERT INTO `examination_ledger` VALUES (471, '张正宇', '320823197510013237', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', '12Cr5Mo', 'Φ57×12', 'RE1-1', NULL);
+INSERT INTO `examination_ledger` VALUES (472, '张正宇', '320823197510013237', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE1-2', NULL);
+INSERT INTO `examination_ledger` VALUES (473, '朱恒良', '321321198706016814', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE2-1', NULL);
+INSERT INTO `examination_ledger` VALUES (474, '朱恒良', '321321198706016814', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE2-2', NULL);
+INSERT INTO `examination_ledger` VALUES (475, '李会斌', '610330198803200618', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', '12Cr5Mo', 'Φ57×12', 'RE3-1', NULL);
+INSERT INTO `examination_ledger` VALUES (476, '李会斌', '610330198803200618', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE3-2', NULL);
+INSERT INTO `examination_ledger` VALUES (477, '梁志荣', '522529198010101615', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'S30408', 'δ=12+Φ18×3', 'RE4-1', NULL);
+INSERT INTO `examination_ledger` VALUES (478, '梁志荣', '522529198010101615', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'S30408', 'δ=12+Φ18×3', 'RE4-2', NULL);
+INSERT INTO `examination_ledger` VALUES (479, '张淑海', '370982198701281356', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'Q345B', 'Φ57×6', 'RE5', NULL);
+INSERT INTO `examination_ledger` VALUES (480, '王春涛', '341225197207200210', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'Q345R', 'δ=12', 'RE6', NULL);
+INSERT INTO `examination_ledger` VALUES (481, '王春超', '342127197702190230', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'Q345R', 'δ=12', 'RE7', NULL);
+INSERT INTO `examination_ledger` VALUES (482, '樊其阳', '321088198201044670', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'Q345R+Q345B', 'δ=12+Φ18×3', 'RE8-1', NULL);
+INSERT INTO `examination_ledger` VALUES (483, '樊其阳', '321088198201044670', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE8-2', NULL);
+INSERT INTO `examination_ledger` VALUES (484, '李德成', '320123198803032032', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'Q345B', 'Φ57×6', 'RE9', NULL);
+INSERT INTO `examination_ledger` VALUES (485, '罗猛', '320113199811260432', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE10-1', NULL);
+INSERT INTO `examination_ledger` VALUES (486, '罗猛', '320113199811260432', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE10-2', NULL);
+INSERT INTO `examination_ledger` VALUES (487, '彭明', '321088197510204311', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE11-1', NULL);
+INSERT INTO `examination_ledger` VALUES (488, '彭明', '321088197510204311', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE11-2', NULL);
+INSERT INTO `examination_ledger` VALUES (489, '李奇', '412922197001304514', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE12-1', NULL);
+INSERT INTO `examination_ledger` VALUES (490, '李奇', '412922197001304514', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE12-2', NULL);
+INSERT INTO `examination_ledger` VALUES (491, '徐国镇', '321081197104242430', 'SMAW-FeⅡ-3G-16-Fef3J', 'Q345R', 'δ=16', 'RE13', NULL);
+INSERT INTO `examination_ledger` VALUES (492, '史学武', '320123198006221818', 'SMAW-FeⅡ-3G-16-Fef3J', 'Q345R', 'δ=16', 'RE14', NULL);
+INSERT INTO `examination_ledger` VALUES (493, '杨小双', '320481198510181018', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE15-1', NULL);
+INSERT INTO `examination_ledger` VALUES (494, '杨小双', '320481198510181018', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE15-2', NULL);
+INSERT INTO `examination_ledger` VALUES (495, '陈元华', '512922197104280678', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE16-1', NULL);
+INSERT INTO `examination_ledger` VALUES (496, '陈元华', '512922197104280678', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE16-2', NULL);
+INSERT INTO `examination_ledger` VALUES (497, '姚建坤', '320423197306086234', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE17-1', NULL);
+INSERT INTO `examination_ledger` VALUES (498, '姚建坤', '320423197306086234', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE17-2', NULL);
+INSERT INTO `examination_ledger` VALUES (499, '姚建坤', '320423197306086234', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE17-3', NULL);
+INSERT INTO `examination_ledger` VALUES (500, '彭桥生', '321088198810174331', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE18-1', NULL);
+INSERT INTO `examination_ledger` VALUES (501, '彭桥生', '321088198810174331', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE18-2', NULL);
+INSERT INTO `examination_ledger` VALUES (502, '张传梁', '320706198302101518', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE19-1', NULL);
+INSERT INTO `examination_ledger` VALUES (503, '张传梁', '320706198302101518', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE19-2', NULL);
+INSERT INTO `examination_ledger` VALUES (504, '时贝', '320322199110136890', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE20-1', NULL);
+INSERT INTO `examination_ledger` VALUES (505, '时贝', '320322199110136890', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE20-2', NULL);
+INSERT INTO `examination_ledger` VALUES (506, '燕群群', '320322199002280174', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE21-1', NULL);
+INSERT INTO `examination_ledger` VALUES (507, '燕群群', '320322199002280174', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE21-2', NULL);
+INSERT INTO `examination_ledger` VALUES (508, '吴玉龙', '320322198312257637', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE22-1', NULL);
+INSERT INTO `examination_ledger` VALUES (509, '吴玉龙', '320322198312257637', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE22-2', NULL);
+INSERT INTO `examination_ledger` VALUES (510, '孟繁明', '320322199904183613', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE23', NULL);
+INSERT INTO `examination_ledger` VALUES (511, '张明亮', '320322199903053614', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE24', NULL);
+INSERT INTO `examination_ledger` VALUES (512, '徐德伟', '32108119910421421X', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'Q345B', 'Φ57×12', 'RE25-1', NULL);
+INSERT INTO `examination_ledger` VALUES (513, '徐德伟', '32108119910421421X', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'S30408', 'Φ57×12', 'RE25-2', NULL);
+INSERT INTO `examination_ledger` VALUES (514, '张银川', '320323198310280012', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE26-1', NULL);
+INSERT INTO `examination_ledger` VALUES (515, '张银川', '320323198310280012', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE26-2', NULL);
+INSERT INTO `examination_ledger` VALUES (516, '张磊', '34222219850207089X', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE27', NULL);
+INSERT INTO `examination_ledger` VALUES (517, '张勇', '321088198006145273', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE28-1', NULL);
+INSERT INTO `examination_ledger` VALUES (518, '张勇', '321088198006145273', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE28-2', NULL);
+INSERT INTO `examination_ledger` VALUES (519, '刘苏宇', '32108819901106275X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE29', NULL);
+INSERT INTO `examination_ledger` VALUES (520, '杨兵', '321323198405115715', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'Q345B', 'Φ76×12', 'RE30-1', NULL);
+INSERT INTO `examination_ledger` VALUES (521, '杨兵', '321323198405115715', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'S30408', 'Φ76×12', 'RE30-2', NULL);
+INSERT INTO `examination_ledger` VALUES (522, '戴建', '321088197612143812', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE31-1', NULL);
+INSERT INTO `examination_ledger` VALUES (523, '戴建', '321088197612143812', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE31-2', NULL);
+INSERT INTO `examination_ledger` VALUES (524, '朱立', '321088198709143434', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'Q345R', 'δ=12', 'RE32-1', NULL);
+INSERT INTO `examination_ledger` VALUES (525, '朱立', '321088198709143434', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE32-2', NULL);
+INSERT INTO `examination_ledger` VALUES (526, '沈佳佳', '321088198704302731', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE33-1', NULL);
+INSERT INTO `examination_ledger` VALUES (527, '沈佳佳', '321088198704302731', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE33-2', NULL);
+INSERT INTO `examination_ledger` VALUES (528, '刘加有', '32072319900110365X', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE34-1', NULL);
+INSERT INTO `examination_ledger` VALUES (529, '刘加有', '32072319900110365X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE34-2', NULL);
+INSERT INTO `examination_ledger` VALUES (530, '朱言升', '342222198506100830', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE35-1', NULL);
+INSERT INTO `examination_ledger` VALUES (531, '朱言升', '342222198506100830', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE35-2', NULL);
+INSERT INTO `examination_ledger` VALUES (532, '朱言升', '342222198506100830', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE35-3', NULL);
+INSERT INTO `examination_ledger` VALUES (533, '王保超', '341122199109132036', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE36-1', NULL);
+INSERT INTO `examination_ledger` VALUES (534, '王保超', '341122199109132036', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE36-2', NULL);
+INSERT INTO `examination_ledger` VALUES (535, '欧永丰', '320830198204201035', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE37-1', NULL);
+INSERT INTO `examination_ledger` VALUES (536, '欧永丰', '320830198204201035', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE37-2', NULL);
+INSERT INTO `examination_ledger` VALUES (537, '李昌昌', '320322199110116515', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'Q345B', 'Φ57×12', 'RE38-1', NULL);
+INSERT INTO `examination_ledger` VALUES (538, '李昌昌', '320322199110116515', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'S30408', 'Φ57×12', 'RE38-2', NULL);
+INSERT INTO `examination_ledger` VALUES (539, '张冲', '321323198202267575', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'Q345B', 'Φ159×16', 'RE39-1', NULL);
+INSERT INTO `examination_ledger` VALUES (540, '张冲', '321323198202267575', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', '12Cr5Mo', 'Φ159×16', 'RE39-2', NULL);
+INSERT INTO `examination_ledger` VALUES (541, '张冲', '321323198202267575', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'S30408', 'Φ57×6', 'RE39-3', NULL);
+INSERT INTO `examination_ledger` VALUES (542, '葛传亮', '320723197111273036', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE40', NULL);
+INSERT INTO `examination_ledger` VALUES (543, '尹正标', '320123196909114811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE41-1', NULL);
+INSERT INTO `examination_ledger` VALUES (544, '尹正标', '320123196909114811', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE41-2', NULL);
+INSERT INTO `examination_ledger` VALUES (545, '杨琦辉', '320423197506231811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE42', NULL);
+INSERT INTO `examination_ledger` VALUES (546, '偰浩', '320481198804221038', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE43-1', NULL);
+INSERT INTO `examination_ledger` VALUES (547, '偰浩', '320481198804221038', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE43-2', NULL);
+INSERT INTO `examination_ledger` VALUES (548, '陈家富', '341122197112274212', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE44-1', NULL);
+INSERT INTO `examination_ledger` VALUES (549, '陈家富', '341122197112274212', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE44-2', NULL);
+INSERT INTO `examination_ledger` VALUES (550, '盛文明', '342322197106164211', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE45-1', NULL);
+INSERT INTO `examination_ledger` VALUES (551, '盛文明', '342322197106164211', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE45-2', NULL);
+INSERT INTO `examination_ledger` VALUES (552, '陈邦', '320123199009191612', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE46-1', NULL);
+INSERT INTO `examination_ledger` VALUES (553, '陈邦', '320123199009191612', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE46-2', NULL);
+INSERT INTO `examination_ledger` VALUES (554, '赵广林', '321088197009121213', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE47-1', NULL);
+INSERT INTO `examination_ledger` VALUES (555, '赵广林', '321088197009121213', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE47-2', NULL);
+INSERT INTO `examination_ledger` VALUES (556, '李俊', '321088199110034850', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE48-1', NULL);
+INSERT INTO `examination_ledger` VALUES (557, '李俊', '321088199110034850', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE48-2', NULL);
+INSERT INTO `examination_ledger` VALUES (558, '徐兵', '321084197209056537', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE49-1', NULL);
+INSERT INTO `examination_ledger` VALUES (559, '徐兵', '321084197209056537', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE49-2', NULL);
+INSERT INTO `examination_ledger` VALUES (560, '张保光', '320321196906101212', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE50', NULL);
+INSERT INTO `examination_ledger` VALUES (561, '丁成永', '321321198706283613', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE51-1', NULL);
+INSERT INTO `examination_ledger` VALUES (562, '丁成永', '321321198706283613', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE51-2', NULL);
+INSERT INTO `examination_ledger` VALUES (563, '刘波', '320825197801074534', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE52-1', NULL);
+INSERT INTO `examination_ledger` VALUES (564, '刘波', '320825197801074534', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE52-2', NULL);
+INSERT INTO `examination_ledger` VALUES (565, '张正宇', '320823197510013237', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', '12Cr5Mo', 'Φ57×12', 'RE1-1', NULL);
+INSERT INTO `examination_ledger` VALUES (566, '张正宇', '320823197510013237', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE1-2', NULL);
+INSERT INTO `examination_ledger` VALUES (567, '朱恒良', '321321198706016814', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE2-1', NULL);
+INSERT INTO `examination_ledger` VALUES (568, '朱恒良', '321321198706016814', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE2-2', NULL);
+INSERT INTO `examination_ledger` VALUES (569, '李会斌', '610330198803200618', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', '12Cr5Mo', 'Φ57×12', 'RE3-1', NULL);
+INSERT INTO `examination_ledger` VALUES (570, '李会斌', '610330198803200618', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE3-2', NULL);
+INSERT INTO `examination_ledger` VALUES (571, '梁志荣', '522529198010101615', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'S30408', 'δ=12+Φ18×3', 'RE4-1', NULL);
+INSERT INTO `examination_ledger` VALUES (572, '梁志荣', '522529198010101615', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'S30408', 'δ=12+Φ18×3', 'RE4-2', NULL);
+INSERT INTO `examination_ledger` VALUES (573, '张淑海', '370982198701281356', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'Q345B', 'Φ57×6', 'RE5', NULL);
+INSERT INTO `examination_ledger` VALUES (574, '王春涛', '341225197207200210', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'Q345R', 'δ=12', 'RE6', NULL);
+INSERT INTO `examination_ledger` VALUES (575, '王春超', '342127197702190230', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'Q345R', 'δ=12', 'RE7', NULL);
+INSERT INTO `examination_ledger` VALUES (576, '樊其阳', '321088198201044670', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'Q345R+Q345B', 'δ=12+Φ18×3', 'RE8-1', NULL);
+INSERT INTO `examination_ledger` VALUES (577, '樊其阳', '321088198201044670', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE8-2', NULL);
+INSERT INTO `examination_ledger` VALUES (578, '李德成', '320123198803032032', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'Q345B', 'Φ57×6', 'RE9', NULL);
+INSERT INTO `examination_ledger` VALUES (579, '罗猛', '320113199811260432', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE10-1', NULL);
+INSERT INTO `examination_ledger` VALUES (580, '罗猛', '320113199811260432', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE10-2', NULL);
+INSERT INTO `examination_ledger` VALUES (581, '彭明', '321088197510204311', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE11-1', NULL);
+INSERT INTO `examination_ledger` VALUES (582, '彭明', '321088197510204311', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE11-2', NULL);
+INSERT INTO `examination_ledger` VALUES (583, '李奇', '412922197001304514', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE12-1', NULL);
+INSERT INTO `examination_ledger` VALUES (584, '李奇', '412922197001304514', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE12-2', NULL);
+INSERT INTO `examination_ledger` VALUES (585, '徐国镇', '321081197104242430', 'SMAW-FeⅡ-3G-16-Fef3J', 'Q345R', 'δ=16', 'RE13', NULL);
+INSERT INTO `examination_ledger` VALUES (586, '史学武', '320123198006221818', 'SMAW-FeⅡ-3G-16-Fef3J', 'Q345R', 'δ=16', 'RE14', NULL);
+INSERT INTO `examination_ledger` VALUES (587, '杨小双', '320481198510181018', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE15-1', NULL);
+INSERT INTO `examination_ledger` VALUES (588, '杨小双', '320481198510181018', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE15-2', NULL);
+INSERT INTO `examination_ledger` VALUES (589, '陈元华', '512922197104280678', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE16-1', NULL);
+INSERT INTO `examination_ledger` VALUES (590, '陈元华', '512922197104280678', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE16-2', NULL);
+INSERT INTO `examination_ledger` VALUES (591, '姚建坤', '320423197306086234', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE17-1', NULL);
+INSERT INTO `examination_ledger` VALUES (592, '姚建坤', '320423197306086234', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE17-2', NULL);
+INSERT INTO `examination_ledger` VALUES (593, '姚建坤', '320423197306086234', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE17-3', NULL);
+INSERT INTO `examination_ledger` VALUES (594, '彭桥生', '321088198810174331', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE18-1', NULL);
+INSERT INTO `examination_ledger` VALUES (595, '彭桥生', '321088198810174331', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE18-2', NULL);
+INSERT INTO `examination_ledger` VALUES (596, '张传梁', '320706198302101518', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE19-1', NULL);
+INSERT INTO `examination_ledger` VALUES (597, '张传梁', '320706198302101518', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE19-2', NULL);
+INSERT INTO `examination_ledger` VALUES (598, '时贝', '320322199110136890', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE20-1', NULL);
+INSERT INTO `examination_ledger` VALUES (599, '时贝', '320322199110136890', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE20-2', NULL);
+INSERT INTO `examination_ledger` VALUES (600, '燕群群', '320322199002280174', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE21-1', NULL);
+INSERT INTO `examination_ledger` VALUES (601, '燕群群', '320322199002280174', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE21-2', NULL);
+INSERT INTO `examination_ledger` VALUES (602, '吴玉龙', '320322198312257637', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE22-1', NULL);
+INSERT INTO `examination_ledger` VALUES (603, '吴玉龙', '320322198312257637', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE22-2', NULL);
+INSERT INTO `examination_ledger` VALUES (604, '孟繁明', '320322199904183613', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE23', NULL);
+INSERT INTO `examination_ledger` VALUES (605, '张明亮', '320322199903053614', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE24', NULL);
+INSERT INTO `examination_ledger` VALUES (606, '徐德伟', '32108119910421421X', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'Q345B', 'Φ57×12', 'RE25-1', NULL);
+INSERT INTO `examination_ledger` VALUES (607, '徐德伟', '32108119910421421X', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'S30408', 'Φ57×12', 'RE25-2', NULL);
+INSERT INTO `examination_ledger` VALUES (608, '张银川', '320323198310280012', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE26-1', NULL);
+INSERT INTO `examination_ledger` VALUES (609, '张银川', '320323198310280012', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE26-2', NULL);
+INSERT INTO `examination_ledger` VALUES (610, '张磊', '34222219850207089X', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE27', NULL);
+INSERT INTO `examination_ledger` VALUES (611, '张勇', '321088198006145273', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE28-1', NULL);
+INSERT INTO `examination_ledger` VALUES (612, '张勇', '321088198006145273', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE28-2', NULL);
+INSERT INTO `examination_ledger` VALUES (613, '刘苏宇', '32108819901106275X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE29', NULL);
+INSERT INTO `examination_ledger` VALUES (614, '杨兵', '321323198405115715', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'Q345B', 'Φ76×12', 'RE30-1', NULL);
+INSERT INTO `examination_ledger` VALUES (615, '杨兵', '321323198405115715', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'S30408', 'Φ76×12', 'RE30-2', NULL);
+INSERT INTO `examination_ledger` VALUES (616, '戴建', '321088197612143812', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE31-1', NULL);
+INSERT INTO `examination_ledger` VALUES (617, '戴建', '321088197612143812', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE31-2', NULL);
+INSERT INTO `examination_ledger` VALUES (618, '朱立', '321088198709143434', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'Q345R', 'δ=12', 'RE32-1', NULL);
+INSERT INTO `examination_ledger` VALUES (619, '朱立', '321088198709143434', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE32-2', NULL);
+INSERT INTO `examination_ledger` VALUES (620, '沈佳佳', '321088198704302731', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE33-1', NULL);
+INSERT INTO `examination_ledger` VALUES (621, '沈佳佳', '321088198704302731', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE33-2', NULL);
+INSERT INTO `examination_ledger` VALUES (622, '刘加有', '32072319900110365X', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE34-1', NULL);
+INSERT INTO `examination_ledger` VALUES (623, '刘加有', '32072319900110365X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE34-2', NULL);
+INSERT INTO `examination_ledger` VALUES (624, '朱言升', '342222198506100830', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE35-1', NULL);
+INSERT INTO `examination_ledger` VALUES (625, '朱言升', '342222198506100830', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE35-2', NULL);
+INSERT INTO `examination_ledger` VALUES (626, '朱言升', '342222198506100830', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE35-3', NULL);
+INSERT INTO `examination_ledger` VALUES (627, '王保超', '341122199109132036', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE36-1', NULL);
+INSERT INTO `examination_ledger` VALUES (628, '王保超', '341122199109132036', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE36-2', NULL);
+INSERT INTO `examination_ledger` VALUES (629, '欧永丰', '320830198204201035', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE37-1', NULL);
+INSERT INTO `examination_ledger` VALUES (630, '欧永丰', '320830198204201035', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE37-2', NULL);
+INSERT INTO `examination_ledger` VALUES (631, '李昌昌', '320322199110116515', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'Q345B', 'Φ57×12', 'RE38-1', NULL);
+INSERT INTO `examination_ledger` VALUES (632, '李昌昌', '320322199110116515', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'S30408', 'Φ57×12', 'RE38-2', NULL);
+INSERT INTO `examination_ledger` VALUES (633, '张冲', '321323198202267575', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'Q345B', 'Φ159×16', 'RE39-1', NULL);
+INSERT INTO `examination_ledger` VALUES (634, '张冲', '321323198202267575', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', '12Cr5Mo', 'Φ159×16', 'RE39-2', NULL);
+INSERT INTO `examination_ledger` VALUES (635, '张冲', '321323198202267575', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'S30408', 'Φ57×6', 'RE39-3', NULL);
+INSERT INTO `examination_ledger` VALUES (636, '葛传亮', '320723197111273036', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE40', NULL);
+INSERT INTO `examination_ledger` VALUES (637, '尹正标', '320123196909114811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE41-1', NULL);
+INSERT INTO `examination_ledger` VALUES (638, '尹正标', '320123196909114811', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE41-2', NULL);
+INSERT INTO `examination_ledger` VALUES (639, '杨琦辉', '320423197506231811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE42', NULL);
+INSERT INTO `examination_ledger` VALUES (640, '偰浩', '320481198804221038', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE43-1', NULL);
+INSERT INTO `examination_ledger` VALUES (641, '偰浩', '320481198804221038', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE43-2', NULL);
+INSERT INTO `examination_ledger` VALUES (642, '陈家富', '341122197112274212', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE44-1', NULL);
+INSERT INTO `examination_ledger` VALUES (643, '陈家富', '341122197112274212', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE44-2', NULL);
+INSERT INTO `examination_ledger` VALUES (644, '盛文明', '342322197106164211', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE45-1', NULL);
+INSERT INTO `examination_ledger` VALUES (645, '盛文明', '342322197106164211', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE45-2', NULL);
+INSERT INTO `examination_ledger` VALUES (646, '陈邦', '320123199009191612', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE46-1', NULL);
+INSERT INTO `examination_ledger` VALUES (647, '陈邦', '320123199009191612', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE46-2', NULL);
+INSERT INTO `examination_ledger` VALUES (648, '赵广林', '321088197009121213', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE47-1', NULL);
+INSERT INTO `examination_ledger` VALUES (649, '赵广林', '321088197009121213', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE47-2', NULL);
+INSERT INTO `examination_ledger` VALUES (650, '李俊', '321088199110034850', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE48-1', NULL);
+INSERT INTO `examination_ledger` VALUES (651, '李俊', '321088199110034850', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE48-2', NULL);
+INSERT INTO `examination_ledger` VALUES (652, '徐兵', '321084197209056537', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE49-1', NULL);
+INSERT INTO `examination_ledger` VALUES (653, '徐兵', '321084197209056537', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE49-2', NULL);
+INSERT INTO `examination_ledger` VALUES (654, '张保光', '320321196906101212', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE50', NULL);
+INSERT INTO `examination_ledger` VALUES (655, '丁成永', '321321198706283613', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE51-1', NULL);
+INSERT INTO `examination_ledger` VALUES (656, '丁成永', '321321198706283613', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE51-2', NULL);
+INSERT INTO `examination_ledger` VALUES (657, '刘波', '320825197801074534', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE52-1', NULL);
+INSERT INTO `examination_ledger` VALUES (658, '刘波', '320825197801074534', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE52-2', NULL);
+INSERT INTO `examination_ledger` VALUES (659, '张正宇', '320823197510013237', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', '12Cr5Mo', 'Φ57×12', 'RE1-1', NULL);
+INSERT INTO `examination_ledger` VALUES (660, '张正宇', '320823197510013237', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE1-2', NULL);
+INSERT INTO `examination_ledger` VALUES (661, '朱恒良', '321321198706016814', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE2-1', NULL);
+INSERT INTO `examination_ledger` VALUES (662, '朱恒良', '321321198706016814', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE2-2', NULL);
+INSERT INTO `examination_ledger` VALUES (663, '李会斌', '610330198803200618', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', '12Cr5Mo', 'Φ57×12', 'RE3-1', NULL);
+INSERT INTO `examination_ledger` VALUES (664, '李会斌', '610330198803200618', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE3-2', NULL);
+INSERT INTO `examination_ledger` VALUES (665, '梁志荣', '522529198010101615', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'S30408', 'δ=12+Φ18×3', 'RE4-1', NULL);
+INSERT INTO `examination_ledger` VALUES (666, '梁志荣', '522529198010101615', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'S30408', 'δ=12+Φ18×3', 'RE4-2', NULL);
+INSERT INTO `examination_ledger` VALUES (667, '张淑海', '370982198701281356', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'Q345B', 'Φ57×6', 'RE5', NULL);
+INSERT INTO `examination_ledger` VALUES (668, '王春涛', '341225197207200210', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'Q345R', 'δ=12', 'RE6', NULL);
+INSERT INTO `examination_ledger` VALUES (669, '王春超', '342127197702190230', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'Q345R', 'δ=12', 'RE7', NULL);
+INSERT INTO `examination_ledger` VALUES (670, '樊其阳', '321088198201044670', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'Q345R+Q345B', 'δ=12+Φ18×3', 'RE8-1', NULL);
+INSERT INTO `examination_ledger` VALUES (671, '樊其阳', '321088198201044670', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE8-2', NULL);
+INSERT INTO `examination_ledger` VALUES (672, '李德成', '320123198803032032', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'Q345B', 'Φ57×6', 'RE9', NULL);
+INSERT INTO `examination_ledger` VALUES (673, '罗猛', '320113199811260432', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE10-1', NULL);
+INSERT INTO `examination_ledger` VALUES (674, '罗猛', '320113199811260432', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE10-2', NULL);
+INSERT INTO `examination_ledger` VALUES (675, '彭明', '321088197510204311', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE11-1', NULL);
+INSERT INTO `examination_ledger` VALUES (676, '彭明', '321088197510204311', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE11-2', NULL);
+INSERT INTO `examination_ledger` VALUES (677, '李奇', '412922197001304514', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE12-1', NULL);
+INSERT INTO `examination_ledger` VALUES (678, '李奇', '412922197001304514', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE12-2', NULL);
+INSERT INTO `examination_ledger` VALUES (679, '徐国镇', '321081197104242430', 'SMAW-FeⅡ-3G-16-Fef3J', 'Q345R', 'δ=16', 'RE13', NULL);
+INSERT INTO `examination_ledger` VALUES (680, '史学武', '320123198006221818', 'SMAW-FeⅡ-3G-16-Fef3J', 'Q345R', 'δ=16', 'RE14', NULL);
+INSERT INTO `examination_ledger` VALUES (681, '杨小双', '320481198510181018', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE15-1', NULL);
+INSERT INTO `examination_ledger` VALUES (682, '杨小双', '320481198510181018', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE15-2', NULL);
+INSERT INTO `examination_ledger` VALUES (683, '陈元华', '512922197104280678', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE16-1', NULL);
+INSERT INTO `examination_ledger` VALUES (684, '陈元华', '512922197104280678', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE16-2', NULL);
+INSERT INTO `examination_ledger` VALUES (685, '姚建坤', '320423197306086234', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE17-1', NULL);
+INSERT INTO `examination_ledger` VALUES (686, '姚建坤', '320423197306086234', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE17-2', NULL);
+INSERT INTO `examination_ledger` VALUES (687, '姚建坤', '320423197306086234', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE17-3', NULL);
+INSERT INTO `examination_ledger` VALUES (688, '彭桥生', '321088198810174331', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE18-1', NULL);
+INSERT INTO `examination_ledger` VALUES (689, '彭桥生', '321088198810174331', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE18-2', NULL);
+INSERT INTO `examination_ledger` VALUES (690, '张传梁', '320706198302101518', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE19-1', NULL);
+INSERT INTO `examination_ledger` VALUES (691, '张传梁', '320706198302101518', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE19-2', NULL);
+INSERT INTO `examination_ledger` VALUES (692, '时贝', '320322199110136890', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE20-1', NULL);
+INSERT INTO `examination_ledger` VALUES (693, '时贝', '320322199110136890', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE20-2', NULL);
+INSERT INTO `examination_ledger` VALUES (694, '燕群群', '320322199002280174', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE21-1', NULL);
+INSERT INTO `examination_ledger` VALUES (695, '燕群群', '320322199002280174', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE21-2', NULL);
+INSERT INTO `examination_ledger` VALUES (696, '吴玉龙', '320322198312257637', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE22-1', NULL);
+INSERT INTO `examination_ledger` VALUES (697, '吴玉龙', '320322198312257637', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE22-2', NULL);
+INSERT INTO `examination_ledger` VALUES (698, '孟繁明', '320322199904183613', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE23', NULL);
+INSERT INTO `examination_ledger` VALUES (699, '张明亮', '320322199903053614', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE24', NULL);
+INSERT INTO `examination_ledger` VALUES (700, '徐德伟', '32108119910421421X', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'Q345B', 'Φ57×12', 'RE25-1', NULL);
+INSERT INTO `examination_ledger` VALUES (701, '徐德伟', '32108119910421421X', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'S30408', 'Φ57×12', 'RE25-2', NULL);
+INSERT INTO `examination_ledger` VALUES (702, '张银川', '320323198310280012', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE26-1', NULL);
+INSERT INTO `examination_ledger` VALUES (703, '张银川', '320323198310280012', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE26-2', NULL);
+INSERT INTO `examination_ledger` VALUES (704, '张磊', '34222219850207089X', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE27', NULL);
+INSERT INTO `examination_ledger` VALUES (705, '张勇', '321088198006145273', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE28-1', NULL);
+INSERT INTO `examination_ledger` VALUES (706, '张勇', '321088198006145273', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE28-2', NULL);
+INSERT INTO `examination_ledger` VALUES (707, '刘苏宇', '32108819901106275X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE29', NULL);
+INSERT INTO `examination_ledger` VALUES (708, '杨兵', '321323198405115715', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'Q345B', 'Φ76×12', 'RE30-1', NULL);
+INSERT INTO `examination_ledger` VALUES (709, '杨兵', '321323198405115715', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'S30408', 'Φ76×12', 'RE30-2', NULL);
+INSERT INTO `examination_ledger` VALUES (710, '戴建', '321088197612143812', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE31-1', NULL);
+INSERT INTO `examination_ledger` VALUES (711, '戴建', '321088197612143812', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE31-2', NULL);
+INSERT INTO `examination_ledger` VALUES (712, '朱立', '321088198709143434', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'Q345R', 'δ=12', 'RE32-1', NULL);
+INSERT INTO `examination_ledger` VALUES (713, '朱立', '321088198709143434', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE32-2', NULL);
+INSERT INTO `examination_ledger` VALUES (714, '沈佳佳', '321088198704302731', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE33-1', NULL);
+INSERT INTO `examination_ledger` VALUES (715, '沈佳佳', '321088198704302731', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE33-2', NULL);
+INSERT INTO `examination_ledger` VALUES (716, '刘加有', '32072319900110365X', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE34-1', NULL);
+INSERT INTO `examination_ledger` VALUES (717, '刘加有', '32072319900110365X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE34-2', NULL);
+INSERT INTO `examination_ledger` VALUES (718, '朱言升', '342222198506100830', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE35-1', NULL);
+INSERT INTO `examination_ledger` VALUES (719, '朱言升', '342222198506100830', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE35-2', NULL);
+INSERT INTO `examination_ledger` VALUES (720, '朱言升', '342222198506100830', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE35-3', NULL);
+INSERT INTO `examination_ledger` VALUES (721, '王保超', '341122199109132036', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE36-1', NULL);
+INSERT INTO `examination_ledger` VALUES (722, '王保超', '341122199109132036', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE36-2', NULL);
+INSERT INTO `examination_ledger` VALUES (723, '欧永丰', '320830198204201035', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE37-1', NULL);
+INSERT INTO `examination_ledger` VALUES (724, '欧永丰', '320830198204201035', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE37-2', NULL);
+INSERT INTO `examination_ledger` VALUES (725, '李昌昌', '320322199110116515', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'Q345B', 'Φ57×12', 'RE38-1', NULL);
+INSERT INTO `examination_ledger` VALUES (726, '李昌昌', '320322199110116515', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'S30408', 'Φ57×12', 'RE38-2', NULL);
+INSERT INTO `examination_ledger` VALUES (727, '张冲', '321323198202267575', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'Q345B', 'Φ159×16', 'RE39-1', NULL);
+INSERT INTO `examination_ledger` VALUES (728, '张冲', '321323198202267575', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', '12Cr5Mo', 'Φ159×16', 'RE39-2', NULL);
+INSERT INTO `examination_ledger` VALUES (729, '张冲', '321323198202267575', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'S30408', 'Φ57×6', 'RE39-3', NULL);
+INSERT INTO `examination_ledger` VALUES (730, '葛传亮', '320723197111273036', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE40', NULL);
+INSERT INTO `examination_ledger` VALUES (731, '尹正标', '320123196909114811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE41-1', NULL);
+INSERT INTO `examination_ledger` VALUES (732, '尹正标', '320123196909114811', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE41-2', NULL);
+INSERT INTO `examination_ledger` VALUES (733, '杨琦辉', '320423197506231811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE42', NULL);
+INSERT INTO `examination_ledger` VALUES (734, '偰浩', '320481198804221038', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE43-1', NULL);
+INSERT INTO `examination_ledger` VALUES (735, '偰浩', '320481198804221038', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE43-2', NULL);
+INSERT INTO `examination_ledger` VALUES (736, '陈家富', '341122197112274212', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE44-1', NULL);
+INSERT INTO `examination_ledger` VALUES (737, '陈家富', '341122197112274212', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE44-2', NULL);
+INSERT INTO `examination_ledger` VALUES (738, '盛文明', '342322197106164211', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE45-1', NULL);
+INSERT INTO `examination_ledger` VALUES (739, '盛文明', '342322197106164211', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE45-2', NULL);
+INSERT INTO `examination_ledger` VALUES (740, '陈邦', '320123199009191612', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE46-1', NULL);
+INSERT INTO `examination_ledger` VALUES (741, '陈邦', '320123199009191612', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE46-2', NULL);
+INSERT INTO `examination_ledger` VALUES (742, '赵广林', '321088197009121213', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE47-1', NULL);
+INSERT INTO `examination_ledger` VALUES (743, '赵广林', '321088197009121213', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE47-2', NULL);
+INSERT INTO `examination_ledger` VALUES (744, '李俊', '321088199110034850', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE48-1', NULL);
+INSERT INTO `examination_ledger` VALUES (745, '李俊', '321088199110034850', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE48-2', NULL);
+INSERT INTO `examination_ledger` VALUES (746, '徐兵', '321084197209056537', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE49-1', NULL);
+INSERT INTO `examination_ledger` VALUES (747, '徐兵', '321084197209056537', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE49-2', NULL);
+INSERT INTO `examination_ledger` VALUES (748, '张保光', '320321196906101212', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE50', NULL);
+INSERT INTO `examination_ledger` VALUES (749, '丁成永', '321321198706283613', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE51-1', NULL);
+INSERT INTO `examination_ledger` VALUES (750, '丁成永', '321321198706283613', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE51-2', NULL);
+INSERT INTO `examination_ledger` VALUES (751, '刘波', '320825197801074534', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE52-1', NULL);
+INSERT INTO `examination_ledger` VALUES (752, '刘波', '320825197801074534', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE52-2', NULL);
+INSERT INTO `examination_ledger` VALUES (753, NULL, NULL, '背弯', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (754, NULL, NULL, '/', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (755, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (756, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (757, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (758, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (759, NULL, '金相面Ⅱ', '', '金相面Ⅲ', '', '金相面Ⅳ', NULL);
+INSERT INTO `examination_ledger` VALUES (760, NULL, '一件', '', '一件', '', '一件', NULL);
+INSERT INTO `examination_ledger` VALUES (761, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (762, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (763, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (764, NULL, '检验结果', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (765, NULL, '试件Ⅰ', '', '试件Ⅱ', '', '试件Ⅲ', NULL);
+INSERT INTO `examination_ledger` VALUES (766, NULL, '/', '', '/', '', '/', NULL);
+INSERT INTO `examination_ledger` VALUES (767, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (768, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (769, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (770, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (771, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (772, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (773, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (774, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (775, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (776, '张正宇', '320823197510013237', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', '12Cr5Mo', 'Φ57×12', 'RE1-1', NULL);
+INSERT INTO `examination_ledger` VALUES (777, '张正宇', '320823197510013237', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE1-2', NULL);
+INSERT INTO `examination_ledger` VALUES (778, '朱恒良', '321321198706016814', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE2-1', NULL);
+INSERT INTO `examination_ledger` VALUES (779, '朱恒良', '321321198706016814', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE2-2', NULL);
+INSERT INTO `examination_ledger` VALUES (780, '李会斌', '610330198803200618', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', '12Cr5Mo', 'Φ57×12', 'RE3-1', NULL);
+INSERT INTO `examination_ledger` VALUES (781, '李会斌', '610330198803200618', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE3-2', NULL);
+INSERT INTO `examination_ledger` VALUES (782, '梁志荣', '522529198010101615', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'S30408', 'δ=12+Φ18×3', 'RE4-1', NULL);
+INSERT INTO `examination_ledger` VALUES (783, '梁志荣', '522529198010101615', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'S30408', 'δ=12+Φ18×3', 'RE4-2', NULL);
+INSERT INTO `examination_ledger` VALUES (784, '张淑海', '370982198701281356', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'Q345B', 'Φ57×6', 'RE5', NULL);
+INSERT INTO `examination_ledger` VALUES (785, '王春涛', '341225197207200210', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'Q345R', 'δ=12', 'RE6', NULL);
+INSERT INTO `examination_ledger` VALUES (786, '王春超', '342127197702190230', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'Q345R', 'δ=12', 'RE7', NULL);
+INSERT INTO `examination_ledger` VALUES (787, '樊其阳', '321088198201044670', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'Q345R+Q345B', 'δ=12+Φ18×3', 'RE8-1', NULL);
+INSERT INTO `examination_ledger` VALUES (788, '樊其阳', '321088198201044670', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE8-2', NULL);
+INSERT INTO `examination_ledger` VALUES (789, '李德成', '320123198803032032', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'Q345B', 'Φ57×6', 'RE9', NULL);
+INSERT INTO `examination_ledger` VALUES (790, '罗猛', '320113199811260432', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE10-1', NULL);
+INSERT INTO `examination_ledger` VALUES (791, '罗猛', '320113199811260432', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE10-2', NULL);
+INSERT INTO `examination_ledger` VALUES (792, '彭明', '321088197510204311', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE11-1', NULL);
+INSERT INTO `examination_ledger` VALUES (793, '彭明', '321088197510204311', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE11-2', NULL);
+INSERT INTO `examination_ledger` VALUES (794, '李奇', '412922197001304514', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE12-1', NULL);
+INSERT INTO `examination_ledger` VALUES (795, '李奇', '412922197001304514', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE12-2', NULL);
+INSERT INTO `examination_ledger` VALUES (796, '徐国镇', '321081197104242430', 'SMAW-FeⅡ-3G-16-Fef3J', 'Q345R', 'δ=16', 'RE13', NULL);
+INSERT INTO `examination_ledger` VALUES (797, '史学武', '320123198006221818', 'SMAW-FeⅡ-3G-16-Fef3J', 'Q345R', 'δ=16', 'RE14', NULL);
+INSERT INTO `examination_ledger` VALUES (798, '杨小双', '320481198510181018', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE15-1', NULL);
+INSERT INTO `examination_ledger` VALUES (799, '杨小双', '320481198510181018', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE15-2', NULL);
+INSERT INTO `examination_ledger` VALUES (800, '陈元华', '512922197104280678', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE16-1', NULL);
+INSERT INTO `examination_ledger` VALUES (801, '陈元华', '512922197104280678', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE16-2', NULL);
+INSERT INTO `examination_ledger` VALUES (802, '姚建坤', '320423197306086234', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE17-1', NULL);
+INSERT INTO `examination_ledger` VALUES (803, '姚建坤', '320423197306086234', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE17-2', NULL);
+INSERT INTO `examination_ledger` VALUES (804, '姚建坤', '320423197306086234', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE17-3', NULL);
+INSERT INTO `examination_ledger` VALUES (805, '彭桥生', '321088198810174331', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE18-1', NULL);
+INSERT INTO `examination_ledger` VALUES (806, '彭桥生', '321088198810174331', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE18-2', NULL);
+INSERT INTO `examination_ledger` VALUES (807, '张传梁', '320706198302101518', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE19-1', NULL);
+INSERT INTO `examination_ledger` VALUES (808, '张传梁', '320706198302101518', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE19-2', NULL);
+INSERT INTO `examination_ledger` VALUES (809, '时贝', '320322199110136890', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE20-1', NULL);
+INSERT INTO `examination_ledger` VALUES (810, '时贝', '320322199110136890', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE20-2', NULL);
+INSERT INTO `examination_ledger` VALUES (811, '燕群群', '320322199002280174', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE21-1', NULL);
+INSERT INTO `examination_ledger` VALUES (812, '燕群群', '320322199002280174', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE21-2', NULL);
+INSERT INTO `examination_ledger` VALUES (813, '吴玉龙', '320322198312257637', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE22-1', NULL);
+INSERT INTO `examination_ledger` VALUES (814, '吴玉龙', '320322198312257637', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE22-2', NULL);
+INSERT INTO `examination_ledger` VALUES (815, '孟繁明', '320322199904183613', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE23', NULL);
+INSERT INTO `examination_ledger` VALUES (816, '张明亮', '320322199903053614', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE24', NULL);
+INSERT INTO `examination_ledger` VALUES (817, '徐德伟', '32108119910421421X', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'Q345B', 'Φ57×12', 'RE25-1', NULL);
+INSERT INTO `examination_ledger` VALUES (818, '徐德伟', '32108119910421421X', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'S30408', 'Φ57×12', 'RE25-2', NULL);
+INSERT INTO `examination_ledger` VALUES (819, '张银川', '320323198310280012', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE26-1', NULL);
+INSERT INTO `examination_ledger` VALUES (820, '张银川', '320323198310280012', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE26-2', NULL);
+INSERT INTO `examination_ledger` VALUES (821, '张磊', '34222219850207089X', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE27', NULL);
+INSERT INTO `examination_ledger` VALUES (822, '张勇', '321088198006145273', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE28-1', NULL);
+INSERT INTO `examination_ledger` VALUES (823, '张勇', '321088198006145273', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE28-2', NULL);
+INSERT INTO `examination_ledger` VALUES (824, '刘苏宇', '32108819901106275X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE29', NULL);
+INSERT INTO `examination_ledger` VALUES (825, '杨兵', '321323198405115715', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'Q345B', 'Φ76×12', 'RE30-1', NULL);
+INSERT INTO `examination_ledger` VALUES (826, '杨兵', '321323198405115715', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'S30408', 'Φ76×12', 'RE30-2', NULL);
+INSERT INTO `examination_ledger` VALUES (827, '戴建', '321088197612143812', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE31-1', NULL);
+INSERT INTO `examination_ledger` VALUES (828, '戴建', '321088197612143812', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE31-2', NULL);
+INSERT INTO `examination_ledger` VALUES (829, '朱立', '321088198709143434', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'Q345R', 'δ=12', 'RE32-1', NULL);
+INSERT INTO `examination_ledger` VALUES (830, '朱立', '321088198709143434', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE32-2', NULL);
+INSERT INTO `examination_ledger` VALUES (831, '沈佳佳', '321088198704302731', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE33-1', NULL);
+INSERT INTO `examination_ledger` VALUES (832, '沈佳佳', '321088198704302731', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE33-2', NULL);
+INSERT INTO `examination_ledger` VALUES (833, '刘加有', '32072319900110365X', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE34-1', NULL);
+INSERT INTO `examination_ledger` VALUES (834, '刘加有', '32072319900110365X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE34-2', NULL);
+INSERT INTO `examination_ledger` VALUES (835, '朱言升', '342222198506100830', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE35-1', NULL);
+INSERT INTO `examination_ledger` VALUES (836, '朱言升', '342222198506100830', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE35-2', NULL);
+INSERT INTO `examination_ledger` VALUES (837, '朱言升', '342222198506100830', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE35-3', NULL);
+INSERT INTO `examination_ledger` VALUES (838, '王保超', '341122199109132036', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE36-1', NULL);
+INSERT INTO `examination_ledger` VALUES (839, '王保超', '341122199109132036', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE36-2', NULL);
+INSERT INTO `examination_ledger` VALUES (840, '欧永丰', '320830198204201035', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE37-1', NULL);
+INSERT INTO `examination_ledger` VALUES (841, '欧永丰', '320830198204201035', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE37-2', NULL);
+INSERT INTO `examination_ledger` VALUES (842, '李昌昌', '320322199110116515', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'Q345B', 'Φ57×12', 'RE38-1', NULL);
+INSERT INTO `examination_ledger` VALUES (843, '李昌昌', '320322199110116515', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'S30408', 'Φ57×12', 'RE38-2', NULL);
+INSERT INTO `examination_ledger` VALUES (844, '张冲', '321323198202267575', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'Q345B', 'Φ159×16', 'RE39-1', NULL);
+INSERT INTO `examination_ledger` VALUES (845, '张冲', '321323198202267575', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', '12Cr5Mo', 'Φ159×16', 'RE39-2', NULL);
+INSERT INTO `examination_ledger` VALUES (846, '张冲', '321323198202267575', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'S30408', 'Φ57×6', 'RE39-3', NULL);
+INSERT INTO `examination_ledger` VALUES (847, '葛传亮', '320723197111273036', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE40', NULL);
+INSERT INTO `examination_ledger` VALUES (848, '尹正标', '320123196909114811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE41-1', NULL);
+INSERT INTO `examination_ledger` VALUES (849, '尹正标', '320123196909114811', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE41-2', NULL);
+INSERT INTO `examination_ledger` VALUES (850, '杨琦辉', '320423197506231811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE42', NULL);
+INSERT INTO `examination_ledger` VALUES (851, '偰浩', '320481198804221038', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE43-1', NULL);
+INSERT INTO `examination_ledger` VALUES (852, '偰浩', '320481198804221038', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE43-2', NULL);
+INSERT INTO `examination_ledger` VALUES (853, '陈家富', '341122197112274212', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE44-1', NULL);
+INSERT INTO `examination_ledger` VALUES (854, '陈家富', '341122197112274212', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE44-2', NULL);
+INSERT INTO `examination_ledger` VALUES (855, '盛文明', '342322197106164211', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE45-1', NULL);
+INSERT INTO `examination_ledger` VALUES (856, '盛文明', '342322197106164211', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE45-2', NULL);
+INSERT INTO `examination_ledger` VALUES (857, '陈邦', '320123199009191612', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE46-1', NULL);
+INSERT INTO `examination_ledger` VALUES (858, '陈邦', '320123199009191612', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE46-2', NULL);
+INSERT INTO `examination_ledger` VALUES (859, '赵广林', '321088197009121213', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE47-1', NULL);
+INSERT INTO `examination_ledger` VALUES (860, '赵广林', '321088197009121213', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE47-2', NULL);
+INSERT INTO `examination_ledger` VALUES (861, '李俊', '321088199110034850', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE48-1', NULL);
+INSERT INTO `examination_ledger` VALUES (862, '李俊', '321088199110034850', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE48-2', NULL);
+INSERT INTO `examination_ledger` VALUES (863, '徐兵', '321084197209056537', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE49-1', NULL);
+INSERT INTO `examination_ledger` VALUES (864, '徐兵', '321084197209056537', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE49-2', NULL);
+INSERT INTO `examination_ledger` VALUES (865, '张保光', '320321196906101212', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE50', NULL);
+INSERT INTO `examination_ledger` VALUES (866, '丁成永', '321321198706283613', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE51-1', NULL);
+INSERT INTO `examination_ledger` VALUES (867, '丁成永', '321321198706283613', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE51-2', NULL);
+INSERT INTO `examination_ledger` VALUES (868, '刘波', '320825197801074534', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE52-1', NULL);
+INSERT INTO `examination_ledger` VALUES (869, '刘波', '320825197801074534', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE52-2', NULL);
+INSERT INTO `examination_ledger` VALUES (870, NULL, NULL, '背弯', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (871, NULL, NULL, '/', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (872, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (873, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (874, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (875, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (876, NULL, '金相面Ⅱ', '', '金相面Ⅲ', '', '金相面Ⅳ', NULL);
+INSERT INTO `examination_ledger` VALUES (877, NULL, '一件', '', '一件', '', '一件', NULL);
+INSERT INTO `examination_ledger` VALUES (878, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (879, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (880, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (881, NULL, '检验结果', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (882, NULL, '试件Ⅰ', '', '试件Ⅱ', '', '试件Ⅲ', NULL);
+INSERT INTO `examination_ledger` VALUES (883, NULL, '/', '', '/', '', '/', NULL);
+INSERT INTO `examination_ledger` VALUES (884, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (885, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (886, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (887, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (888, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (889, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (890, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (891, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (892, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (893, NULL, NULL, '背弯', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (894, NULL, NULL, '/', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (895, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (896, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (897, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (898, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (899, NULL, '金相面Ⅱ', '', '金相面Ⅲ', '', '金相面Ⅳ', NULL);
+INSERT INTO `examination_ledger` VALUES (900, NULL, '一件', '', '一件', '', '一件', NULL);
+INSERT INTO `examination_ledger` VALUES (901, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (902, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (903, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (904, NULL, '检验结果', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (905, NULL, '试件Ⅰ', '', '试件Ⅱ', '', '试件Ⅲ', NULL);
+INSERT INTO `examination_ledger` VALUES (906, NULL, '/', '', '/', '', '/', NULL);
+INSERT INTO `examination_ledger` VALUES (907, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (908, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (909, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (910, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (911, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (912, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (913, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (914, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (915, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (916, NULL, NULL, '背弯', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (917, NULL, NULL, '/', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (918, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (919, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (920, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (921, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (922, NULL, '金相面Ⅱ', '', '金相面Ⅲ', '', '金相面Ⅳ', NULL);
+INSERT INTO `examination_ledger` VALUES (923, NULL, '一件', '', '一件', '', '一件', NULL);
+INSERT INTO `examination_ledger` VALUES (924, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (925, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (926, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (927, NULL, '检验结果', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (928, NULL, '试件Ⅰ', '', '试件Ⅱ', '', '试件Ⅲ', NULL);
+INSERT INTO `examination_ledger` VALUES (929, NULL, '/', '', '/', '', '/', NULL);
+INSERT INTO `examination_ledger` VALUES (930, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (931, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (932, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (933, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (934, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (935, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (936, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (937, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (938, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (939, NULL, NULL, '背弯', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (940, NULL, NULL, '/', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (941, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (942, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (943, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (944, NULL, NULL, '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (945, NULL, '金相面Ⅱ', '', '金相面Ⅲ', '', '金相面Ⅳ', NULL);
+INSERT INTO `examination_ledger` VALUES (946, NULL, '一件', '', '一件', '', '一件', NULL);
+INSERT INTO `examination_ledger` VALUES (947, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (948, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (949, NULL, '一件', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (950, NULL, '检验结果', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (951, NULL, '试件Ⅰ', '', '试件Ⅱ', '', '试件Ⅲ', NULL);
+INSERT INTO `examination_ledger` VALUES (952, NULL, '/', '', '/', '', '/', NULL);
+INSERT INTO `examination_ledger` VALUES (953, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (954, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (955, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (956, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (957, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (958, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (959, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (960, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (961, NULL, '/', '', '', '', '', NULL);
+INSERT INTO `examination_ledger` VALUES (962, '张正宇', '320823197510013237', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', '12Cr5Mo', 'Φ57×12', 'RE1-1', NULL);
+INSERT INTO `examination_ledger` VALUES (963, '张正宇', '320823197510013237', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE1-2', NULL);
+INSERT INTO `examination_ledger` VALUES (964, '朱恒良', '321321198706016814', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE2-1', NULL);
+INSERT INTO `examination_ledger` VALUES (965, '朱恒良', '321321198706016814', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE2-2', NULL);
+INSERT INTO `examination_ledger` VALUES (966, '李会斌', '610330198803200618', 'GTAW-FeⅢ-6G-3/57-FefS-02/10/12和SMAW-FeⅢ-6G(K)-9/57-Fef3J', '12Cr5Mo', 'Φ57×12', 'RE3-1', NULL);
+INSERT INTO `examination_ledger` VALUES (967, '李会斌', '610330198803200618', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE3-2', NULL);
+INSERT INTO `examination_ledger` VALUES (968, '梁志荣', '522529198010101615', 'SMAW-FeⅣ-6FG-12/18-Fef4J', 'S30408', 'δ=12+Φ18×3', 'RE4-1', NULL);
+INSERT INTO `examination_ledger` VALUES (969, '梁志荣', '522529198010101615', 'GTAW-FeⅣ-6FG-12/18-FefS-02/10/12', 'S30408', 'δ=12+Φ18×3', 'RE4-2', NULL);
+INSERT INTO `examination_ledger` VALUES (970, '张淑海', '370982198701281356', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'Q345B', 'Φ57×6', 'RE5', NULL);
+INSERT INTO `examination_ledger` VALUES (971, '王春涛', '341225197207200210', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'Q345R', 'δ=12', 'RE6', NULL);
+INSERT INTO `examination_ledger` VALUES (972, '王春超', '342127197702190230', 'SMAW-FeⅡ-2G(K)-12-Fef3J', 'Q345R', 'δ=12', 'RE7', NULL);
+INSERT INTO `examination_ledger` VALUES (973, '樊其阳', '321088198201044670', 'SMAW-FeⅡ-6FG-12/18-Fef3J', 'Q345R+Q345B', 'δ=12+Φ18×3', 'RE8-1', NULL);
+INSERT INTO `examination_ledger` VALUES (974, '樊其阳', '321088198201044670', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE8-2', NULL);
+INSERT INTO `examination_ledger` VALUES (975, '李德成', '320123198803032032', 'GTAW-FeⅡ-2G-6/57-FefS-02/11/12', 'Q345B', 'Φ57×6', 'RE9', NULL);
+INSERT INTO `examination_ledger` VALUES (976, '罗猛', '320113199811260432', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE10-1', NULL);
+INSERT INTO `examination_ledger` VALUES (977, '罗猛', '320113199811260432', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE10-2', NULL);
+INSERT INTO `examination_ledger` VALUES (978, '彭明', '321088197510204311', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE11-1', NULL);
+INSERT INTO `examination_ledger` VALUES (979, '彭明', '321088197510204311', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE11-2', NULL);
+INSERT INTO `examination_ledger` VALUES (980, '李奇', '412922197001304514', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE12-1', NULL);
+INSERT INTO `examination_ledger` VALUES (981, '李奇', '412922197001304514', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE12-2', NULL);
+INSERT INTO `examination_ledger` VALUES (982, '徐国镇', '321081197104242430', 'SMAW-FeⅡ-3G-16-Fef3J', 'Q345R', 'δ=16', 'RE13', NULL);
+INSERT INTO `examination_ledger` VALUES (983, '史学武', '320123198006221818', 'SMAW-FeⅡ-3G-16-Fef3J', 'Q345R', 'δ=16', 'RE14', NULL);
+INSERT INTO `examination_ledger` VALUES (984, '杨小双', '320481198510181018', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE15-1', NULL);
+INSERT INTO `examination_ledger` VALUES (985, '杨小双', '320481198510181018', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE15-2', NULL);
+INSERT INTO `examination_ledger` VALUES (986, '陈元华', '512922197104280678', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE16-1', NULL);
+INSERT INTO `examination_ledger` VALUES (987, '陈元华', '512922197104280678', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE16-2', NULL);
+INSERT INTO `examination_ledger` VALUES (988, '姚建坤', '320423197306086234', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE17-1', NULL);
+INSERT INTO `examination_ledger` VALUES (989, '姚建坤', '320423197306086234', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE17-2', NULL);
+INSERT INTO `examination_ledger` VALUES (990, '姚建坤', '320423197306086234', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE17-3', NULL);
+INSERT INTO `examination_ledger` VALUES (991, '彭桥生', '321088198810174331', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE18-1', NULL);
+INSERT INTO `examination_ledger` VALUES (992, '彭桥生', '321088198810174331', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE18-2', NULL);
+INSERT INTO `examination_ledger` VALUES (993, '张传梁', '320706198302101518', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE19-1', NULL);
+INSERT INTO `examination_ledger` VALUES (994, '张传梁', '320706198302101518', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE19-2', NULL);
+INSERT INTO `examination_ledger` VALUES (995, '时贝', '320322199110136890', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE20-1', NULL);
+INSERT INTO `examination_ledger` VALUES (996, '时贝', '320322199110136890', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE20-2', NULL);
+INSERT INTO `examination_ledger` VALUES (997, '燕群群', '320322199002280174', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE21-1', NULL);
+INSERT INTO `examination_ledger` VALUES (998, '燕群群', '320322199002280174', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE21-2', NULL);
+INSERT INTO `examination_ledger` VALUES (999, '吴玉龙', '320322198312257637', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE22-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1000, '吴玉龙', '320322198312257637', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE22-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1001, '孟繁明', '320322199904183613', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE23', NULL);
+INSERT INTO `examination_ledger` VALUES (1002, '张明亮', '320322199903053614', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE24', NULL);
+INSERT INTO `examination_ledger` VALUES (1003, '徐德伟', '32108119910421421X', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'Q345B', 'Φ57×12', 'RE25-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1004, '徐德伟', '32108119910421421X', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'S30408', 'Φ57×12', 'RE25-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1005, '张银川', '320323198310280012', 'SMAW-FeⅡ-2G-12-Fef3J', 'Q345R', 'δ=12', 'RE26-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1006, '张银川', '320323198310280012', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE26-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1007, '张磊', '34222219850207089X', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE27', NULL);
+INSERT INTO `examination_ledger` VALUES (1008, '张勇', '321088198006145273', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE28-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1009, '张勇', '321088198006145273', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE28-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1010, '刘苏宇', '32108819901106275X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE29', NULL);
+INSERT INTO `examination_ledger` VALUES (1011, '杨兵', '321323198405115715', 'SMAW-FeⅡ-6G-12/76-Fef3J', 'Q345B', 'Φ76×12', 'RE30-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1012, '杨兵', '321323198405115715', 'SMAW-FeⅣ-6G-12/76-Fef4J', 'S30408', 'Φ76×12', 'RE30-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1013, '戴建', '321088197612143812', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE31-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1014, '戴建', '321088197612143812', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE31-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1015, '朱立', '321088198709143434', 'GMAW-FeⅡ-3G-12-FefS-11/15', 'Q345R', 'δ=12', 'RE32-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1016, '朱立', '321088198709143434', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE32-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1017, '沈佳佳', '321088198704302731', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE33-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1018, '沈佳佳', '321088198704302731', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE33-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1019, '刘加有', '32072319900110365X', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE34-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1020, '刘加有', '32072319900110365X', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE34-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1021, '朱言升', '342222198506100830', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE35-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1022, '朱言升', '342222198506100830', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE35-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1023, '朱言升', '342222198506100830', 'SMAW-FeⅡ-6GX-3/325-Fef2和FCAW-FeⅡ-6GX(K)-9/325-FefS-11/15', 'Q345B', 'Φ325×12', 'RE35-3', NULL);
+INSERT INTO `examination_ledger` VALUES (1024, '王保超', '341122199109132036', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE36-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1025, '王保超', '341122199109132036', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE36-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1026, '欧永丰', '320830198204201035', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE37-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1027, '欧永丰', '320830198204201035', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE37-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1028, '李昌昌', '320322199110116515', 'GTAW-FeⅡ-6G-4/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-8/57-Fef3J', 'Q345B', 'Φ57×12', 'RE38-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1029, '李昌昌', '320322199110116515', 'GTAW-FeⅣ-6G-4/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-8/57-Fef4J', 'S30408', 'Φ57×12', 'RE38-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1030, '张冲', '321323198202267575', 'GTAW-FeⅡ-6G-3/159-FefS-02/11/12和SMAW-FeⅡ-6G(K)-13/159-Fef3J', 'Q345B', 'Φ159×16', 'RE39-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1031, '张冲', '321323198202267575', 'GTAW-FeⅢ-6G-3/159-FefS-02/10/12和SMAW-FeⅢ-6G(K)-13/159-Fef3J', '12Cr5Mo', 'Φ159×16', 'RE39-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1032, '张冲', '321323198202267575', 'GTAW-FeⅣ-6G-6/57-FefS-02/10/12', 'S30408', 'Φ57×6', 'RE39-3', NULL);
+INSERT INTO `examination_ledger` VALUES (1033, '葛传亮', '320723197111273036', 'SMAW-FeⅡ-3G-12-Fef3J', 'Q345R', 'δ=12', 'RE40', NULL);
+INSERT INTO `examination_ledger` VALUES (1034, '尹正标', '320123196909114811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE41-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1035, '尹正标', '320123196909114811', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE41-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1036, '杨琦辉', '320423197506231811', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE42', NULL);
+INSERT INTO `examination_ledger` VALUES (1037, '偰浩', '320481198804221038', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE43-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1038, '偰浩', '320481198804221038', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE43-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1039, '陈家富', '341122197112274212', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE44-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1040, '陈家富', '341122197112274212', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE44-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1041, '盛文明', '342322197106164211', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE45-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1042, '盛文明', '342322197106164211', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE45-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1043, '陈邦', '320123199009191612', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE46-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1044, '陈邦', '320123199009191612', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE46-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1045, '赵广林', '321088197009121213', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE47-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1046, '赵广林', '321088197009121213', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE47-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1047, '李俊', '321088199110034850', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE48-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1048, '李俊', '321088199110034850', 'GTAW-FeⅣ-6G-3/76-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/76-Fef4J', 'S30408', 'Φ76×12', 'RE48-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1049, '徐兵', '321084197209056537', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE49-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1050, '徐兵', '321084197209056537', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE49-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1051, '张保光', '320321196906101212', 'GTAW-FeⅡ-6G-3/76-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/76-Fef3J', 'Q345B', 'Φ76×12', 'RE50', NULL);
+INSERT INTO `examination_ledger` VALUES (1052, '丁成永', '321321198706283613', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE51-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1053, '丁成永', '321321198706283613', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE51-2', NULL);
+INSERT INTO `examination_ledger` VALUES (1054, '刘波', '320825197801074534', 'GTAW-FeⅡ-6G-3/57-FefS-02/11/12和SMAW-FeⅡ-6G(K)-9/57-Fef3J', 'Q345B', 'Φ57×12', 'RE52-1', NULL);
+INSERT INTO `examination_ledger` VALUES (1055, '刘波', '320825197801074534', 'GTAW-FeⅣ-6G-3/57-FefS-02/10/12和SMAW-FeⅣ-6G(K)-9/57-Fef4J', 'S30408', 'Φ57×12', 'RE52-2', NULL);
+
+-- ----------------------------
+-- Table structure for examination_passed_list
+-- ----------------------------
+DROP TABLE IF EXISTS `examination_passed_list`;
+CREATE TABLE `examination_passed_list`  (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '姓名',
+  `id_card` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '身份证号',
+  `item` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '项目',
+  `serial_number` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '编号',
+  `qualifying_time` datetime NULL DEFAULT NULL COMMENT '日期',
+  `invigilator` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '监考人',
+  `remark` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of examination_passed_list
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for inspection_records
+-- ----------------------------
+DROP TABLE IF EXISTS `inspection_records`;
+CREATE TABLE `inspection_records`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '姓名',
+  `exam_number` int(11) NULL DEFAULT NULL COMMENT '考试编号',
+  `welding_method` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '焊接方法',
+  `degree_of_motorization` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '机动化程度',
+  `instruction_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '指导书编号',
+  `metal_material_category_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '金属材料类别代号',
+  `piece_plate_thickness` double NULL DEFAULT NULL COMMENT '试件板材厚度',
+  `outer_diameter_and_wall_thickness` double NULL DEFAULT NULL COMMENT '试件管材外径与壁厚',
+  `stud_diameter` double NULL DEFAULT NULL COMMENT '螺柱直径',
+  `material_category_code_model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '填充金属材料类别代号、型号',
+  `exam_item_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '考试项目代号',
+  `weld_surface_condition` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '焊缝表面状况',
+  `weld_reinforcement` double NULL DEFAULT NULL COMMENT '焊缝余高',
+  `weld_seam_height_difference` double NULL DEFAULT NULL COMMENT '焊缝余高差',
+  `each_side_wider` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '比坡口每侧增宽',
+  `width_difference` double NULL DEFAULT NULL COMMENT '宽度差',
+  `edge_straightness` double NULL DEFAULT NULL COMMENT '焊缝边缘直线度',
+  `back_weld_reinforcement` double NULL DEFAULT NULL COMMENT '背面焊缝余高',
+  `crack` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '裂纹',
+  `not_fused` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '未熔合',
+  `slag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '夹渣',
+  `undercut` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '咬边',
+  `not_penetrated` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '未焊透',
+  `dimples_back` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '背面凹坑',
+  `stomata` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '气孔',
+  `weld` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '焊瘤',
+  `deformation_angle` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '变形角度',
+  `error_margin` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '错边量',
+  `fillet_weld_concavity_convexity` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '角焊缝凹凸度',
+  `welding_feet` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '焊脚',
+  `butt_unevenness_of_surfacing_weld_bead` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '堆焊焊道对接不平度',
+  `welding_bead_height_difference` double NULL DEFAULT NULL COMMENT '堆焊焊道高度差',
+  `deposit_surfacing_welding` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '堆焊凹下量',
+  `appearance_result` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '外观检查结果',
+  `inspector` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '检验员',
+  `inspection_date` datetime NULL DEFAULT NULL COMMENT '检验日期',
+  `radiographic_quality_level` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '射线透照质量等级',
+  `weld_defect_grade` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '焊缝缺陷等级',
+  `weld_defect_testing_results` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '焊缝缺陷检测结果',
+  `report_number_date` int(11) NULL DEFAULT NULL COMMENT '报告编号与日期',
+  `penetration_detection_methods` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '渗透检测方法',
+  `penetration_testing_results` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '渗透检测结果',
+  `penetration_testing_report_num_date` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '渗透报告编号与日期',
+  `nodestructive_result` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '无损检测结果',
+  `nodestructive_testing_personnel` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '无损检测人员',
+  `no_destructive_date` datetime NULL DEFAULT NULL COMMENT '日期',
+  `no_destructive_person_certificate_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '  无损检测人员证书编号',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of inspection_records
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for macro_commission
+-- ----------------------------
+DROP TABLE IF EXISTS `macro_commission`;
+CREATE TABLE `macro_commission`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `principal_ID` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '姓名',
+  `requester` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '委托单位',
+  `sample_delivery_time` datetime NULL DEFAULT NULL COMMENT '送样时间',
+  `client` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '委托人',
+  `samples_num` int(11) NULL DEFAULT NULL COMMENT '样品数量',
+  `product_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '品名',
+  `report_form` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '报告形式',
+  `drawing` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图面',
+  `according_standard` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '依据标准',
+  `pilot_projects` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '试验项目（宏观委托）',
+  `planned_completion` datetime NULL DEFAULT NULL COMMENT '计划完成日期',
+  `specification` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规格',
+  `inspection_num` int(11) NULL DEFAULT NULL COMMENT '检件编号',
+  `material` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '材质',
+  `receiver` bigint(20) NULL DEFAULT NULL COMMENT '接收人',
+  `receive_date` datetime NULL DEFAULT NULL COMMENT '接收日期',
+  `client_date` bigint(20) NULL DEFAULT NULL COMMENT '委托日期',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 95 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of macro_commission
+-- ----------------------------
+INSERT INTO `macro_commission` VALUES (1, '张正宇', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (2, '张正宇', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (3, '朱恒良', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (4, '朱恒良', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (5, '李会斌', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (6, '李会斌', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (7, '梁志荣', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (8, '梁志荣', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (9, '张淑海', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (10, '王春涛', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (11, '王春超', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (12, '樊其阳', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (13, '樊其阳', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (14, '李德成', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (15, '罗猛', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (16, '罗猛', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (17, '彭明', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (18, '彭明', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (19, '李奇', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (20, '李奇', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (21, '徐国镇', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (22, '史学武', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (23, '杨小双', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (24, '杨小双', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (25, '陈元华', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (26, '陈元华', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (27, '姚建坤', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (28, '姚建坤', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (29, '姚建坤', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (30, '彭桥生', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (31, '彭桥生', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (32, '张传梁', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (33, '张传梁', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (34, '时贝', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (35, '时贝', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (36, '燕群群', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (37, '燕群群', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (38, '吴玉龙', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (39, '吴玉龙', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (40, '孟繁明', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (41, '张明亮', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (42, '徐德伟', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (43, '徐德伟', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (44, '张银川', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (45, '张银川', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (46, '张磊', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (47, '张勇', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (48, '张勇', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (49, '刘苏宇', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (50, '杨兵', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (51, '杨兵', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (52, '戴建', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (53, '戴建', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (54, '朱立', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (55, '朱立', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (56, '沈佳佳', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (57, '沈佳佳', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (58, '刘加有', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (59, '刘加有', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (60, '朱言升', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (61, '朱言升', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (62, '朱言升', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (63, '王保超', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (64, '王保超', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (65, '欧永丰', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (66, '欧永丰', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (67, '李昌昌', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (68, '李昌昌', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (69, '张冲', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (70, '张冲', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (71, '张冲', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (72, '葛传亮', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (73, '尹正标', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (74, '尹正标', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (75, '杨琦辉', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (76, '偰浩', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (77, '偰浩', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (78, '陈家富', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (79, '陈家富', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (80, '盛文明', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (81, '盛文明', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (82, '陈邦', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (83, '陈邦', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (84, '赵广林', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (85, '赵广林', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (86, '李俊', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (87, '李俊', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (88, '徐兵', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (89, '徐兵', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (90, '张保光', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (91, '丁成永', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (92, '丁成永', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (93, '刘波', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `macro_commission` VALUES (94, '刘波', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for non_destructive_testing_order
+-- ----------------------------
+DROP TABLE IF EXISTS `non_destructive_testing_order`;
+CREATE TABLE `non_destructive_testing_order`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `principal_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '委托编号',
+  `project_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '工程名称',
+  `project_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '工程编号',
+  `inspection_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '检件名称',
+  `detection_method` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '检测方法 RT PT',
+  `testing_standards` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '检测标准',
+  `eligible_level` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '合格级别',
+  `total_inspected_items` int(11) NULL DEFAULT NULL COMMENT '检件总量',
+  `detection_ratio` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '检测比例',
+  `test_quantity` int(11) NULL DEFAULT NULL COMMENT '检测数量',
+  `test_material` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '检测材质',
+  `test_specification` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '检测规格',
+  `welding_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '检测方法',
+  `inspection_number` int(11) NULL DEFAULT NULL COMMENT '检测编号',
+  `client` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '委托人',
+  `client_date` datetime NULL DEFAULT NULL COMMENT '委托日期',
+  `receiver` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接收人',
+  `receiver_date` datetime NULL DEFAULT NULL COMMENT '接收日期',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 91 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of non_destructive_testing_order
+-- ----------------------------
+INSERT INTO `non_destructive_testing_order` VALUES (1, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=0.6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (2, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=1.0', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (3, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'GTAW-1G', 'δ=1.0', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (4, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=2', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (5, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (6, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (7, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=10', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (8, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (9, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (10, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'SAW-', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (11, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'EGW-', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (12, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=14', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (13, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'δ=16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (14, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'δ=16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (15, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ8×1.5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (16, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ10×2', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (17, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ10×2', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (18, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ10.3×2.41', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (19, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ10×2.5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (20, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ12×2.5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (21, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ12×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (22, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ14×1', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (23, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ14×2', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (24, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ14×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (25, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ14×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (26, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ16×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (27, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ16×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (28, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ18×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (29, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ18×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (30, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ18×5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (31, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ18×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (32, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ18×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (33, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ19×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (34, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ22×5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (35, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ24×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (36, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ32×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (37, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ32×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (38, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ45×3', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (39, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ48×5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (40, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ57×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (41, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ57×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (42, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ57×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (43, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ60.3×5.54', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (44, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ60.3×5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (45, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ60×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (46, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ60×7', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (47, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ60×7', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (48, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ57×8', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (49, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ60×10', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (50, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ60.3×10', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (51, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ57×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (52, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ57×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (53, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ73×4', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (54, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ73×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (55, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ73×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (56, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ76×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (57, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ76×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (58, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ76×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (59, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ73×16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (60, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ni', 'Φ73×16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (61, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ89×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (62, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ108×8', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (63, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ108×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (64, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ114×6', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (65, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ114.3×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (66, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ159×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (67, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ159×16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (68, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ168×14', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (69, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ273×15', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (70, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ325×12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (71, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ325×16', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (72, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ508×12.7', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (73, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Fe', 'Φ273×25', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (74, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (75, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ15×2.5', NULL, NULL, NULL, '2024-05-30 18:25:01', NULL, '2024-05-30 18:25:01');
+INSERT INTO `non_destructive_testing_order` VALUES (76, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ18×3', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (77, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ57×5', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (78, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ57×6', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (79, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ57×8', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (80, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ57×12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (81, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ60×5', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (82, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-Ti', 'Φ60×12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (83, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-AlⅠ', 'Φ57×5', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (84, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-AlⅤ', 'Φ60.3×10', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (85, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-AlⅤ', 'δ=16', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (86, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-AIⅢ', 'Φ75×15', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (87, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, '-CuⅣ', 'Φ60.3×5.54', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (88, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'CuⅠ', 'Φ73×12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (89, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'GTAW-1G', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+INSERT INTO `non_destructive_testing_order` VALUES (90, 'HCPT23-', NULL, NULL, NULL, 'PT', 'NB/T47013.5-2015', 'I级', 0, '100%', 0, 'GMAW-1G', 'δ=12', NULL, NULL, NULL, '2024-05-30 18:25:02', NULL, '2024-05-30 18:25:02');
+
+-- ----------------------------
+-- Table structure for processing_entrustment
+-- ----------------------------
+DROP TABLE IF EXISTS `processing_entrustment`;
+CREATE TABLE `processing_entrustment`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `project_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '项目名称',
+  `processing_time` datetime NULL DEFAULT NULL COMMENT '加工时间',
+  `test_piece_num` int(11) NULL DEFAULT NULL COMMENT '试件编号',
+  `material` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '材质',
+  `specification` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规格',
+  `one_piece_face_curvature` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '面弯一件',
+  `one_piece_back_bend` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '背弯一件',
+  `side_bend_two_pieces` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '侧弯二件',
+  `four_pieces_macroscopic_metallography` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '宏观金相四件',
+  `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of processing_entrustment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for processing_order
+-- ----------------------------
+DROP TABLE IF EXISTS `processing_order`;
+CREATE TABLE `processing_order`  (
+  `id` int(11) NOT NULL,
+  `project_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '项目名称',
+  `processing_time` datetime NULL DEFAULT NULL COMMENT '加工时间',
+  `commission_content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '委 托 内 容',
+  `test_piece_number` int(11) NULL DEFAULT NULL COMMENT '试件编号',
+  `material` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '材质',
+  `specifications` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规格',
+  `one_piece_of_face_curvature` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '面弯一件',
+  `one_piece_of_back_bend` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '背弯一件',
+  `side_bend_two_pieces` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '侧弯二件',
+  `four_pieces_of_macroscopic_metallography` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '宏观金相四件',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `client` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '委托人',
+  `receiver` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接收人',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of processing_order
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sample_disposal_records
+-- ----------------------------
+DROP TABLE IF EXISTS `sample_disposal_records`;
+CREATE TABLE `sample_disposal_records`  (
+  `id` int(11) NOT NULL,
+  `serial_number` int(11) NULL DEFAULT NULL COMMENT '样品序号',
+  `sample_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '样品名称',
+  `specifications_models` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '规格型号',
+  `number_samples` int(11) NULL DEFAULT NULL COMMENT '样品数量',
+  `disposal_method` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '处置方式',
+  `receiver` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接收人',
+  `date` datetime NULL DEFAULT NULL COMMENT '日期',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sample_disposal_records
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for score_summary
+-- ----------------------------
+DROP TABLE IF EXISTS `score_summary`;
+CREATE TABLE `score_summary`  (
+  `id` bigint(11) NOT NULL,
+  `examination_institution_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `Examination institution qualification` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `certificate_number` int(11) NULL DEFAULT NULL,
+  `serial number` int(11) NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `Educational qualifications` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `id_card` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `homework_items` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `theory_test_time` datetime NULL DEFAULT NULL,
+  `theoretical_scores` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `operation_skills_test_time` datetime NULL DEFAULT NULL,
+  `operational skills scores` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `exam_score_assessment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `employing_unit` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of score_summary
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for specimen
+-- ----------------------------
+DROP TABLE IF EXISTS `specimen`;
+CREATE TABLE `specimen`  (
+  `id` bigint(11) NOT NULL,
+  `material` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `specification` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `warehouse_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `num` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of specimen
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_content
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_content`;
+CREATE TABLE `sys_content`  (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '主键',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '标题',
+  `one_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '单图url',
+  `multiple_img` varchar(500) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '多图url',
+  `keywords` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '关键字',
+  `type` int(11) NULL DEFAULT NULL COMMENT '文章类型',
+  `content` longtext CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '内容',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `create_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '创建人',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '文章管理' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of sys_content
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_dept
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dept`;
+CREATE TABLE `sys_dept`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  `dept_no` varchar(18) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门编号(规则：父级关系编码+自己的编码)',
+  `name` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门名称',
+  `pid` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '父级id',
+  `status` tinyint(4) NULL DEFAULT NULL COMMENT '状态(1:正常；0:弃用)',
+  `relation_code` varchar(3000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '为了维护更深层级关系',
+  `dept_manager_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门经理user_id',
+  `manager_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门经理名称',
+  `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门经理联系电话',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(4) NULL DEFAULT NULL COMMENT '是否删除(1未删除；0已删除)',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统部门' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_dept
+-- ----------------------------
+INSERT INTO `sys_dept` VALUES ('1', 'D000001', '总公司', '0', 1, 'D000001', NULL, '小李', '13888888888', NULL, NULL, 1);
+
+-- ----------------------------
+-- Table structure for sys_dict
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dict`;
+CREATE TABLE `sys_dict`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典名称',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典表' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of sys_dict
+-- ----------------------------
+INSERT INTO `sys_dict` VALUES ('1255790029680242690', 'sex', '性别', '2020-04-30 17:24:09');
+INSERT INTO `sys_dict` VALUES ('1255790029680242691', 'content_keyword', '关键字', '2020-04-30 17:24:09');
+INSERT INTO `sys_dict` VALUES ('1282504369620430849', 'content_type', '文章类型略略略', '2020-07-13 10:37:24');
+
+-- ----------------------------
+-- Table structure for sys_dict_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dict_detail`;
+CREATE TABLE `sys_dict_detail`  (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `label` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典标签',
+  `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典值',
+  `sort` smallint(6) NULL DEFAULT NULL COMMENT '排序',
+  `dict_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典id',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典详情' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of sys_dict_detail
+-- ----------------------------
+INSERT INTO `sys_dict_detail` VALUES ('1255790073535885314', '男', '1', 1, '1255790029680242690', '2020-04-30 17:24:19');
+INSERT INTO `sys_dict_detail` VALUES ('1255790100115189761', '女', '2', 2, '1255790029680242690', '2020-04-30 17:24:25');
+INSERT INTO `sys_dict_detail` VALUES ('1282504475715350530', '诗词', '1', 1, '1282504369620430849', '2020-07-13 10:37:49');
+INSERT INTO `sys_dict_detail` VALUES ('1282504651729317889', '散文', '2', 2, '1282504369620430849', '2020-07-13 10:38:31');
+INSERT INTO `sys_dict_detail` VALUES ('1282846022950842369', '剧本', '3', 3, '1282504369620430849', '2020-07-14 09:15:01');
+INSERT INTO `sys_dict_detail` VALUES ('1282846022950842370', 'java', '1', 1, '1255790029680242691', '2020-07-14 09:15:01');
+INSERT INTO `sys_dict_detail` VALUES ('1282846022950842371', 'mysql', '2', 2, '1255790029680242691', '2020-07-14 09:15:01');
+
+-- ----------------------------
+-- Table structure for sys_files
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_files`;
+CREATE TABLE `sys_files`  (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'URL地址',
+  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件名称',
+  `file_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '文件上传' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of sys_files
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_job
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_job`;
+CREATE TABLE `sys_job`  (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务id',
+  `bean_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
+  `params` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数',
+  `cron_expression` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'cron表达式',
+  `status` tinyint(4) NULL DEFAULT NULL COMMENT '任务状态  0：正常  1：暂停',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of sys_job
+-- ----------------------------
+INSERT INTO `sys_job` VALUES ('1252884495040782337', 'testTask', '1', '0 0 0 L * ? ', 0, '1', '2020-04-22 16:58:35');
+
+-- ----------------------------
+-- Table structure for sys_job_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_job_log`;
+CREATE TABLE `sys_job_log`  (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务日志id',
+  `job_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务id',
+  `bean_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
+  `params` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数',
+  `status` tinyint(4) NOT NULL COMMENT '任务状态    0：成功    1：失败',
+  `error` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '失败信息',
+  `times` int(11) NOT NULL COMMENT '耗时(单位：毫秒)',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `job_id`(`job_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务日志' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of sys_job_log
+-- ----------------------------
+INSERT INTO `sys_job_log` VALUES ('1780057523082346498', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:16:00');
+INSERT INTO `sys_job_log` VALUES ('1780057774660894722', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:17:00');
+INSERT INTO `sys_job_log` VALUES ('1780058026319134722', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:18:00');
+INSERT INTO `sys_job_log` VALUES ('1780058277956403201', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:19:00');
+INSERT INTO `sys_job_log` VALUES ('1780058529631420417', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:20:00');
+INSERT INTO `sys_job_log` VALUES ('1780058781293854721', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:21:00');
+INSERT INTO `sys_job_log` VALUES ('1780059032922734594', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:22:00');
+INSERT INTO `sys_job_log` VALUES ('1780059284580933634', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:23:00');
+INSERT INTO `sys_job_log` VALUES ('1780059536226590722', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:24:00');
+INSERT INTO `sys_job_log` VALUES ('1780059787909996545', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:25:00');
+INSERT INTO `sys_job_log` VALUES ('1780060039559847938', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:26:00');
+INSERT INTO `sys_job_log` VALUES ('1780060291218087938', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:27:00');
+INSERT INTO `sys_job_log` VALUES ('1780060542918270978', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:28:00');
+INSERT INTO `sys_job_log` VALUES ('1780060794517790722', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:29:00');
+INSERT INTO `sys_job_log` VALUES ('1780061046213779458', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:30:00');
+INSERT INTO `sys_job_log` VALUES ('1780061297892990977', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:31:00');
+INSERT INTO `sys_job_log` VALUES ('1780061549500899329', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:32:00');
+INSERT INTO `sys_job_log` VALUES ('1780061801184305153', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:33:00');
+INSERT INTO `sys_job_log` VALUES ('1780062052846739457', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:34:00');
+INSERT INTO `sys_job_log` VALUES ('1780062304496590849', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:35:00');
+INSERT INTO `sys_job_log` VALUES ('1780062556150636546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:36:00');
+INSERT INTO `sys_job_log` VALUES ('1780062807796293633', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:37:00');
+INSERT INTO `sys_job_log` VALUES ('1780063059450339330', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:38:00');
+INSERT INTO `sys_job_log` VALUES ('1780063311125356545', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:39:00');
+INSERT INTO `sys_job_log` VALUES ('1780063562821345282', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:40:00');
+INSERT INTO `sys_job_log` VALUES ('1780063814471196674', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:41:00');
+INSERT INTO `sys_job_log` VALUES ('1780064066108465153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:42:00');
+INSERT INTO `sys_job_log` VALUES ('1780064317783482369', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:43:00');
+INSERT INTO `sys_job_log` VALUES ('1780064569437528066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:44:00');
+INSERT INTO `sys_job_log` VALUES ('1780064821112545281', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:45:00');
+INSERT INTO `sys_job_log` VALUES ('1780065072720453634', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:46:00');
+INSERT INTO `sys_job_log` VALUES ('1780065324412248066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:47:00');
+INSERT INTO `sys_job_log` VALUES ('1780065576053710850', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:48:00');
+INSERT INTO `sys_job_log` VALUES ('1780065827728728066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:49:00');
+INSERT INTO `sys_job_log` VALUES ('1780066079395356673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:50:00');
+INSERT INTO `sys_job_log` VALUES ('1780066331024236546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:51:00');
+INSERT INTO `sys_job_log` VALUES ('1780066582690865153', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:52:00');
+INSERT INTO `sys_job_log` VALUES ('1780066834319745025', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:53:00');
+INSERT INTO `sys_job_log` VALUES ('1780067085994762242', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:54:00');
+INSERT INTO `sys_job_log` VALUES ('1780067337669779458', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:55:00');
+INSERT INTO `sys_job_log` VALUES ('1780067589311242242', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 10:56:00');
+INSERT INTO `sys_job_log` VALUES ('1780067840956899330', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:57:00');
+INSERT INTO `sys_job_log` VALUES ('1780068092623527937', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:58:00');
+INSERT INTO `sys_job_log` VALUES ('1780068344323710978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 10:59:00');
+INSERT INTO `sys_job_log` VALUES ('1780068595952590849', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:00:00');
+INSERT INTO `sys_job_log` VALUES ('1780068847606636546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:01:00');
+INSERT INTO `sys_job_log` VALUES ('1780069099269070850', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:02:00');
+INSERT INTO `sys_job_log` VALUES ('1780069350927310850', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 11:03:00');
+INSERT INTO `sys_job_log` VALUES ('1780069602577162241', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 11:04:00');
+INSERT INTO `sys_job_log` VALUES ('1780069854218625025', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:05:00');
+INSERT INTO `sys_job_log` VALUES ('1780070105931390978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:06:00');
+INSERT INTO `sys_job_log` VALUES ('1780070357539299329', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:07:00');
+INSERT INTO `sys_job_log` VALUES ('1780070609214316546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:08:00');
+INSERT INTO `sys_job_log` VALUES ('1780070860901916673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:09:00');
+INSERT INTO `sys_job_log` VALUES ('1780071112514019329', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:10:00');
+INSERT INTO `sys_job_log` VALUES ('1780071364205813762', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:11:00');
+INSERT INTO `sys_job_log` VALUES ('1780071615859859458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:12:00');
+INSERT INTO `sys_job_log` VALUES ('1780071867501322241', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:13:00');
+INSERT INTO `sys_job_log` VALUES ('1780072119188922370', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:14:00');
+INSERT INTO `sys_job_log` VALUES ('1780072370830385153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:15:00');
+INSERT INTO `sys_job_log` VALUES ('1780072622517985281', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:16:00');
+INSERT INTO `sys_job_log` VALUES ('1780072874172030978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:17:00');
+INSERT INTO `sys_job_log` VALUES ('1780073125826076673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:18:00');
+INSERT INTO `sys_job_log` VALUES ('1780073377475928066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:19:00');
+INSERT INTO `sys_job_log` VALUES ('1780073629146750978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:20:00');
+INSERT INTO `sys_job_log` VALUES ('1780073880758853634', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:21:00');
+INSERT INTO `sys_job_log` VALUES ('1780074132450648065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:22:00');
+INSERT INTO `sys_job_log` VALUES ('1780074384066945025', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:23:00');
+INSERT INTO `sys_job_log` VALUES ('1780074635771322370', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:24:00');
+INSERT INTO `sys_job_log` VALUES ('1780074887416979457', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 11:25:00');
+INSERT INTO `sys_job_log` VALUES ('1780075139083608066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:26:00');
+INSERT INTO `sys_job_log` VALUES ('1780075390750236673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:27:00');
+INSERT INTO `sys_job_log` VALUES ('1780075642404282369', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:28:00');
+INSERT INTO `sys_job_log` VALUES ('1780075894058328066', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 11:29:00');
+INSERT INTO `sys_job_log` VALUES ('1780076145670430721', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:30:00');
+INSERT INTO `sys_job_log` VALUES ('1780076397353836546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:31:00');
+INSERT INTO `sys_job_log` VALUES ('1780076649028853761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:32:00');
+INSERT INTO `sys_job_log` VALUES ('1780076900691288065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:33:00');
+INSERT INTO `sys_job_log` VALUES ('1780077152332750850', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 11:34:00');
+INSERT INTO `sys_job_log` VALUES ('1780077403990990850', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:35:00');
+INSERT INTO `sys_job_log` VALUES ('1780077655645036546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:36:00');
+INSERT INTO `sys_job_log` VALUES ('1780077907320053761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:37:00');
+INSERT INTO `sys_job_log` VALUES ('1780078158969905153', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 11:38:00');
+INSERT INTO `sys_job_log` VALUES ('1780078410632339458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:39:00');
+INSERT INTO `sys_job_log` VALUES ('1780078662277996545', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 11:40:00');
+INSERT INTO `sys_job_log` VALUES ('1780078913932042241', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:41:00');
+INSERT INTO `sys_job_log` VALUES ('1780079165602865154', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:42:00');
+INSERT INTO `sys_job_log` VALUES ('1780079417290465281', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:43:00');
+INSERT INTO `sys_job_log` VALUES ('1780079668927733762', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 11:44:00');
+INSERT INTO `sys_job_log` VALUES ('1780079920577585153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:45:00');
+INSERT INTO `sys_job_log` VALUES ('1780080172219047938', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:46:00');
+INSERT INTO `sys_job_log` VALUES ('1780080423898259458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:47:00');
+INSERT INTO `sys_job_log` VALUES ('1780080675556499457', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:48:00');
+INSERT INTO `sys_job_log` VALUES ('1780080927218933761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:49:00');
+INSERT INTO `sys_job_log` VALUES ('1780081178885562370', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:50:00');
+INSERT INTO `sys_job_log` VALUES ('1780081430531219457', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:51:00');
+INSERT INTO `sys_job_log` VALUES ('1780081682206236673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:52:00');
+INSERT INTO `sys_job_log` VALUES ('1780081933843505154', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 11:53:00');
+INSERT INTO `sys_job_log` VALUES ('1780082185505939457', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:54:00');
+INSERT INTO `sys_job_log` VALUES ('1780082437134819329', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:55:00');
+INSERT INTO `sys_job_log` VALUES ('1780082688822419458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:56:00');
+INSERT INTO `sys_job_log` VALUES ('1780082940484853761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:57:00');
+INSERT INTO `sys_job_log` VALUES ('1780083192109539330', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:58:00');
+INSERT INTO `sys_job_log` VALUES ('1780083443759390722', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 11:59:00');
+INSERT INTO `sys_job_log` VALUES ('1780083695451185153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 12:00:00');
+INSERT INTO `sys_job_log` VALUES ('1780083947109425153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 12:01:00');
+INSERT INTO `sys_job_log` VALUES ('1780084198784442369', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 12:02:00');
+INSERT INTO `sys_job_log` VALUES ('1780084450434293762', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 12:03:00');
+INSERT INTO `sys_job_log` VALUES ('1780084702050590722', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 12:04:00');
+INSERT INTO `sys_job_log` VALUES ('1780084953742385154', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 12:05:00');
+INSERT INTO `sys_job_log` VALUES ('1780085205404819458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 12:06:00');
+INSERT INTO `sys_job_log` VALUES ('1780085457058865153', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 12:07:00');
+INSERT INTO `sys_job_log` VALUES ('1780085708691939329', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 12:08:00');
+INSERT INTO `sys_job_log` VALUES ('1780085960375345153', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 12:09:00');
+INSERT INTO `sys_job_log` VALUES ('1780128490638876673', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 14:58:00');
+INSERT INTO `sys_job_log` VALUES ('1780128742271950850', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 14:59:00');
+INSERT INTO `sys_job_log` VALUES ('1780128993921802242', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:00:00');
+INSERT INTO `sys_job_log` VALUES ('1780129245567459329', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:01:00');
+INSERT INTO `sys_job_log` VALUES ('1780129497225699330', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:02:00');
+INSERT INTO `sys_job_log` VALUES ('1780129748888133634', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:03:00');
+INSERT INTO `sys_job_log` VALUES ('1780130000567345153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:04:00');
+INSERT INTO `sys_job_log` VALUES ('1780130252196225026', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:05:00');
+INSERT INTO `sys_job_log` VALUES ('1780130503875436545', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:06:00');
+INSERT INTO `sys_job_log` VALUES ('1780130755533676545', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:07:00');
+INSERT INTO `sys_job_log` VALUES ('1780131007196110850', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:08:00');
+INSERT INTO `sys_job_log` VALUES ('1780131258866933761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:09:00');
+INSERT INTO `sys_job_log` VALUES ('1780131510512590849', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:10:00');
+INSERT INTO `sys_job_log` VALUES ('1780131762170830850', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:11:00');
+INSERT INTO `sys_job_log` VALUES ('1780132013837459458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:12:00');
+INSERT INTO `sys_job_log` VALUES ('1780132265491505153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:13:00');
+INSERT INTO `sys_job_log` VALUES ('1780132517149745154', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 15:14:00');
+INSERT INTO `sys_job_log` VALUES ('1780132768816373762', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 15:15:00');
+INSERT INTO `sys_job_log` VALUES ('1780133020457836546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:16:00');
+INSERT INTO `sys_job_log` VALUES ('1780133272099299329', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:17:00');
+INSERT INTO `sys_job_log` VALUES ('1780133523786899458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:18:00');
+INSERT INTO `sys_job_log` VALUES ('1780133775415779329', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:19:00');
+INSERT INTO `sys_job_log` VALUES ('1780134027090796545', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:20:00');
+INSERT INTO `sys_job_log` VALUES ('1780134278774202369', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:21:00');
+INSERT INTO `sys_job_log` VALUES ('1780134530403082241', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:22:00');
+INSERT INTO `sys_job_log` VALUES ('1780134782086488065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:23:00');
+INSERT INTO `sys_job_log` VALUES ('1780135033736339458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:24:00');
+INSERT INTO `sys_job_log` VALUES ('1780135285415550977', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:25:00');
+INSERT INTO `sys_job_log` VALUES ('1780135537073790977', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:26:00');
+INSERT INTO `sys_job_log` VALUES ('1780135788727836673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:27:00');
+INSERT INTO `sys_job_log` VALUES ('1780136040339939329', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:28:00');
+INSERT INTO `sys_job_log` VALUES ('1780136292052705282', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:29:00');
+INSERT INTO `sys_job_log` VALUES ('1780136543706750978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:30:00');
+INSERT INTO `sys_job_log` VALUES ('1780136795310465026', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:31:00');
+INSERT INTO `sys_job_log` VALUES ('1780137046977093633', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:32:00');
+INSERT INTO `sys_job_log` VALUES ('1780137298631139329', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:33:00');
+INSERT INTO `sys_job_log` VALUES ('1780137550297767937', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:34:00');
+INSERT INTO `sys_job_log` VALUES ('1780137801985368066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:35:00');
+INSERT INTO `sys_job_log` VALUES ('1780138053643608066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:36:00');
+INSERT INTO `sys_job_log` VALUES ('1780138305297653762', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:37:00');
+INSERT INTO `sys_job_log` VALUES ('1780138556918145025', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:38:00');
+INSERT INTO `sys_job_log` VALUES ('1780138808588967937', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:39:00');
+INSERT INTO `sys_job_log` VALUES ('1780139060251402242', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:40:00');
+INSERT INTO `sys_job_log` VALUES ('1780139311918030850', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:41:00');
+INSERT INTO `sys_job_log` VALUES ('1780139563609825281', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:42:00');
+INSERT INTO `sys_job_log` VALUES ('1780139815247093761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:43:00');
+INSERT INTO `sys_job_log` VALUES ('1780140066888556545', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 15:44:00');
+INSERT INTO `sys_job_log` VALUES ('1780140318563573761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:45:00');
+INSERT INTO `sys_job_log` VALUES ('1780140570217619458', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 15:46:00');
+INSERT INTO `sys_job_log` VALUES ('1780140821854887938', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 15:47:00');
+INSERT INTO `sys_job_log` VALUES ('1780141073529905153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:48:00');
+INSERT INTO `sys_job_log` VALUES ('1780141325192339457', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:49:00');
+INSERT INTO `sys_job_log` VALUES ('1780141576854773761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:50:00');
+INSERT INTO `sys_job_log` VALUES ('1780141828521402370', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 15:51:00');
+INSERT INTO `sys_job_log` VALUES ('1780142080167059458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:52:00');
+INSERT INTO `sys_job_log` VALUES ('1780142331825299457', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:53:00');
+INSERT INTO `sys_job_log` VALUES ('1780142583496122369', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:54:00');
+INSERT INTO `sys_job_log` VALUES ('1780142835108225025', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:55:00');
+INSERT INTO `sys_job_log` VALUES ('1780143086800019458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:56:00');
+INSERT INTO `sys_job_log` VALUES ('1780143338458259458', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 15:57:00');
+INSERT INTO `sys_job_log` VALUES ('1780143590108110849', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:58:00');
+INSERT INTO `sys_job_log` VALUES ('1780143841795710978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 15:59:00');
+INSERT INTO `sys_job_log` VALUES ('1780144093395230722', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:00:00');
+INSERT INTO `sys_job_log` VALUES ('1780144345091219458', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 16:01:00');
+INSERT INTO `sys_job_log` VALUES ('1780144596757848066', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 16:02:00');
+INSERT INTO `sys_job_log` VALUES ('1780144848416088066', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 16:03:00');
+INSERT INTO `sys_job_log` VALUES ('1780145100053356546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:04:00');
+INSERT INTO `sys_job_log` VALUES ('1780145351719985153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:05:00');
+INSERT INTO `sys_job_log` VALUES ('1780145603382419458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:06:00');
+INSERT INTO `sys_job_log` VALUES ('1780145855053242369', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:07:00');
+INSERT INTO `sys_job_log` VALUES ('1780146106694705154', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:08:00');
+INSERT INTO `sys_job_log` VALUES ('1780146358382305281', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:09:00');
+INSERT INTO `sys_job_log` VALUES ('1780146609986019329', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:10:00');
+INSERT INTO `sys_job_log` VALUES ('1780146861677813761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:11:00');
+INSERT INTO `sys_job_log` VALUES ('1780147113340248066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:12:00');
+INSERT INTO `sys_job_log` VALUES ('1780147364994293762', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:13:00');
+INSERT INTO `sys_job_log` VALUES ('1780147616656728066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:14:00');
+INSERT INTO `sys_job_log` VALUES ('1780152398154899458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:33:00');
+INSERT INTO `sys_job_log` VALUES ('1780152649817333762', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:34:00');
+INSERT INTO `sys_job_log` VALUES ('1780152901462990850', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:35:00');
+INSERT INTO `sys_job_log` VALUES ('1780153153138008065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:36:00');
+INSERT INTO `sys_job_log` VALUES ('1780153404775276545', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:37:00');
+INSERT INTO `sys_job_log` VALUES ('1780153656433516545', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:38:00');
+INSERT INTO `sys_job_log` VALUES ('1780153908091756546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:39:00');
+INSERT INTO `sys_job_log` VALUES ('1780154159766773761', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 16:40:00');
+INSERT INTO `sys_job_log` VALUES ('1780154411408236546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:41:00');
+INSERT INTO `sys_job_log` VALUES ('1780154663045505026', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:42:00');
+INSERT INTO `sys_job_log` VALUES ('1780154914724716546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:43:00');
+INSERT INTO `sys_job_log` VALUES ('1780155166370373634', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:44:00');
+INSERT INTO `sys_job_log` VALUES ('1780155418032807938', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:45:00');
+INSERT INTO `sys_job_log` VALUES ('1780155669716213761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:46:00');
+INSERT INTO `sys_job_log` VALUES ('1780155921374453761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:47:00');
+INSERT INTO `sys_job_log` VALUES ('1780156173024305153', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 16:48:00');
+INSERT INTO `sys_job_log` VALUES ('1780156424661573633', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:49:00');
+INSERT INTO `sys_job_log` VALUES ('1780156676353368065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:50:00');
+INSERT INTO `sys_job_log` VALUES ('1780156928011608066', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 16:51:00');
+INSERT INTO `sys_job_log` VALUES ('1780157179640487937', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:52:00');
+INSERT INTO `sys_job_log` VALUES ('1780157431298727937', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:53:00');
+INSERT INTO `sys_job_log` VALUES ('1780157682956967937', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:54:00');
+INSERT INTO `sys_job_log` VALUES ('1780157934648762370', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:55:00');
+INSERT INTO `sys_job_log` VALUES ('1780158186302808066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:56:00');
+INSERT INTO `sys_job_log` VALUES ('1780158437927493633', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:57:00');
+INSERT INTO `sys_job_log` VALUES ('1780158689619288065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:58:00');
+INSERT INTO `sys_job_log` VALUES ('1780158941294305282', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 16:59:00');
+INSERT INTO `sys_job_log` VALUES ('1780159192931573761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:00:00');
+INSERT INTO `sys_job_log` VALUES ('1780159444568842241', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:01:00');
+INSERT INTO `sys_job_log` VALUES ('1780159696235470850', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:02:00');
+INSERT INTO `sys_job_log` VALUES ('1780159947876933634', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:03:00');
+INSERT INTO `sys_job_log` VALUES ('1780160199547756546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:04:00');
+INSERT INTO `sys_job_log` VALUES ('1780160451214385153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:05:00');
+INSERT INTO `sys_job_log` VALUES ('1780160702885208065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:06:00');
+INSERT INTO `sys_job_log` VALUES ('1780160954509893633', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:07:00');
+INSERT INTO `sys_job_log` VALUES ('1780161206197493761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:08:00');
+INSERT INTO `sys_job_log` VALUES ('1780161457859928065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:09:00');
+INSERT INTO `sys_job_log` VALUES ('1780161709509779457', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:10:00');
+INSERT INTO `sys_job_log` VALUES ('1780161961180602370', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:11:00');
+INSERT INTO `sys_job_log` VALUES ('1780162212813676545', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:12:00');
+INSERT INTO `sys_job_log` VALUES ('1780162464463527938', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:13:00');
+INSERT INTO `sys_job_log` VALUES ('1780162716117573634', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:14:00');
+INSERT INTO `sys_job_log` VALUES ('1780162967805173762', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:15:00');
+INSERT INTO `sys_job_log` VALUES ('1780163219475996673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:16:00');
+INSERT INTO `sys_job_log` VALUES ('1780163471104876545', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:17:00');
+INSERT INTO `sys_job_log` VALUES ('1780163722788282370', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:18:00');
+INSERT INTO `sys_job_log` VALUES ('1780163974454910977', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:19:00');
+INSERT INTO `sys_job_log` VALUES ('1780164226092179458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:20:00');
+INSERT INTO `sys_job_log` VALUES ('1780164477750419457', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:21:00');
+INSERT INTO `sys_job_log` VALUES ('1780164729433825282', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:22:00');
+INSERT INTO `sys_job_log` VALUES ('1780164981075288065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:23:00');
+INSERT INTO `sys_job_log` VALUES ('1780165232750305282', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:24:00');
+INSERT INTO `sys_job_log` VALUES ('1780165484354019329', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:25:00');
+INSERT INTO `sys_job_log` VALUES ('1780165736020647937', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:26:00');
+INSERT INTO `sys_job_log` VALUES ('1780165987683082242', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:27:00');
+INSERT INTO `sys_job_log` VALUES ('1780166239341322241', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:28:00');
+INSERT INTO `sys_job_log` VALUES ('1780166490991173634', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:29:00');
+INSERT INTO `sys_job_log` VALUES ('1780166742661996545', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:30:00');
+INSERT INTO `sys_job_log` VALUES ('1780166994353790978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:31:00');
+INSERT INTO `sys_job_log` VALUES ('1780167245986865153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:32:00');
+INSERT INTO `sys_job_log` VALUES ('1780167497649299458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:33:00');
+INSERT INTO `sys_job_log` VALUES ('1780167749294956546', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 17:34:00');
+INSERT INTO `sys_job_log` VALUES ('1780168000982556673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:35:00');
+INSERT INTO `sys_job_log` VALUES ('1780168252594659329', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:36:00');
+INSERT INTO `sys_job_log` VALUES ('1780168504278065153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:37:00');
+INSERT INTO `sys_job_log` VALUES ('1780168755961470978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:38:00');
+INSERT INTO `sys_job_log` VALUES ('1780169007577767938', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:39:00');
+INSERT INTO `sys_job_log` VALUES ('1780169259244396546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:40:00');
+INSERT INTO `sys_job_log` VALUES ('1780169510936190978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:41:00');
+INSERT INTO `sys_job_log` VALUES ('1780169762556682242', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:42:00');
+INSERT INTO `sys_job_log` VALUES ('1780170014198145026', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:43:00');
+INSERT INTO `sys_job_log` VALUES ('1780170265885745154', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:44:00');
+INSERT INTO `sys_job_log` VALUES ('1780170517510430722', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:45:00');
+INSERT INTO `sys_job_log` VALUES ('1780170769202225153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:46:00');
+INSERT INTO `sys_job_log` VALUES ('1780171020864659458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:47:00');
+INSERT INTO `sys_job_log` VALUES ('1780171272518705153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:48:00');
+INSERT INTO `sys_job_log` VALUES ('1780171524176945154', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:49:00');
+INSERT INTO `sys_job_log` VALUES ('1780171775826796546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:50:00');
+INSERT INTO `sys_job_log` VALUES ('1780172027489230849', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:51:00');
+INSERT INTO `sys_job_log` VALUES ('1780172279139082242', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:52:00');
+INSERT INTO `sys_job_log` VALUES ('1780172530814099458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:53:00');
+INSERT INTO `sys_job_log` VALUES ('1780172782472339457', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:54:00');
+INSERT INTO `sys_job_log` VALUES ('1780173034147356673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:55:00');
+INSERT INTO `sys_job_log` VALUES ('1780173285809790978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:56:00');
+INSERT INTO `sys_job_log` VALUES ('1780173537451253761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:57:00');
+INSERT INTO `sys_job_log` VALUES ('1780173789113688066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 17:58:00');
+INSERT INTO `sys_job_log` VALUES ('1780174040755150849', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 17:59:00');
+INSERT INTO `sys_job_log` VALUES ('1780174292421779458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:00:00');
+INSERT INTO `sys_job_log` VALUES ('1780174544084213762', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:01:00');
+INSERT INTO `sys_job_log` VALUES ('1780174795734065153', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 18:02:00');
+INSERT INTO `sys_job_log` VALUES ('1780175047392305153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:03:00');
+INSERT INTO `sys_job_log` VALUES ('1780175299063128066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:04:00');
+INSERT INTO `sys_job_log` VALUES ('1780175550725562369', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:05:00');
+INSERT INTO `sys_job_log` VALUES ('1780175802387996674', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:06:00');
+INSERT INTO `sys_job_log` VALUES ('1780176053995905025', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:07:00');
+INSERT INTO `sys_job_log` VALUES ('1780176305683505153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:08:00');
+INSERT INTO `sys_job_log` VALUES ('1780176557345939458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:09:00');
+INSERT INTO `sys_job_log` VALUES ('1780176808999985154', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:10:00');
+INSERT INTO `sys_job_log` VALUES ('1780177060666613761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:11:00');
+INSERT INTO `sys_job_log` VALUES ('1780177312329048065', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 18:12:00');
+INSERT INTO `sys_job_log` VALUES ('1780177563983093761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:13:00');
+INSERT INTO `sys_job_log` VALUES ('1780177815637139458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:14:00');
+INSERT INTO `sys_job_log` VALUES ('1780178067282796545', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 18:15:00');
+INSERT INTO `sys_job_log` VALUES ('1780178318953619457', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:16:00');
+INSERT INTO `sys_job_log` VALUES ('1780178570611859458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:17:00');
+INSERT INTO `sys_job_log` VALUES ('1780178822257516546', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:18:00');
+INSERT INTO `sys_job_log` VALUES ('1780179073928339458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:19:00');
+INSERT INTO `sys_job_log` VALUES ('1780179325599162370', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:20:00');
+INSERT INTO `sys_job_log` VALUES ('1780179577240625154', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:21:00');
+INSERT INTO `sys_job_log` VALUES ('1780179828903059457', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:22:00');
+INSERT INTO `sys_job_log` VALUES ('1780180080557105153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:23:00');
+INSERT INTO `sys_job_log` VALUES ('1780180332211150849', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:24:00');
+INSERT INTO `sys_job_log` VALUES ('1780180583898750978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:25:00');
+INSERT INTO `sys_job_log` VALUES ('1780180835536019457', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:26:00');
+INSERT INTO `sys_job_log` VALUES ('1780181087211036674', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:27:00');
+INSERT INTO `sys_job_log` VALUES ('1780181338865082369', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:28:00');
+INSERT INTO `sys_job_log` VALUES ('1780181590506545153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:29:00');
+INSERT INTO `sys_job_log` VALUES ('1780181842164785154', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:30:00');
+INSERT INTO `sys_job_log` VALUES ('1780182093810442242', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:31:00');
+INSERT INTO `sys_job_log` VALUES ('1780182345485459458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:32:00');
+INSERT INTO `sys_job_log` VALUES ('1780182597143699457', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:33:00');
+INSERT INTO `sys_job_log` VALUES ('1780182848818716673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:34:00');
+INSERT INTO `sys_job_log` VALUES ('1780183100460179457', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 18:35:00');
+INSERT INTO `sys_job_log` VALUES ('1780183352093253634', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:36:00');
+INSERT INTO `sys_job_log` VALUES ('1780183603789242370', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:37:00');
+INSERT INTO `sys_job_log` VALUES ('1780183855434899457', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:38:00');
+INSERT INTO `sys_job_log` VALUES ('1780184107067973634', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:39:00');
+INSERT INTO `sys_job_log` VALUES ('1780184358742990849', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:40:00');
+INSERT INTO `sys_job_log` VALUES ('1780184610426396673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:41:00');
+INSERT INTO `sys_job_log` VALUES ('1780184862088830977', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:42:00');
+INSERT INTO `sys_job_log` VALUES ('1780185113709322241', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:43:00');
+INSERT INTO `sys_job_log` VALUES ('1780185365392728065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:44:00');
+INSERT INTO `sys_job_log` VALUES ('1780185617038385153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:45:00');
+INSERT INTO `sys_job_log` VALUES ('1780185868679847937', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:46:00');
+INSERT INTO `sys_job_log` VALUES ('1780186120329699330', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:47:00');
+INSERT INTO `sys_job_log` VALUES ('1780186372038270977', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:48:00');
+INSERT INTO `sys_job_log` VALUES ('1780186623692316674', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:49:00');
+INSERT INTO `sys_job_log` VALUES ('1780186875346362370', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:50:00');
+INSERT INTO `sys_job_log` VALUES ('1780187127008796673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:51:00');
+INSERT INTO `sys_job_log` VALUES ('1780187378675425282', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:52:00');
+INSERT INTO `sys_job_log` VALUES ('1780187630329470978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:53:00');
+INSERT INTO `sys_job_log` VALUES ('1780187881987710977', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:54:00');
+INSERT INTO `sys_job_log` VALUES ('1780188133637562370', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:55:00');
+INSERT INTO `sys_job_log` VALUES ('1780188385279025153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:56:00');
+INSERT INTO `sys_job_log` VALUES ('1780188636937265154', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:57:00');
+INSERT INTO `sys_job_log` VALUES ('1780188888612282369', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:58:00');
+INSERT INTO `sys_job_log` VALUES ('1780189140236967937', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 18:59:00');
+INSERT INTO `sys_job_log` VALUES ('1780189391937150978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:00:00');
+INSERT INTO `sys_job_log` VALUES ('1780189643566030850', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:01:00');
+INSERT INTO `sys_job_log` VALUES ('1780189895253630977', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:02:00');
+INSERT INTO `sys_job_log` VALUES ('1780190146853150722', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:03:00');
+INSERT INTO `sys_job_log` VALUES ('1780190398511390722', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:04:00');
+INSERT INTO `sys_job_log` VALUES ('1780190650173825025', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:05:00');
+INSERT INTO `sys_job_log` VALUES ('1780190901832065025', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:06:00');
+INSERT INTO `sys_job_log` VALUES ('1780191153507082241', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:07:00');
+INSERT INTO `sys_job_log` VALUES ('1780191405190488066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:08:00');
+INSERT INTO `sys_job_log` VALUES ('1780191656865505282', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:09:00');
+INSERT INTO `sys_job_log` VALUES ('1780191908523745281', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:10:00');
+INSERT INTO `sys_job_log` VALUES ('1780192160152625153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:11:00');
+INSERT INTO `sys_job_log` VALUES ('1780192411836030977', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:12:00');
+INSERT INTO `sys_job_log` VALUES ('1780192663490076673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:13:00');
+INSERT INTO `sys_job_log` VALUES ('1780192915139928066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:14:00');
+INSERT INTO `sys_job_log` VALUES ('1780193166768807938', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:15:00');
+INSERT INTO `sys_job_log` VALUES ('1780193418431242242', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:16:00');
+INSERT INTO `sys_job_log` VALUES ('1780193670102065153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:17:00');
+INSERT INTO `sys_job_log` VALUES ('1780193921777082370', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:18:00');
+INSERT INTO `sys_job_log` VALUES ('1780194173443710978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:19:00');
+INSERT INTO `sys_job_log` VALUES ('1780194425106145282', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:20:00');
+INSERT INTO `sys_job_log` VALUES ('1780194676755996673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:21:00');
+INSERT INTO `sys_job_log` VALUES ('1780194928414236674', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:22:00');
+INSERT INTO `sys_job_log` VALUES ('1780195180064088066', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:23:00');
+INSERT INTO `sys_job_log` VALUES ('1780195431734910978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:24:00');
+INSERT INTO `sys_job_log` VALUES ('1780195683359596545', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:25:00');
+INSERT INTO `sys_job_log` VALUES ('1780195935009447938', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:26:00');
+INSERT INTO `sys_job_log` VALUES ('1780196186655105026', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:27:00');
+INSERT INTO `sys_job_log` VALUES ('1780196438325927938', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:28:00');
+INSERT INTO `sys_job_log` VALUES ('1780196690013528065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:29:00');
+INSERT INTO `sys_job_log` VALUES ('1780196941638213634', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:30:00');
+INSERT INTO `sys_job_log` VALUES ('1780197193338396674', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:31:00');
+INSERT INTO `sys_job_log` VALUES ('1780197444954693634', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:32:00');
+INSERT INTO `sys_job_log` VALUES ('1780197696663265281', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:33:00');
+INSERT INTO `sys_job_log` VALUES ('1780197948279562242', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:34:00');
+INSERT INTO `sys_job_log` VALUES ('1780198199971356673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:35:00');
+INSERT INTO `sys_job_log` VALUES ('1780198451591847937', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:36:00');
+INSERT INTO `sys_job_log` VALUES ('1780198703283642369', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:37:00');
+INSERT INTO `sys_job_log` VALUES ('1780198954895745025', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:38:00');
+INSERT INTO `sys_job_log` VALUES ('1780199206591733761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:39:00');
+INSERT INTO `sys_job_log` VALUES ('1780199458254168065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:40:00');
+INSERT INTO `sys_job_log` VALUES ('1780199709929185282', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:41:00');
+INSERT INTO `sys_job_log` VALUES ('1780199961541287937', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:42:00');
+INSERT INTO `sys_job_log` VALUES ('1780200213195333634', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:43:00');
+INSERT INTO `sys_job_log` VALUES ('1780200464870350850', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:44:00');
+INSERT INTO `sys_job_log` VALUES ('1780200716541173761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:45:00');
+INSERT INTO `sys_job_log` VALUES ('1780200968174247938', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:46:00');
+INSERT INTO `sys_job_log` VALUES ('1780201219836682241', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:47:00');
+INSERT INTO `sys_job_log` VALUES ('1780201471520088065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:48:00');
+INSERT INTO `sys_job_log` VALUES ('1780201723186716674', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:49:00');
+INSERT INTO `sys_job_log` VALUES ('1780201974840762369', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:50:00');
+INSERT INTO `sys_job_log` VALUES ('1780202226494808065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:51:00');
+INSERT INTO `sys_job_log` VALUES ('1780202478140465154', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:52:00');
+INSERT INTO `sys_job_log` VALUES ('1780202729794510850', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:53:00');
+INSERT INTO `sys_job_log` VALUES ('1780202981486305282', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:54:00');
+INSERT INTO `sys_job_log` VALUES ('1780203233127768065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:55:00');
+INSERT INTO `sys_job_log` VALUES ('1780203484756647938', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:56:00');
+INSERT INTO `sys_job_log` VALUES ('1780203736461025281', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:57:00');
+INSERT INTO `sys_job_log` VALUES ('1780203988106682370', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:58:00');
+INSERT INTO `sys_job_log` VALUES ('1780204239718785025', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 19:59:00');
+INSERT INTO `sys_job_log` VALUES ('1780204491431550978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:00:00');
+INSERT INTO `sys_job_log` VALUES ('1780204743098179586', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:01:00');
+INSERT INTO `sys_job_log` VALUES ('1780204994727059458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:02:00');
+INSERT INTO `sys_job_log` VALUES ('1780205246406270978', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:03:00');
+INSERT INTO `sys_job_log` VALUES ('1780205498051928065', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:04:00');
+INSERT INTO `sys_job_log` VALUES ('1780205749689196545', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:05:00');
+INSERT INTO `sys_job_log` VALUES ('1780206001326465026', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:06:00');
+INSERT INTO `sys_job_log` VALUES ('1780206252997287937', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-04-16 20:07:00');
+INSERT INTO `sys_job_log` VALUES ('1780206504701665281', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:08:00');
+INSERT INTO `sys_job_log` VALUES ('1780206756330545153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:09:00');
+INSERT INTO `sys_job_log` VALUES ('1780207007984590850', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:10:00');
+INSERT INTO `sys_job_log` VALUES ('1780207259651219458', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:11:00');
+INSERT INTO `sys_job_log` VALUES ('1780207511305265154', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:12:00');
+INSERT INTO `sys_job_log` VALUES ('1780207762946727937', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:13:00');
+INSERT INTO `sys_job_log` VALUES ('1780208014613356545', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:14:00');
+INSERT INTO `sys_job_log` VALUES ('1780208266267402241', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:15:00');
+INSERT INTO `sys_job_log` VALUES ('1780208517908865026', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:16:00');
+INSERT INTO `sys_job_log` VALUES ('1780208769625825281', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:17:00');
+INSERT INTO `sys_job_log` VALUES ('1780209021275676673', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:18:00');
+INSERT INTO `sys_job_log` VALUES ('1780209272912945153', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:19:00');
+INSERT INTO `sys_job_log` VALUES ('1780209524587962370', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:20:00');
+INSERT INTO `sys_job_log` VALUES ('1780209776237813761', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:21:00');
+INSERT INTO `sys_job_log` VALUES ('1780210027866693634', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-04-16 20:22:00');
+INSERT INTO `sys_job_log` VALUES ('1787753735323721729', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-07 15:58:00');
+INSERT INTO `sys_job_log` VALUES ('1787753986977767425', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 15:59:00');
+INSERT INTO `sys_job_log` VALUES ('1787754238602452994', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:00:00');
+INSERT INTO `sys_job_log` VALUES ('1787754490269081602', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:01:00');
+INSERT INTO `sys_job_log` VALUES ('1787754741914738689', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-07 16:02:00');
+INSERT INTO `sys_job_log` VALUES ('1787754993556201473', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:03:00');
+INSERT INTO `sys_job_log` VALUES ('1787755245268967425', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:04:00');
+INSERT INTO `sys_job_log` VALUES ('1787755496906235906', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:05:00');
+INSERT INTO `sys_job_log` VALUES ('1787755748530921474', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:06:00');
+INSERT INTO `sys_job_log` VALUES ('1787756000235298817', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:07:00');
+INSERT INTO `sys_job_log` VALUES ('1787756251851595777', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-07 16:08:00');
+INSERT INTO `sys_job_log` VALUES ('1787756503535001601', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:09:00');
+INSERT INTO `sys_job_log` VALUES ('1787756755172270082', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-07 16:10:00');
+INSERT INTO `sys_job_log` VALUES ('1787757006830510081', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-07 16:11:00');
+INSERT INTO `sys_job_log` VALUES ('1787757258492944386', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:12:00');
+INSERT INTO `sys_job_log` VALUES ('1787757510146990081', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:13:00');
+INSERT INTO `sys_job_log` VALUES ('1787757761817812994', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:14:00');
+INSERT INTO `sys_job_log` VALUES ('1787758013463470081', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:15:00');
+INSERT INTO `sys_job_log` VALUES ('1787758265113321473', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:16:00');
+INSERT INTO `sys_job_log` VALUES ('1787758516779950081', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:17:00');
+INSERT INTO `sys_job_log` VALUES ('1787758768446578690', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-07 16:18:00');
+INSERT INTO `sys_job_log` VALUES ('1787759020092235777', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:19:00');
+INSERT INTO `sys_job_log` VALUES ('1787759271763058689', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:20:00');
+INSERT INTO `sys_job_log` VALUES ('1787759523404521473', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:21:00');
+INSERT INTO `sys_job_log` VALUES ('1787759775083732993', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:22:00');
+INSERT INTO `sys_job_log` VALUES ('1787760026725195777', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-07 16:23:00');
+INSERT INTO `sys_job_log` VALUES ('1788501667435237378', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-09 17:30:01');
+INSERT INTO `sys_job_log` VALUES ('1790216462893309953', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:04:00');
+INSERT INTO `sys_job_log` VALUES ('1790216714497024002', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:05:00');
+INSERT INTO `sys_job_log` VALUES ('1790216966125903873', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-14 11:06:00');
+INSERT INTO `sys_job_log` VALUES ('1790217217813504002', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-14 11:07:00');
+INSERT INTO `sys_job_log` VALUES ('1790217469484326914', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:08:00');
+INSERT INTO `sys_job_log` VALUES ('1790217721125789697', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-14 11:09:00');
+INSERT INTO `sys_job_log` VALUES ('1790217972750475266', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-14 11:10:00');
+INSERT INTO `sys_job_log` VALUES ('1790218224467435522', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:11:00');
+INSERT INTO `sys_job_log` VALUES ('1790218476083732481', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:12:00');
+INSERT INTO `sys_job_log` VALUES ('1790218727729389569', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-14 11:13:00');
+INSERT INTO `sys_job_log` VALUES ('1790218979375046658', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:14:00');
+INSERT INTO `sys_job_log` VALUES ('1790219231045869570', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:15:00');
+INSERT INTO `sys_job_log` VALUES ('1790219482758635522', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-14 11:16:00');
+INSERT INTO `sys_job_log` VALUES ('1790219734408486914', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:17:00');
+INSERT INTO `sys_job_log` VALUES ('1790219986016395265', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-14 11:18:00');
+INSERT INTO `sys_job_log` VALUES ('1790220237699801090', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:19:00');
+INSERT INTO `sys_job_log` VALUES ('1790220489374818306', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-14 11:20:00');
+INSERT INTO `sys_job_log` VALUES ('1790220741033058306', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:21:00');
+INSERT INTO `sys_job_log` VALUES ('1790220992691298305', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:22:00');
+INSERT INTO `sys_job_log` VALUES ('1790221244357926914', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:23:00');
+INSERT INTO `sys_job_log` VALUES ('1790221496016166914', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:24:00');
+INSERT INTO `sys_job_log` VALUES ('1790221747636645890', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:25:00');
+INSERT INTO `sys_job_log` VALUES ('1790221999320051714', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:26:00');
+INSERT INTO `sys_job_log` VALUES ('1790222250940542977', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:27:00');
+INSERT INTO `sys_job_log` VALUES ('1790222502607171585', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:28:00');
+INSERT INTO `sys_job_log` VALUES ('1790222754286383105', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:29:00');
+INSERT INTO `sys_job_log` VALUES ('1790224012581789698', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:34:00');
+INSERT INTO `sys_job_log` VALUES ('1790224515915010049', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:36:00');
+INSERT INTO `sys_job_log` VALUES ('1790224767543889921', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:37:00');
+INSERT INTO `sys_job_log` VALUES ('1790225019193741314', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:38:00');
+INSERT INTO `sys_job_log` VALUES ('1790225270872952834', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 11:39:00');
+INSERT INTO `sys_job_log` VALUES ('1790295231939801090', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:17:00');
+INSERT INTO `sys_job_log` VALUES ('1790295483497377793', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:18:00');
+INSERT INTO `sys_job_log` VALUES ('1790295735247835137', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:19:00');
+INSERT INTO `sys_job_log` VALUES ('1790295986838966273', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:20:00');
+INSERT INTO `sys_job_log` VALUES ('1790296238484623361', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:21:00');
+INSERT INTO `sys_job_log` VALUES ('1790296490172223490', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:22:00');
+INSERT INTO `sys_job_log` VALUES ('1790296741822074882', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:23:00');
+INSERT INTO `sys_job_log` VALUES ('1790296993438371841', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:24:00');
+INSERT INTO `sys_job_log` VALUES ('1790297245096611841', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:25:00');
+INSERT INTO `sys_job_log` VALUES ('1790297496780079106', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:26:00');
+INSERT INTO `sys_job_log` VALUES ('1790297748417347585', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:27:00');
+INSERT INTO `sys_job_log` VALUES ('1790298000075587586', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:28:00');
+INSERT INTO `sys_job_log` VALUES ('1790298251754799106', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-14 16:29:00');
+INSERT INTO `sys_job_log` VALUES ('1790298503413039106', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:30:00');
+INSERT INTO `sys_job_log` VALUES ('1790298755071279105', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-14 16:31:00');
+INSERT INTO `sys_job_log` VALUES ('1790299006737907714', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:32:00');
+INSERT INTO `sys_job_log` VALUES ('1790299258396147713', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:33:00');
+INSERT INTO `sys_job_log` VALUES ('1790299510071164929', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:34:00');
+INSERT INTO `sys_job_log` VALUES ('1790299761691656194', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:35:00');
+INSERT INTO `sys_job_log` VALUES ('1790300013349896194', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:36:00');
+INSERT INTO `sys_job_log` VALUES ('1790300264995553282', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:37:00');
+INSERT INTO `sys_job_log` VALUES ('1790300516678959105', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:38:00');
+INSERT INTO `sys_job_log` VALUES ('1790300768366559233', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:39:00');
+INSERT INTO `sys_job_log` VALUES ('1790301020024807425', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:40:00');
+INSERT INTO `sys_job_log` VALUES ('1790301271657881602', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:41:00');
+INSERT INTO `sys_job_log` VALUES ('1790301523341287426', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:42:00');
+INSERT INTO `sys_job_log` VALUES ('1790301774961778690', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:43:00');
+INSERT INTO `sys_job_log` VALUES ('1790302026645184513', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:44:00');
+INSERT INTO `sys_job_log` VALUES ('1790302278282452994', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:45:00');
+INSERT INTO `sys_job_log` VALUES ('1790302529928110082', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:46:00');
+INSERT INTO `sys_job_log` VALUES ('1790302781586350082', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:47:00');
+INSERT INTO `sys_job_log` VALUES ('1790303033244590082', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:48:00');
+INSERT INTO `sys_job_log` VALUES ('1790303284940578817', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:49:00');
+INSERT INTO `sys_job_log` VALUES ('1790303536561070082', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:50:00');
+INSERT INTO `sys_job_log` VALUES ('1790303788231892994', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:51:00');
+INSERT INTO `sys_job_log` VALUES ('1790304039898521601', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:52:00');
+INSERT INTO `sys_job_log` VALUES ('1790304291531595777', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:53:00');
+INSERT INTO `sys_job_log` VALUES ('1790304543206612994', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:54:00');
+INSERT INTO `sys_job_log` VALUES ('1790304794852270081', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:55:00');
+INSERT INTO `sys_job_log` VALUES ('1790305046502121473', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:56:00');
+INSERT INTO `sys_job_log` VALUES ('1790305298206498818', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:57:00');
+INSERT INTO `sys_job_log` VALUES ('1790305549839572993', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:58:00');
+INSERT INTO `sys_job_log` VALUES ('1790305801497812994', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 16:59:00');
+INSERT INTO `sys_job_log` VALUES ('1790306053143470082', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:00:00');
+INSERT INTO `sys_job_log` VALUES ('1790306304835264513', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:01:00');
+INSERT INTO `sys_job_log` VALUES ('1790306556506087426', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:02:00');
+INSERT INTO `sys_job_log` VALUES ('1790306808130772994', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:03:00');
+INSERT INTO `sys_job_log` VALUES ('1790307059780624385', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:04:00');
+INSERT INTO `sys_job_log` VALUES ('1790307311434670082', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:05:00');
+INSERT INTO `sys_job_log` VALUES ('1790307563113881602', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:06:00');
+INSERT INTO `sys_job_log` VALUES ('1790307814784704513', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:07:00');
+INSERT INTO `sys_job_log` VALUES ('1790308066392612865', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:08:00');
+INSERT INTO `sys_job_log` VALUES ('1790308318096990210', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:09:00');
+INSERT INTO `sys_job_log` VALUES ('1790308569738452994', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:10:00');
+INSERT INTO `sys_job_log` VALUES ('1790308821371527169', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:11:00');
+INSERT INTO `sys_job_log` VALUES ('1790309073063321601', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:12:00');
+INSERT INTO `sys_job_log` VALUES ('1790309324704784385', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:13:00');
+INSERT INTO `sys_job_log` VALUES ('1790309576388190210', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:14:00');
+INSERT INTO `sys_job_log` VALUES ('1790309828029652994', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:15:00');
+INSERT INTO `sys_job_log` VALUES ('1790310079687892994', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:16:00');
+INSERT INTO `sys_job_log` VALUES ('1790310331375493122', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:17:00');
+INSERT INTO `sys_job_log` VALUES ('1790310582991790081', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:18:00');
+INSERT INTO `sys_job_log` VALUES ('1790310834641641473', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:19:00');
+INSERT INTO `sys_job_log` VALUES ('1790311086350213121', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:20:00');
+INSERT INTO `sys_job_log` VALUES ('1790311337949732866', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:21:00');
+INSERT INTO `sys_job_log` VALUES ('1790311589633138689', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:22:00');
+INSERT INTO `sys_job_log` VALUES ('1790311841324933122', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:23:00');
+INSERT INTO `sys_job_log` VALUES ('1790312092983173121', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:24:00');
+INSERT INTO `sys_job_log` VALUES ('1790312344641413121', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:25:00');
+INSERT INTO `sys_job_log` VALUES ('1790312596253515778', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:26:00');
+INSERT INTO `sys_job_log` VALUES ('1790312847928532994', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:27:00');
+INSERT INTO `sys_job_log` VALUES ('1790313099599355906', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:28:00');
+INSERT INTO `sys_job_log` VALUES ('1790313351282761730', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:29:00');
+INSERT INTO `sys_job_log` VALUES ('1790313602920030209', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:30:00');
+INSERT INTO `sys_job_log` VALUES ('1790313854561492993', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:31:00');
+INSERT INTO `sys_job_log` VALUES ('1790314106240704513', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:32:00');
+INSERT INTO `sys_job_log` VALUES ('1790314357857001474', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:33:00');
+INSERT INTO `sys_job_log` VALUES ('1790314609565573122', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:34:00');
+INSERT INTO `sys_job_log` VALUES ('1790314861177675778', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:35:00');
+INSERT INTO `sys_job_log` VALUES ('1790315112831721473', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:36:00');
+INSERT INTO `sys_job_log` VALUES ('1790315364527710210', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:37:00');
+INSERT INTO `sys_job_log` VALUES ('1790315616164978690', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:38:00');
+INSERT INTO `sys_job_log` VALUES ('1790315867819024385', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:39:00');
+INSERT INTO `sys_job_log` VALUES ('1790316119494041601', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:40:00');
+INSERT INTO `sys_job_log` VALUES ('1790316371139698690', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:41:00');
+INSERT INTO `sys_job_log` VALUES ('1790316622806327298', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:42:00');
+INSERT INTO `sys_job_log` VALUES ('1790316874456178689', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:43:00');
+INSERT INTO `sys_job_log` VALUES ('1790317126106030081', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:44:00');
+INSERT INTO `sys_job_log` VALUES ('1790317377772658690', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:45:00');
+INSERT INTO `sys_job_log` VALUES ('1790317629460258817', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:46:00');
+INSERT INTO `sys_job_log` VALUES ('1790317881080750082', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:47:00');
+INSERT INTO `sys_job_log` VALUES ('1790318132726407170', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:48:00');
+INSERT INTO `sys_job_log` VALUES ('1790318384443367425', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:49:00');
+INSERT INTO `sys_job_log` VALUES ('1790318636089024513', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:50:00');
+INSERT INTO `sys_job_log` VALUES ('1790318887743070209', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:51:00');
+INSERT INTO `sys_job_log` VALUES ('1790319139392921601', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:52:00');
+INSERT INTO `sys_job_log` VALUES ('1790319391051161602', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:53:00');
+INSERT INTO `sys_job_log` VALUES ('1790319642692624385', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:54:00');
+INSERT INTO `sys_job_log` VALUES ('1790319894363447297', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:55:00');
+INSERT INTO `sys_job_log` VALUES ('1790320146004910081', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:56:00');
+INSERT INTO `sys_job_log` VALUES ('1790320397667344386', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:57:00');
+INSERT INTO `sys_job_log` VALUES ('1790320649367527425', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:58:00');
+INSERT INTO `sys_job_log` VALUES ('1790320901013184514', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 17:59:00');
+INSERT INTO `sys_job_log` VALUES ('1790321152654647297', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:00:00');
+INSERT INTO `sys_job_log` VALUES ('1790321404308692994', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:01:00');
+INSERT INTO `sys_job_log` VALUES ('1790321655987904513', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:02:00');
+INSERT INTO `sys_job_log` VALUES ('1790321907646144514', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:03:00');
+INSERT INTO `sys_job_log` VALUES ('1790322159291801602', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:04:00');
+INSERT INTO `sys_job_log` VALUES ('1790322410933264386', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:05:00');
+INSERT INTO `sys_job_log` VALUES ('1790327444098064385', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:25:00');
+INSERT INTO `sys_job_log` VALUES ('1790327695735332866', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:26:00');
+INSERT INTO `sys_job_log` VALUES ('1790327947406143490', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:27:00');
+INSERT INTO `sys_job_log` VALUES ('1790328199081160705', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:28:00');
+INSERT INTO `sys_job_log` VALUES ('1790328450739400705', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:29:00');
+INSERT INTO `sys_job_log` VALUES ('1790328702427000834', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:30:00');
+INSERT INTO `sys_job_log` VALUES ('1790328954030714881', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:31:00');
+INSERT INTO `sys_job_log` VALUES ('1790329205697343490', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:32:00');
+INSERT INTO `sys_job_log` VALUES ('1790329457359777793', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:33:00');
+INSERT INTO `sys_job_log` VALUES ('1790329709059960834', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:34:00');
+INSERT INTO `sys_job_log` VALUES ('1790329960697229314', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:35:00');
+INSERT INTO `sys_job_log` VALUES ('1790330212347080705', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:36:00');
+INSERT INTO `sys_job_log` VALUES ('1790330464026292225', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:37:00');
+INSERT INTO `sys_job_log` VALUES ('1790330715663560705', '1252884495040782337', 'testTask', '1', 0, NULL, 0, '2024-05-14 18:38:00');
+INSERT INTO `sys_job_log` VALUES ('1790330967300829186', '1252884495040782337', 'testTask', '1', 0, NULL, 1, '2024-05-14 18:39:00');
+
+-- ----------------------------
+-- Table structure for sys_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_log`;
+CREATE TABLE `sys_log`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `user_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户id',
+  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名',
+  `operation` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户操作',
+  `time` int(11) NULL DEFAULT NULL COMMENT '响应时间',
+  `method` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求方法',
+  `params` varchar(5000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求参数',
+  `ip` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'IP地址',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_log
+-- ----------------------------
+INSERT INTO `sys_log` VALUES ('1780058747458404353', '1', 'admin', '机构管理-树型组织列表', 16, 'com.company.project.controller.DeptController.getTree()', '[null]', '172.25.80.1', '2024-04-16 10:20:52');
+INSERT INTO `sys_log` VALUES ('1780058747584233473', '1', 'admin', '用户管理-分页获取用户列表', 53, 'com.company.project.controller.UserController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.80.1', '2024-04-16 10:20:52');
+INSERT INTO `sys_log` VALUES ('1780058751002591234', '1', 'admin', '角色管理-分页获取角色信息', 7, 'com.company.project.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.80.1', '2024-04-16 10:20:53');
+INSERT INTO `sys_log` VALUES ('1780058757734449153', '1', 'admin', '机构管理-获取所有组织机构', 4, 'com.company.project.controller.DeptController.getDeptAll()', NULL, '172.25.80.1', '2024-04-16 10:20:54');
+INSERT INTO `sys_log` VALUES ('1780059268063764481', '1', 'admin', '机构管理-获取所有组织机构', 6, 'com.company.project.controller.DeptController.getDeptAll()', NULL, '172.25.80.1', '2024-04-16 10:22:56');
+INSERT INTO `sys_log` VALUES ('1787754458690166785', '1', 'admin', '机构管理-获取所有组织机构', 6, 'com.company.project.controller.DeptController.getDeptAll()', NULL, '172.25.240.1', '2024-05-07 16:00:52');
+INSERT INTO `sys_log` VALUES ('1790223905773838338', '1', 'admin', '角色管理-分页获取角色信息', 38, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.28.224.1', '2024-05-14 11:33:35');
+INSERT INTO `sys_log` VALUES ('1790223907384451074', '1', 'admin', '机构管理-树型组织列表', 13, 'cn.edu.lut.welder.controller.DeptController.getTree()', '[null]', '172.28.224.1', '2024-05-14 11:33:35');
+INSERT INTO `sys_log` VALUES ('1790223907518668801', '1', 'admin', '用户管理-分页获取用户列表', 20, 'cn.edu.lut.welder.controller.UserController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.28.224.1', '2024-05-14 11:33:35');
+INSERT INTO `sys_log` VALUES ('1790223914246332418', '1', 'admin', '机构管理-获取所有组织机构', 4, 'cn.edu.lut.welder.controller.DeptController.getDeptAll()', NULL, '172.28.224.1', '2024-05-14 11:33:37');
+INSERT INTO `sys_log` VALUES ('1790225031290114049', '1', 'admin', '菜单权限管理-获取所有菜单权限', 88, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.224.1', '2024-05-14 11:38:03');
+INSERT INTO `sys_log` VALUES ('1790225173447659521', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 66, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790221597925158914\"]', '172.28.224.1', '2024-05-14 11:38:37');
+INSERT INTO `sys_log` VALUES ('1790225202493214722', '1', 'admin', '菜单权限管理-更新菜单权限', 16, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1790221597925158914\",\"name\":\"examinationLedger\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"21\",\"pidName\":\"其他\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715657923705,\"url\":\"index/examinationLedger\"}]', '172.28.224.1', '2024-05-14 11:38:44');
+INSERT INTO `sys_log` VALUES ('1790225202891673602', '1', 'admin', '菜单权限管理-获取所有菜单权限', 71, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.224.1', '2024-05-14 11:38:44');
+INSERT INTO `sys_log` VALUES ('1790225240728489986', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 62, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790221597925158914\"]', '172.28.224.1', '2024-05-14 11:38:53');
+INSERT INTO `sys_log` VALUES ('1790295840948490242', '1', 'admin', '菜单权限管理-获取所有菜单权限', 87, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.31.224.1', '2024-05-14 16:19:25');
+INSERT INTO `sys_log` VALUES ('1790296000768249857', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 71, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790221597925158914\"]', '172.31.224.1', '2024-05-14 16:20:03');
+INSERT INTO `sys_log` VALUES ('1790296102043914241', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 79, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.31.224.1', '2024-05-14 16:20:27');
+INSERT INTO `sys_log` VALUES ('1790296429132517379', '1', 'admin', '菜单权限管理-新增菜单权限', 4, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1715674905469,\"deleted\":1,\"icon\":\"layui-icon-home\",\"id\":\"1790296429132517378\",\"name\":\"台账管理\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"0\",\"pidName\":\"默认顶级菜单\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1715674905469,\"url\":\"\"}]', '172.31.224.1', '2024-05-14 16:21:45');
+INSERT INTO `sys_log` VALUES ('1790296429589696514', '1', 'admin', '菜单权限管理-获取所有菜单权限', 80, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.31.224.1', '2024-05-14 16:21:46');
+INSERT INTO `sys_log` VALUES ('1790296464146567169', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 53, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790221597925158914\"]', '172.31.224.1', '2024-05-14 16:21:54');
+INSERT INTO `sys_log` VALUES ('1790296586561523713', '1', 'admin', '菜单权限管理-更新菜单权限', 14, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1790221597925158914\",\"name\":\"examinationLedger\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1790296429132517378\",\"pidName\":\"台账管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715674942981,\"url\":\"index/examinationLedger\"}]', '172.31.224.1', '2024-05-14 16:22:23');
+INSERT INTO `sys_log` VALUES ('1790296586821570561', '1', 'admin', '菜单权限管理-获取所有菜单权限', 54, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.31.224.1', '2024-05-14 16:22:23');
+INSERT INTO `sys_log` VALUES ('1790297104071528450', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 50, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790221597925158914\"]', '172.31.224.1', '2024-05-14 16:24:26');
+INSERT INTO `sys_log` VALUES ('1790297162535931906', '1', 'admin', '菜单权限管理-更新菜单权限', 8, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1790221597925158914\",\"name\":\"examinationLedger\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1790296429132517378\",\"pidName\":\"台账管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715675080309,\"url\":\"index/examinationLedger\"}]', '172.31.224.1', '2024-05-14 16:24:40');
+INSERT INTO `sys_log` VALUES ('1790297162728869890', '1', 'admin', '菜单权限管理-获取所有菜单权限', 46, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.31.224.1', '2024-05-14 16:24:40');
+INSERT INTO `sys_log` VALUES ('1790297285785554946', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 43, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790221597925158914\"]', '172.31.224.1', '2024-05-14 16:25:10');
+INSERT INTO `sys_log` VALUES ('1790297351992643585', '1', 'admin', '菜单权限管理-更新菜单权限', 4, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1790221597925158914\",\"name\":\"考试台账管理\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1790296429132517378\",\"pidName\":\"台账管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715675125491,\"url\":\"index/examinationLedger\"}]', '172.31.224.1', '2024-05-14 16:25:25');
+INSERT INTO `sys_log` VALUES ('1790297352189775873', '1', 'admin', '菜单权限管理-获取所有菜单权限', 41, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.31.224.1', '2024-05-14 16:25:26');
+INSERT INTO `sys_log` VALUES ('1790297374084042754', NULL, NULL, '用户管理-退出', 1, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.31.224.1', '2024-05-14 16:25:31');
+INSERT INTO `sys_log` VALUES ('1790297472310509569', '1', 'admin', '菜单权限管理-获取所有菜单权限', 102, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.31.224.1', '2024-05-14 16:25:54');
+INSERT INTO `sys_log` VALUES ('1790297484885032961', '1', 'admin', '角色管理-分页获取角色信息', 37, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 16:25:57');
+INSERT INTO `sys_log` VALUES ('1790297497514082305', '1', 'admin', '机构管理-树型组织列表', 12, 'cn.edu.lut.welder.controller.DeptController.getTree()', '[null]', '172.31.224.1', '2024-05-14 16:26:00');
+INSERT INTO `sys_log` VALUES ('1790297497581191169', '1', 'admin', '用户管理-分页获取用户列表', 12, 'cn.edu.lut.welder.controller.UserController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 16:26:00');
+INSERT INTO `sys_log` VALUES ('1790297503432245249', '1', 'admin', '机构管理-获取所有组织机构', 4, 'cn.edu.lut.welder.controller.DeptController.getDeptAll()', NULL, '172.31.224.1', '2024-05-14 16:26:02');
+INSERT INTO `sys_log` VALUES ('1790297513603432449', '1', 'admin', '机构管理-树型组织列表', 3, 'cn.edu.lut.welder.controller.DeptController.getTree()', '[null]', '172.31.224.1', '2024-05-14 16:26:04');
+INSERT INTO `sys_log` VALUES ('1790297513670541314', '1', 'admin', '用户管理-分页获取用户列表', 7, 'cn.edu.lut.welder.controller.UserController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 16:26:04');
+INSERT INTO `sys_log` VALUES ('1790297526966484993', '1', 'admin', '机构管理-获取所有组织机构', 3, 'cn.edu.lut.welder.controller.DeptController.getDeptAll()', NULL, '172.31.224.1', '2024-05-14 16:26:07');
+INSERT INTO `sys_log` VALUES ('1790297537980727297', '1', 'admin', '角色管理-分页获取角色信息', 6, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 16:26:10');
+INSERT INTO `sys_log` VALUES ('1790297548713951234', '1', 'admin', '角色管理-查询角色详情', 84, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.31.224.1', '2024-05-14 16:26:12');
+INSERT INTO `sys_log` VALUES ('1790297573217075201', '1', 'admin', '角色管理-绑定角色部门信息', 10, 'cn.edu.lut.welder.controller.RoleController.bindDept()', '[{\"dataScope\":1,\"id\":\"1\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 16:26:18');
+INSERT INTO `sys_log` VALUES ('1790297573284184065', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 16:26:18');
+INSERT INTO `sys_log` VALUES ('1790297602082275330', '1', 'admin', '菜单权限管理-获取所有菜单权限', 54, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.31.224.1', '2024-05-14 16:26:25');
+INSERT INTO `sys_log` VALUES ('1790297669279219714', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 16:26:41');
+INSERT INTO `sys_log` VALUES ('1790297678435385345', '1', 'admin', '角色管理-查询角色详情', 52, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.31.224.1', '2024-05-14 16:26:43');
+INSERT INTO `sys_log` VALUES ('1790297684429045762', '1', 'admin', '角色管理-分页获取角色信息', 3, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 16:26:45');
+INSERT INTO `sys_log` VALUES ('1790297689290244098', '1', 'admin', '角色管理-查询角色详情', 55, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.31.224.1', '2024-05-14 16:26:46');
+INSERT INTO `sys_log` VALUES ('1790297725201874946', '1', 'admin', '角色管理-更新角色信息', 40, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1715675214436}]', '172.31.224.1', '2024-05-14 16:26:54');
+INSERT INTO `sys_log` VALUES ('1790297725268983809', '1', 'admin', '角色管理-分页获取角色信息', 3, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 16:26:54');
+INSERT INTO `sys_log` VALUES ('1790297739487674369', NULL, NULL, '用户管理-退出', 1, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.31.224.1', '2024-05-14 16:26:58');
+INSERT INTO `sys_log` VALUES ('1790307401259884546', '1', 'admin', '菜单权限管理-获取所有菜单权限', 88, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.31.224.1', '2024-05-14 17:05:21');
+INSERT INTO `sys_log` VALUES ('1790307443257450497', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 61, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.31.224.1', '2024-05-14 17:05:31');
+INSERT INTO `sys_log` VALUES ('1790327851167838210', '1', 'admin', '菜单权限管理-获取所有菜单权限', 88, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.31.224.1', '2024-05-14 18:26:37');
+INSERT INTO `sys_log` VALUES ('1790327908327813121', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 67, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.31.224.1', '2024-05-14 18:26:51');
+INSERT INTO `sys_log` VALUES ('1790327938111565825', '1', 'admin', '菜单权限管理-获取所有菜单权限', 66, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.31.224.1', '2024-05-14 18:26:58');
+INSERT INTO `sys_log` VALUES ('1790327999323238401', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 54, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.31.224.1', '2024-05-14 18:27:12');
+INSERT INTO `sys_log` VALUES ('1790328183071502338', '1', 'admin', '菜单权限管理-新增菜单权限', 9, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1715682476180,\"deleted\":1,\"icon\":\"\",\"id\":\"1790328183004393474\",\"name\":\"导入excel数据\",\"orderNum\":100,\"perms\":\"examinationLedger:import_Data\",\"pid\":\"1790221597925158914\",\"pidName\":\"考试台账管理\",\"status\":1,\"target\":\"_self\",\"type\":3,\"updateTime\":1715682476180,\"url\":\"examinationLedger/import_excel\"}]', '172.31.224.1', '2024-05-14 18:27:56');
+INSERT INTO `sys_log` VALUES ('1790328183268634626', '1', 'admin', '菜单权限管理-获取所有菜单权限', 47, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.31.224.1', '2024-05-14 18:27:56');
+INSERT INTO `sys_log` VALUES ('1790328258157932545', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 52, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790328183004393474\"]', '172.31.224.1', '2024-05-14 18:28:14');
+INSERT INTO `sys_log` VALUES ('1790328285211193345', '1', 'admin', '菜单权限管理-更新菜单权限', 13, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1790328183004393474\",\"name\":\"导入数据\",\"orderNum\":100,\"perms\":\"examinationLedger:import_Data\",\"pid\":\"1790221597925158914\",\"pidName\":\"考试台账管理\",\"status\":1,\"target\":\"_self\",\"type\":3,\"updateTime\":1715682500544,\"url\":\"examinationLedger/import_excel\"}]', '172.31.224.1', '2024-05-14 18:28:21');
+INSERT INTO `sys_log` VALUES ('1790328285475434498', '1', 'admin', '菜单权限管理-获取所有菜单权限', 46, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.31.224.1', '2024-05-14 18:28:21');
+INSERT INTO `sys_log` VALUES ('1790328426664095746', '1', 'admin', '机构管理-获取所有组织机构', 4, 'cn.edu.lut.welder.controller.DeptController.getDeptAll()', NULL, '172.31.224.1', '2024-05-14 18:28:54');
+INSERT INTO `sys_log` VALUES ('1790328432997494785', '1', 'admin', '机构管理-树型组织列表', 9, 'cn.edu.lut.welder.controller.DeptController.getTree()', '[null]', '172.31.224.1', '2024-05-14 18:28:56');
+INSERT INTO `sys_log` VALUES ('1790328433064603650', '1', 'admin', '用户管理-分页获取用户列表', 16, 'cn.edu.lut.welder.controller.UserController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 18:28:56');
+INSERT INTO `sys_log` VALUES ('1790328440241057793', '1', 'admin', '角色管理-分页获取角色信息', 9, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 18:28:58');
+INSERT INTO `sys_log` VALUES ('1790328447413317634', '1', 'admin', '角色管理-查询角色详情', 60, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.31.224.1', '2024-05-14 18:28:59');
+INSERT INTO `sys_log` VALUES ('1790328456410099713', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 18:29:01');
+INSERT INTO `sys_log` VALUES ('1790328461304852481', '1', 'admin', '机构管理-树型组织列表', 1, 'cn.edu.lut.welder.controller.DeptController.getTree()', '[null]', '172.31.224.1', '2024-05-14 18:29:03');
+INSERT INTO `sys_log` VALUES ('1790328461367767042', '1', 'admin', '用户管理-分页获取用户列表', 8, 'cn.edu.lut.welder.controller.UserController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 18:29:03');
+INSERT INTO `sys_log` VALUES ('1790328475221553154', '1', 'admin', '机构管理-获取所有组织机构', 2, 'cn.edu.lut.welder.controller.DeptController.getDeptAll()', NULL, '172.31.224.1', '2024-05-14 18:29:06');
+INSERT INTO `sys_log` VALUES ('1790328483933122561', '1', 'admin', '机构管理-树型组织列表', 10, 'cn.edu.lut.welder.controller.DeptController.getTree()', '[\"1\"]', '172.31.224.1', '2024-05-14 18:29:08');
+INSERT INTO `sys_log` VALUES ('1790328494884450305', '1', 'admin', '菜单权限管理-获取所有菜单权限', 42, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.31.224.1', '2024-05-14 18:29:11');
+INSERT INTO `sys_log` VALUES ('1790328501431758849', '1', 'admin', '角色管理-分页获取角色信息', 2, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 18:29:12');
+INSERT INTO `sys_log` VALUES ('1790328511972044802', '1', 'admin', '角色管理-查询角色详情', 46, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.31.224.1', '2024-05-14 18:29:15');
+INSERT INTO `sys_log` VALUES ('1790328534348656642', '1', 'admin', '角色管理-更新角色信息', 35, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1715682559921}]', '172.31.224.1', '2024-05-14 18:29:20');
+INSERT INTO `sys_log` VALUES ('1790328534478680066', '1', 'admin', '角色管理-分页获取角色信息', 3, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.31.224.1', '2024-05-14 18:29:20');
+INSERT INTO `sys_log` VALUES ('1790328595468054530', NULL, NULL, '用户管理-退出', 1, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.31.224.1', '2024-05-14 18:29:35');
+INSERT INTO `sys_log` VALUES ('1790354509066919937', NULL, NULL, '用户管理-退出', 8, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.30.96.1', '2024-05-14 20:12:33');
+INSERT INTO `sys_log` VALUES ('1790359767012790273', '1', 'admin', '机构管理-树型组织列表', 20, 'cn.edu.lut.welder.controller.DeptController.getTree()', '[null]', '172.30.96.1', '2024-05-14 20:33:26');
+INSERT INTO `sys_log` VALUES ('1790359767277031426', '1', 'admin', '用户管理-分页获取用户列表', 103, 'cn.edu.lut.welder.controller.UserController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.30.96.1', '2024-05-14 20:33:26');
+INSERT INTO `sys_log` VALUES ('1790359771848822785', '1', 'admin', '角色管理-分页获取角色信息', 25, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.30.96.1', '2024-05-14 20:33:28');
+INSERT INTO `sys_log` VALUES ('1790361213141696514', '1', 'admin', '机构管理-获取所有组织机构', 16, 'cn.edu.lut.welder.controller.DeptController.getDeptAll()', NULL, '172.30.96.1', '2024-05-14 20:39:11');
+INSERT INTO `sys_log` VALUES ('1790659630653722625', '1', 'admin', '菜单权限管理-获取所有菜单权限', 75, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:24:59');
+INSERT INTO `sys_log` VALUES ('1790659647875534849', '1', 'admin', '菜单权限管理-获取所有菜单权限', 53, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:25:04');
+INSERT INTO `sys_log` VALUES ('1790659660039016449', '1', 'admin', '菜单权限管理-获取所有菜单权限', 63, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:25:06');
+INSERT INTO `sys_log` VALUES ('1790659738959040513', '1', 'admin', '菜单权限管理-删除菜单权限', 17, 'cn.edu.lut.welder.controller.PermissionController.deleted()', '[\"1790657146417815558\"]', '172.25.112.1', '2024-05-15 16:25:25');
+INSERT INTO `sys_log` VALUES ('1790659739156172802', '1', 'admin', '菜单权限管理-获取所有菜单权限', 39, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:25:25');
+INSERT INTO `sys_log` VALUES ('1790659769346772994', '1', 'admin', '菜单权限管理-删除菜单权限', 11, 'cn.edu.lut.welder.controller.PermissionController.deleted()', '[\"1790657146417815555\"]', '172.25.112.1', '2024-05-15 16:25:33');
+INSERT INTO `sys_log` VALUES ('1790659769606819842', '1', 'admin', '菜单权限管理-获取所有菜单权限', 42, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:25:33');
+INSERT INTO `sys_log` VALUES ('1790659816570441729', '1', 'admin', '菜单权限管理-删除菜单权限', 11, 'cn.edu.lut.welder.controller.PermissionController.deleted()', '[\"1790657146417815557\"]', '172.25.112.1', '2024-05-15 16:25:44');
+INSERT INTO `sys_log` VALUES ('1790659816771768321', '1', 'admin', '菜单权限管理-获取所有菜单权限', 35, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:25:44');
+INSERT INTO `sys_log` VALUES ('1790659839576199170', '1', 'admin', '菜单权限管理-删除菜单权限', 11, 'cn.edu.lut.welder.controller.PermissionController.deleted()', '[\"1790657146417815556\"]', '172.25.112.1', '2024-05-15 16:25:49');
+INSERT INTO `sys_log` VALUES ('1790659839777525762', '1', 'admin', '菜单权限管理-获取所有菜单权限', 32, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:25:49');
+INSERT INTO `sys_log` VALUES ('1790659865752850434', '1', 'admin', '菜单权限管理-删除菜单权限', 11, 'cn.edu.lut.welder.controller.PermissionController.deleted()', '[\"1790657146417815554\"]', '172.25.112.1', '2024-05-15 16:25:56');
+INSERT INTO `sys_log` VALUES ('1790659865954177026', '1', 'admin', '菜单权限管理-获取所有菜单权限', 30, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:25:56');
+INSERT INTO `sys_log` VALUES ('1790659903522557954', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 28, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790221597925158918\"]', '172.25.112.1', '2024-05-15 16:26:05');
+INSERT INTO `sys_log` VALUES ('1790659941153853441', '1', 'admin', '菜单权限管理-更新菜单权限', 8, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1790221597925158918\",\"name\":\"列表\",\"orderNum\":100,\"perms\":\"examinationLedger:list\",\"pid\":\"1790221597925158914\",\"pidName\":\"考试台账管理\",\"status\":1,\"type\":3,\"updateTime\":1715761573474,\"url\":\"examinationLedger/listByPage\"}]', '172.25.112.1', '2024-05-15 16:26:13');
+INSERT INTO `sys_log` VALUES ('1790659941288071170', '1', 'admin', '菜单权限管理-获取所有菜单权限', 28, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:26:14');
+INSERT INTO `sys_log` VALUES ('1790664129434857473', '1', 'admin', '菜单权限管理-获取所有菜单权限', 67, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:42:52');
+INSERT INTO `sys_log` VALUES ('1790664139329220609', '1', 'admin', '角色管理-分页获取角色信息', 13, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 16:42:54');
+INSERT INTO `sys_log` VALUES ('1790664157901598721', '1', 'admin', '角色管理-查询角色详情', 74, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.25.112.1', '2024-05-15 16:42:59');
+INSERT INTO `sys_log` VALUES ('1790666553742544897', '1', 'admin', '菜单权限管理-获取所有菜单权限', 78, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:52:30');
+INSERT INTO `sys_log` VALUES ('1790666595354234881', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 61, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790665164387758081\"]', '172.25.112.1', '2024-05-15 16:52:40');
+INSERT INTO `sys_log` VALUES ('1790666686613901313', '1', 'admin', '菜单权限管理-更新菜单权限', 13, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1790665164387758081\",\"name\":\"流转卡\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"0\",\"pidName\":\"默认顶级菜单\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1715763181711,\"url\":\"index/circulationCard\"}]', '172.25.112.1', '2024-05-15 16:53:02');
+INSERT INTO `sys_log` VALUES ('1790666686878142465', '1', 'admin', '菜单权限管理-获取所有菜单权限', 50, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:53:02');
+INSERT INTO `sys_log` VALUES ('1790666751147462657', '1', 'admin', '菜单权限管理-获取所有菜单权限', 47, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:53:17');
+INSERT INTO `sys_log` VALUES ('1790666786006323202', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 43, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790665164387758081\"]', '172.25.112.1', '2024-05-15 16:53:25');
+INSERT INTO `sys_log` VALUES ('1790666886338269185', '1', 'admin', '菜单权限管理-更新菜单权限', 8, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-file\",\"id\":\"1790665164387758081\",\"name\":\"流转卡\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"0\",\"pidName\":\"\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1715763229331,\"url\":\"index/circulationCard\"}]', '172.25.112.1', '2024-05-15 16:53:49');
+INSERT INTO `sys_log` VALUES ('1790666886539595778', '1', 'admin', '菜单权限管理-获取所有菜单权限', 39, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:53:49');
+INSERT INTO `sys_log` VALUES ('1790666933515800577', '1', 'admin', '菜单权限管理-获取所有菜单权限', 43, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:54:01');
+INSERT INTO `sys_log` VALUES ('1790666941556281346', '1', 'admin', '机构管理-树型组织列表', 9, 'cn.edu.lut.welder.controller.DeptController.getTree()', '[null]', '172.25.112.1', '2024-05-15 16:54:03');
+INSERT INTO `sys_log` VALUES ('1790666941690499073', '1', 'admin', '用户管理-分页获取用户列表', 34, 'cn.edu.lut.welder.controller.UserController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 16:54:03');
+INSERT INTO `sys_log` VALUES ('1790666948736929794', '1', 'admin', '角色管理-分页获取角色信息', 23, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 16:54:04');
+INSERT INTO `sys_log` VALUES ('1790666954390851586', '1', 'admin', '角色管理-查询角色详情', 55, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.25.112.1', '2024-05-15 16:54:06');
+INSERT INTO `sys_log` VALUES ('1790667008220549121', NULL, NULL, '用户管理-退出', 2, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.25.112.1', '2024-05-15 16:54:18');
+INSERT INTO `sys_log` VALUES ('1790667132602634242', '1', 'admin', '菜单权限管理-获取所有菜单权限', 35, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:54:48');
+INSERT INTO `sys_log` VALUES ('1790667229428142082', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 37, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.25.112.1', '2024-05-15 16:55:11');
+INSERT INTO `sys_log` VALUES ('1790667306716581889', '1', 'admin', '菜单权限管理-新增菜单权限', 8, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1715763329566,\"deleted\":1,\"icon\":\"\",\"id\":\"1790667306649473026\",\"name\":\"流转卡管理\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"0\",\"pidName\":\"默认顶级菜单\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1715763329566,\"url\":\"\"}]', '172.25.112.1', '2024-05-15 16:55:30');
+INSERT INTO `sys_log` VALUES ('1790667306913714177', '1', 'admin', '菜单权限管理-获取所有菜单权限', 31, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:55:30');
+INSERT INTO `sys_log` VALUES ('1790667347732680706', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 33, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790665164387758081\"]', '172.25.112.1', '2024-05-15 16:55:39');
+INSERT INTO `sys_log` VALUES ('1790667466255323137', '1', 'admin', '菜单权限管理-更新菜单权限', 7, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-home\",\"id\":\"1790665164387758081\",\"name\":\"流转卡\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1790667306649473026\",\"pidName\":\"流转卡管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715763367607,\"url\":\"index/circulationCard\"}]', '172.25.112.1', '2024-05-15 16:56:08');
+INSERT INTO `sys_log` VALUES ('1790667466456649730', '1', 'admin', '菜单权限管理-获取所有菜单权限', 29, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:56:08');
+INSERT INTO `sys_log` VALUES ('1790667499784589314', '1', 'admin', '菜单权限管理-获取所有菜单权限', 29, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:56:16');
+INSERT INTO `sys_log` VALUES ('1790667540792299521', '1', 'admin', '角色管理-分页获取角色信息', 3, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 16:56:25');
+INSERT INTO `sys_log` VALUES ('1790667545825464322', '1', 'admin', '角色管理-查询角色详情', 33, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.25.112.1', '2024-05-15 16:56:27');
+INSERT INTO `sys_log` VALUES ('1790667604361170945', '1', 'admin', '菜单权限管理-获取所有菜单权限', 32, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:56:41');
+INSERT INTO `sys_log` VALUES ('1790667812516024321', NULL, NULL, '用户管理-退出', 4, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.25.112.1', '2024-05-15 16:57:30');
+INSERT INTO `sys_log` VALUES ('1790667851036512258', '1', 'admin', '角色管理-分页获取角色信息', 31, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 16:57:39');
+INSERT INTO `sys_log` VALUES ('1790667858401710082', '1', 'admin', '角色管理-查询角色详情', 85, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.25.112.1', '2024-05-15 16:57:41');
+INSERT INTO `sys_log` VALUES ('1790667865586552834', '1', 'admin', '角色管理-分页获取角色信息', 5, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 16:57:43');
+INSERT INTO `sys_log` VALUES ('1790667870040903682', '1', 'admin', '角色管理-查询角色详情', 58, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.25.112.1', '2024-05-15 16:57:44');
+INSERT INTO `sys_log` VALUES ('1790667925598654465', '1', 'admin', '菜单权限管理-获取所有菜单权限', 62, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:57:57');
+INSERT INTO `sys_log` VALUES ('1790667956112216065', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 56, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790667306649473026\"]', '172.25.112.1', '2024-05-15 16:58:04');
+INSERT INTO `sys_log` VALUES ('1790668058277072898', '1', 'admin', '菜单权限管理-更新菜单权限', 11, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-home\",\"id\":\"1790667306649473026\",\"name\":\"流转卡管理\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"0\",\"pidName\":\"默认顶级菜单\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1715763508750,\"url\":\"\"}]', '172.25.112.1', '2024-05-15 16:58:29');
+INSERT INTO `sys_log` VALUES ('1790668058478399490', '1', 'admin', '菜单权限管理-获取所有菜单权限', 42, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:58:29');
+INSERT INTO `sys_log` VALUES ('1790668117211238401', '1', 'admin', '菜单权限管理-获取所有菜单权限', 39, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:58:43');
+INSERT INTO `sys_log` VALUES ('1790668161301762049', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 46, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790667306649473026\"]', '172.25.112.1', '2024-05-15 16:58:53');
+INSERT INTO `sys_log` VALUES ('1790668236040065025', '1', 'admin', '菜单权限管理-更新菜单权限', 10, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-home\",\"id\":\"1790667306649473026\",\"name\":\"流转卡管理\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"1790296429132517378\",\"pidName\":\"台账管理\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1715763551129,\"url\":\"\"}]', '172.25.112.1', '2024-05-15 16:59:11');
+INSERT INTO `sys_log` VALUES ('1790668236237197314', '1', 'admin', '菜单权限管理-获取所有菜单权限', 36, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:59:11');
+INSERT INTO `sys_log` VALUES ('1790668266163556353', '1', 'admin', '菜单权限管理-获取所有菜单权限', 33, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:59:18');
+INSERT INTO `sys_log` VALUES ('1790668288863129602', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 33, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790667306649473026\"]', '172.25.112.1', '2024-05-15 16:59:24');
+INSERT INTO `sys_log` VALUES ('1790668333285003266', '1', 'admin', '菜单权限管理-更新菜单权限', 7, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-home\",\"id\":\"1790667306649473026\",\"name\":\"流转卡管理\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"0\",\"pidName\":\"默认顶级菜单\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1715763574327,\"url\":\"\"}]', '172.25.112.1', '2024-05-15 16:59:34');
+INSERT INTO `sys_log` VALUES ('1790668333482135553', '1', 'admin', '菜单权限管理-获取所有菜单权限', 30, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 16:59:34');
+INSERT INTO `sys_log` VALUES ('1790668604551700481', NULL, NULL, '用户管理-退出', 4, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.25.112.1', '2024-05-15 17:00:39');
+INSERT INTO `sys_log` VALUES ('1790668673451532289', '1', 'admin', '角色管理-分页获取角色信息', 37, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:00:55');
+INSERT INTO `sys_log` VALUES ('1790668677553561602', '1', 'admin', '机构管理-树型组织列表', 10, 'cn.edu.lut.welder.controller.DeptController.getTree()', '[null]', '172.25.112.1', '2024-05-15 17:00:56');
+INSERT INTO `sys_log` VALUES ('1790668677553561603', '1', 'admin', '用户管理-分页获取用户列表', 8, 'cn.edu.lut.welder.controller.UserController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:00:56');
+INSERT INTO `sys_log` VALUES ('1790668684369305602', '1', 'admin', '机构管理-获取所有组织机构', 6, 'cn.edu.lut.welder.controller.DeptController.getDeptAll()', NULL, '172.25.112.1', '2024-05-15 17:00:58');
+INSERT INTO `sys_log` VALUES ('1790668692585947138', '1', 'admin', '菜单权限管理-获取所有菜单权限', 82, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:01:00');
+INSERT INTO `sys_log` VALUES ('1790668726161350658', '1', 'admin', '角色管理-分页获取角色信息', 5, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:01:08');
+INSERT INTO `sys_log` VALUES ('1790668734080196609', '1', 'admin', '角色管理-查询角色详情', 67, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.25.112.1', '2024-05-15 17:01:10');
+INSERT INTO `sys_log` VALUES ('1790668739922862081', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:01:11');
+INSERT INTO `sys_log` VALUES ('1790668745841025025', '1', 'admin', '角色管理-查询角色详情', 52, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.25.112.1', '2024-05-15 17:01:13');
+INSERT INTO `sys_log` VALUES ('1790668806155116546', '1', 'admin', '菜单权限管理-获取所有菜单权限', 41, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:01:27');
+INSERT INTO `sys_log` VALUES ('1790668855937310722', '1', 'admin', '菜单权限管理-删除菜单权限', 24, 'cn.edu.lut.welder.controller.PermissionController.deleted()', '[\"1790665164387758085\"]', '172.25.112.1', '2024-05-15 17:01:39');
+INSERT INTO `sys_log` VALUES ('1790668856138637313', '1', 'admin', '菜单权限管理-获取所有菜单权限', 39, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:01:39');
+INSERT INTO `sys_log` VALUES ('1790668884202725377', '1', 'admin', '菜单权限管理-删除菜单权限', 14, 'cn.edu.lut.welder.controller.PermissionController.deleted()', '[\"1790665164387758084\"]', '172.25.112.1', '2024-05-15 17:01:46');
+INSERT INTO `sys_log` VALUES ('1790668884399857666', '1', 'admin', '菜单权限管理-获取所有菜单权限', 36, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:01:46');
+INSERT INTO `sys_log` VALUES ('1790668914317828097', '1', 'admin', '菜单权限管理-删除菜单权限', 14, 'cn.edu.lut.welder.controller.PermissionController.deleted()', '[\"1790665164387758083\"]', '172.25.112.1', '2024-05-15 17:01:53');
+INSERT INTO `sys_log` VALUES ('1790668914514960385', '1', 'admin', '菜单权限管理-获取所有菜单权限', 32, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:01:53');
+INSERT INTO `sys_log` VALUES ('1790668943388549122', '1', 'admin', '菜单权限管理-删除菜单权限', 8, 'cn.edu.lut.welder.controller.PermissionController.deleted()', '[\"1790665164387758082\"]', '172.25.112.1', '2024-05-15 17:02:00');
+INSERT INTO `sys_log` VALUES ('1790668943585681409', '1', 'admin', '菜单权限管理-获取所有菜单权限', 33, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:02:00');
+INSERT INTO `sys_log` VALUES ('1790668979090464769', '1', 'admin', '菜单权限管理-删除菜单权限', 12, 'cn.edu.lut.welder.controller.PermissionController.deleted()', '[\"1790665164387758081\"]', '172.25.112.1', '2024-05-15 17:02:08');
+INSERT INTO `sys_log` VALUES ('1790668979287597057', '1', 'admin', '菜单权限管理-获取所有菜单权限', 29, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:02:08');
+INSERT INTO `sys_log` VALUES ('1790669046354518017', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 31, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790667306649473026\"]', '172.25.112.1', '2024-05-15 17:02:24');
+INSERT INTO `sys_log` VALUES ('1790669094152806402', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 28, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"51\"]', '172.25.112.1', '2024-05-15 17:02:36');
+INSERT INTO `sys_log` VALUES ('1790669142299222018', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 28, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790667306649473026\"]', '172.25.112.1', '2024-05-15 17:02:47');
+INSERT INTO `sys_log` VALUES ('1790669260486320130', '1', 'admin', '菜单权限管理-更新菜单权限', 9, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1790667306649473026\",\"name\":\"流转卡管理\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"0\",\"pidName\":\"\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1715763795385,\"url\":\"\"}]', '172.25.112.1', '2024-05-15 17:03:15');
+INSERT INTO `sys_log` VALUES ('1790669260683452418', '1', 'admin', '菜单权限管理-获取所有菜单权限', 26, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:03:15');
+INSERT INTO `sys_log` VALUES ('1790669283475300353', '1', 'admin', '菜单权限管理-获取所有菜单权限', 27, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:03:21');
+INSERT INTO `sys_log` VALUES ('1790669316006322178', '1', 'admin', '菜单权限管理-删除菜单权限', 9, 'cn.edu.lut.welder.controller.PermissionController.deleted()', '[\"1790667306649473026\"]', '172.25.112.1', '2024-05-15 17:03:29');
+INSERT INTO `sys_log` VALUES ('1790669316140539906', '1', 'admin', '菜单权限管理-获取所有菜单权限', 25, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:03:29');
+INSERT INTO `sys_log` VALUES ('1790669323065335810', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 26, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.25.112.1', '2024-05-15 17:03:30');
+INSERT INTO `sys_log` VALUES ('1790669456553254914', '1', 'admin', '菜单权限管理-新增菜单权限', 8, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1715763842128,\"deleted\":1,\"icon\":\"\",\"id\":\"1790669456553254913\",\"name\":\"流转卡管理\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"0\",\"pidName\":\"默认顶级菜单\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1715763842128,\"url\":\"\"}]', '172.25.112.1', '2024-05-15 17:04:02');
+INSERT INTO `sys_log` VALUES ('1790669456687472642', '1', 'admin', '菜单权限管理-获取所有菜单权限', 27, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:04:02');
+INSERT INTO `sys_log` VALUES ('1790669560890761217', '1', 'admin', '菜单权限管理-获取所有菜单权限', 29, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:04:27');
+INSERT INTO `sys_log` VALUES ('1790669564871155713', '1', 'admin', '角色管理-分页获取角色信息', 2, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:04:28');
+INSERT INTO `sys_log` VALUES ('1790669572366376962', '1', 'admin', '角色管理-查询角色详情', 29, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.25.112.1', '2024-05-15 17:04:30');
+INSERT INTO `sys_log` VALUES ('1790669608575803393', '1', 'admin', '角色管理-更新角色信息', 29, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1715763878348}]', '172.25.112.1', '2024-05-15 17:04:38');
+INSERT INTO `sys_log` VALUES ('1790669608642912257', '1', 'admin', '角色管理-分页获取角色信息', 3, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:04:38');
+INSERT INTO `sys_log` VALUES ('1790669958099738626', '1', 'admin', '菜单权限管理-获取所有菜单权限', 28, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:06:02');
+INSERT INTO `sys_log` VALUES ('1790669983559163905', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 28, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790669773055434753\"]', '172.25.112.1', '2024-05-15 17:06:08');
+INSERT INTO `sys_log` VALUES ('1790670065415200770', '1', 'admin', '菜单权限管理-更新菜单权限', 7, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1790669773055434753\",\"name\":\"流转卡\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1790669456553254913\",\"pidName\":\"流转卡管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715763987298,\"url\":\"index/circulationCard\"}]', '172.25.112.1', '2024-05-15 17:06:27');
+INSERT INTO `sys_log` VALUES ('1790670065616527362', '1', 'admin', '菜单权限管理-获取所有菜单权限', 27, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:06:27');
+INSERT INTO `sys_log` VALUES ('1790670629616168961', '1', 'admin', '菜单权限管理-获取所有菜单权限', 86, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:08:42');
+INSERT INTO `sys_log` VALUES ('1790670655973175298', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 57, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790669456553254913\"]', '172.25.112.1', '2024-05-15 17:08:48');
+INSERT INTO `sys_log` VALUES ('1790670710641733633', '1', 'admin', '菜单权限管理-更新菜单权限', 12, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-home\",\"id\":\"1790669456553254913\",\"name\":\"流转卡管理\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"0\",\"pidName\":\"\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1715764141126,\"url\":\"\"}]', '172.25.112.1', '2024-05-15 17:09:01');
+INSERT INTO `sys_log` VALUES ('1790670710910169089', '1', 'admin', '菜单权限管理-获取所有菜单权限', 50, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:09:01');
+INSERT INTO `sys_log` VALUES ('1790670886420819970', '1', 'admin', '菜单权限管理-获取所有菜单权限', 49, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:09:43');
+INSERT INTO `sys_log` VALUES ('1790670977915387905', '1', 'admin', '角色管理-分页获取角色信息', 32, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:10:05');
+INSERT INTO `sys_log` VALUES ('1790670983288291329', '1', 'admin', '角色管理-查询角色详情', 100, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.25.112.1', '2024-05-15 17:10:06');
+INSERT INTO `sys_log` VALUES ('1790671024098869249', NULL, NULL, '用户管理-退出', 4, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.25.112.1', '2024-05-15 17:10:16');
+INSERT INTO `sys_log` VALUES ('1790671223089233922', '1', 'admin', '菜单权限管理-获取所有菜单权限', 56, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:11:03');
+INSERT INTO `sys_log` VALUES ('1790671252243841026', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 48, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790221597925158914\"]', '172.25.112.1', '2024-05-15 17:11:10');
+INSERT INTO `sys_log` VALUES ('1790671290974044161', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 42, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790221597925158914\"]', '172.25.112.1', '2024-05-15 17:11:20');
+INSERT INTO `sys_log` VALUES ('1790671348977074178', '1', 'admin', '菜单权限管理-更新菜单权限', 11, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-home\",\"id\":\"1790221597925158914\",\"name\":\"考试台账管理\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1790296429132517378\",\"pidName\":\"台账管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715764293317,\"url\":\"index/examinationLedger\"}]', '172.25.112.1', '2024-05-15 17:11:33');
+INSERT INTO `sys_log` VALUES ('1790671349245509633', '1', 'admin', '菜单权限管理-获取所有菜单权限', 41, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:11:33');
+INSERT INTO `sys_log` VALUES ('1790671426819162113', '1', 'admin', '菜单权限管理-获取所有菜单权限', 37, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:11:52');
+INSERT INTO `sys_log` VALUES ('1790671486202118145', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 39, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790669773055434757\"]', '172.25.112.1', '2024-05-15 17:12:06');
+INSERT INTO `sys_log` VALUES ('1790671515964899329', '1', 'admin', '菜单权限管理-更新菜单权限', 3, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1790669773055434757\",\"name\":\"列表\",\"orderNum\":100,\"perms\":\"circulationCard:list\",\"pid\":\"1790669773055434753\",\"pidName\":\"流转卡\",\"status\":1,\"type\":3,\"updateTime\":1715764333134,\"url\":\"circulationCard/listByPage\"}]', '172.25.112.1', '2024-05-15 17:12:13');
+INSERT INTO `sys_log` VALUES ('1790671516166225922', '1', 'admin', '菜单权限管理-获取所有菜单权限', 35, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:12:13');
+INSERT INTO `sys_log` VALUES ('1790672157643079681', '1', 'admin', '菜单权限管理-获取所有菜单权限', 46, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:14:46');
+INSERT INTO `sys_log` VALUES ('1790672974651523074', '1', 'admin', '菜单权限管理-获取所有菜单权限', 89, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:18:01');
+INSERT INTO `sys_log` VALUES ('1790672981408546818', '1', 'admin', '角色管理-分页获取角色信息', 33, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:18:03');
+INSERT INTO `sys_log` VALUES ('1790672990694735874', '1', 'admin', '角色管理-查询角色详情', 80, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.25.112.1', '2024-05-15 17:18:05');
+INSERT INTO `sys_log` VALUES ('1790673003864850434', '1', 'admin', '角色管理-分页获取角色信息', 3, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:18:08');
+INSERT INTO `sys_log` VALUES ('1790673017194348545', '1', 'admin', '菜单权限管理-获取所有菜单权限', 52, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:18:11');
+INSERT INTO `sys_log` VALUES ('1790673024542769154', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:18:13');
+INSERT INTO `sys_log` VALUES ('1790673030167330817', '1', 'admin', '角色管理-查询角色详情', 50, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.25.112.1', '2024-05-15 17:18:14');
+INSERT INTO `sys_log` VALUES ('1790673071145680898', '1', 'admin', '机构管理-树型组织列表', 3, 'cn.edu.lut.welder.controller.DeptController.getTree()', '[null]', '172.25.112.1', '2024-05-15 17:18:24');
+INSERT INTO `sys_log` VALUES ('1790673071212789761', '1', 'admin', '用户管理-分页获取用户列表', 8, 'cn.edu.lut.welder.controller.UserController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:18:24');
+INSERT INTO `sys_log` VALUES ('1790673080188600321', '1', 'admin', '机构管理-获取所有组织机构', 2, 'cn.edu.lut.welder.controller.DeptController.getDeptAll()', NULL, '172.25.112.1', '2024-05-15 17:18:26');
+INSERT INTO `sys_log` VALUES ('1790673087562186754', '1', 'admin', '菜单权限管理-获取所有菜单权限', 53, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:18:28');
+INSERT INTO `sys_log` VALUES ('1790673138640420866', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 39, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790669773055434753\"]', '172.25.112.1', '2024-05-15 17:18:40');
+INSERT INTO `sys_log` VALUES ('1790673519869100034', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 41, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790296429132517378\"]', '172.25.112.1', '2024-05-15 17:20:11');
+INSERT INTO `sys_log` VALUES ('1790673566300045314', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 33, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790221597925158914\"]', '172.25.112.1', '2024-05-15 17:20:22');
+INSERT INTO `sys_log` VALUES ('1790673594817118210', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 32, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790669773055434753\"]', '172.25.112.1', '2024-05-15 17:20:29');
+INSERT INTO `sys_log` VALUES ('1790673732511924226', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 30, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790221597925158914\"]', '172.25.112.1', '2024-05-15 17:21:02');
+INSERT INTO `sys_log` VALUES ('1790673750719397889', '1', 'admin', '菜单权限管理-更新菜单权限', 11, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-home\",\"id\":\"1790221597925158914\",\"name\":\"考试台账管理\",\"orderNum\":100,\"perms\":\"\",\"pid\":\"1790296429132517378\",\"pidName\":\"台账管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715764865941,\"url\":\"index/examinationLedger\"}]', '172.25.112.1', '2024-05-15 17:21:06');
+INSERT INTO `sys_log` VALUES ('1790673750920724482', '1', 'admin', '菜单权限管理-获取所有菜单权限', 28, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:21:06');
+INSERT INTO `sys_log` VALUES ('1790674436966252546', '1', 'admin', '菜单权限管理-获取所有菜单权限', 31, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:23:50');
+INSERT INTO `sys_log` VALUES ('1790674467458842626', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 29, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"51\"]', '172.25.112.1', '2024-05-15 17:23:57');
+INSERT INTO `sys_log` VALUES ('1790674499000008706', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 28, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.25.112.1', '2024-05-15 17:24:04');
+INSERT INTO `sys_log` VALUES ('1790674640377413634', '1', 'admin', '菜单权限管理-新增菜单权限', 3, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1715765078049,\"deleted\":1,\"icon\":\"\",\"id\":\"1790674640377413633\",\"name\":\"流转卡\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"1790296429132517378\",\"pidName\":\"台账管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715765078049,\"url\":\"/index/circulationCard\"}]', '172.25.112.1', '2024-05-15 17:24:38');
+INSERT INTO `sys_log` VALUES ('1790674640507437058', '1', 'admin', '菜单权限管理-获取所有菜单权限', 30, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:24:38');
+INSERT INTO `sys_log` VALUES ('1790674681938771969', '1', 'admin', '菜单权限管理-获取所有菜单权限', 28, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:24:48');
+INSERT INTO `sys_log` VALUES ('1790674708450967554', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 29, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790674640377413633\"]', '172.25.112.1', '2024-05-15 17:24:54');
+INSERT INTO `sys_log` VALUES ('1790674772074364929', '1', 'admin', '菜单权限管理-更新菜单权限', 7, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1790674640377413633\",\"name\":\"流转卡\",\"orderNum\":100,\"perms\":\"\",\"pid\":\"1790296429132517378\",\"pidName\":\"台账管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715765109443,\"url\":\"index/circulationCard\"}]', '172.25.112.1', '2024-05-15 17:25:09');
+INSERT INTO `sys_log` VALUES ('1790674772204388353', '1', 'admin', '菜单权限管理-获取所有菜单权限', 28, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:25:09');
+INSERT INTO `sys_log` VALUES ('1790674811001700354', NULL, NULL, '用户管理-退出', 1, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.25.112.1', '2024-05-15 17:25:19');
+INSERT INTO `sys_log` VALUES ('1790674990194958337', '1', 'admin', '菜单权限管理-获取所有菜单权限', 78, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:26:01');
+INSERT INTO `sys_log` VALUES ('1790675021757095938', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 57, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790669773055434753\"]', '172.25.112.1', '2024-05-15 17:26:09');
+INSERT INTO `sys_log` VALUES ('1790675062085328898', '1', 'admin', '菜单权限管理-更新菜单权限', 13, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1790669773055434753\",\"name\":\"流转卡\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"54\",\"pidName\":\"系统管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715765178594,\"url\":\"index/circulationCard\"}]', '172.25.112.1', '2024-05-15 17:26:19');
+INSERT INTO `sys_log` VALUES ('1790675062420873217', '1', 'admin', '菜单权限管理-获取所有菜单权限', 53, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:26:19');
+INSERT INTO `sys_log` VALUES ('1790675119790563330', '1', 'admin', '菜单权限管理-获取所有菜单权限', 46, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:26:32');
+INSERT INTO `sys_log` VALUES ('1790675126522421250', '1', 'admin', '角色管理-分页获取角色信息', 11, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:26:34');
+INSERT INTO `sys_log` VALUES ('1790675133216530433', '1', 'admin', '角色管理-查询角色详情', 62, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.25.112.1', '2024-05-15 17:26:36');
+INSERT INTO `sys_log` VALUES ('1790675188510040065', '1', 'admin', '角色管理-更新角色信息', 42, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1715765208703}]', '172.25.112.1', '2024-05-15 17:26:49');
+INSERT INTO `sys_log` VALUES ('1790675188644257794', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:26:49');
+INSERT INTO `sys_log` VALUES ('1790675195753603073', '1', 'admin', '角色管理-查询角色详情', 45, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.25.112.1', '2024-05-15 17:26:50');
+INSERT INTO `sys_log` VALUES ('1790675212522430465', '1', 'admin', '角色管理-更新角色信息', 25, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1715765214442}]', '172.25.112.1', '2024-05-15 17:26:54');
+INSERT INTO `sys_log` VALUES ('1790675212589539329', '1', 'admin', '角色管理-分页获取角色信息', 3, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:26:54');
+INSERT INTO `sys_log` VALUES ('1790675250376024065', '1', 'admin', '菜单权限管理-获取所有菜单权限', 36, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:27:03');
+INSERT INTO `sys_log` VALUES ('1790675308827844609', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 36, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790669773055434753\"]', '172.25.112.1', '2024-05-15 17:27:17');
+INSERT INTO `sys_log` VALUES ('1790675344223576065', '1', 'admin', '菜单权限管理-更新菜单权限', 7, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1790669773055434753\",\"name\":\"流转卡\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1790669456553254913\",\"pidName\":\"流转卡管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715765245852,\"url\":\"index/circulationCard\"}]', '172.25.112.1', '2024-05-15 17:27:26');
+INSERT INTO `sys_log` VALUES ('1790675344349405185', '1', 'admin', '菜单权限管理-获取所有菜单权限', 28, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:27:26');
+INSERT INTO `sys_log` VALUES ('1790675364356235265', '1', 'admin', '菜单权限管理-获取所有菜单权限', 30, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:27:31');
+INSERT INTO `sys_log` VALUES ('1790675413739970562', '1', 'admin', '菜单权限管理-删除菜单权限', 15, 'cn.edu.lut.welder.controller.PermissionController.deleted()', '[\"1790674640377413633\"]', '172.25.112.1', '2024-05-15 17:27:42');
+INSERT INTO `sys_log` VALUES ('1790675413874188289', '1', 'admin', '菜单权限管理-获取所有菜单权限', 27, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:27:42');
+INSERT INTO `sys_log` VALUES ('1790675488146923521', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 29, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790669773055434753\"]', '172.25.112.1', '2024-05-15 17:28:00');
+INSERT INTO `sys_log` VALUES ('1790675503829426178', '1', 'admin', '菜单权限管理-更新菜单权限', 7, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1790669773055434753\",\"name\":\"流转卡\",\"orderNum\":100,\"perms\":\"\",\"pid\":\"1790669456553254913\",\"pidName\":\"流转卡管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715765283903,\"url\":\"index/circulationCard\"}]', '172.25.112.1', '2024-05-15 17:28:04');
+INSERT INTO `sys_log` VALUES ('1790675503963643906', '1', 'admin', '菜单权限管理-获取所有菜单权限', 28, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:28:04');
+INSERT INTO `sys_log` VALUES ('1790675614466768898', '1', 'admin', '菜单权限管理-获取所有菜单权限', 81, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:28:30');
+INSERT INTO `sys_log` VALUES ('1790675639745839106', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 57, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790221597925158914\"]', '172.25.112.1', '2024-05-15 17:28:36');
+INSERT INTO `sys_log` VALUES ('1790675674004914177', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 50, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790296429132517378\"]', '172.25.112.1', '2024-05-15 17:28:44');
+INSERT INTO `sys_log` VALUES ('1790675717814419457', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 49, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790669773055434753\"]', '172.25.112.1', '2024-05-15 17:28:55');
+INSERT INTO `sys_log` VALUES ('1790675743676497921', '1', 'admin', '菜单权限管理-更新菜单权限', 11, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-rate\",\"id\":\"1790669773055434753\",\"name\":\"流转卡\",\"orderNum\":100,\"perms\":\"\",\"pid\":\"1790669456553254913\",\"pidName\":\"流转卡管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715765341090,\"url\":\"index/circulationCard\"}]', '172.25.112.1', '2024-05-15 17:29:01');
+INSERT INTO `sys_log` VALUES ('1790675743944933377', '1', 'admin', '菜单权限管理-获取所有菜单权限', 49, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:29:01');
+INSERT INTO `sys_log` VALUES ('1790675777507753985', NULL, NULL, '用户管理-退出', 4, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.25.112.1', '2024-05-15 17:29:09');
+INSERT INTO `sys_log` VALUES ('1790675830783803393', '1', 'admin', '菜单权限管理-获取所有菜单权限', 42, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:29:22');
+INSERT INTO `sys_log` VALUES ('1790675853584039938', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 41, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790669773055434754\"]', '172.25.112.1', '2024-05-15 17:29:27');
+INSERT INTO `sys_log` VALUES ('1790675898937049089', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 37, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790669773055434753\"]', '172.25.112.1', '2024-05-15 17:29:38');
+INSERT INTO `sys_log` VALUES ('1790675935196807169', '1', 'admin', '菜单权限管理-更新菜单权限', 8, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-rate\",\"id\":\"1790669773055434753\",\"name\":\"流转卡\",\"orderNum\":100,\"perms\":\"\",\"pid\":\"1790669456553254913\",\"pidName\":\"流转卡管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715765386757,\"url\":\"/index/circulationCard\"}]', '172.25.112.1', '2024-05-15 17:29:47');
+INSERT INTO `sys_log` VALUES ('1790675935393939457', '1', 'admin', '菜单权限管理-获取所有菜单权限', 33, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:29:47');
+INSERT INTO `sys_log` VALUES ('1790676025378537473', '1', 'admin', '菜单权限管理-获取所有菜单权限', 34, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:30:08');
+INSERT INTO `sys_log` VALUES ('1790676042529046529', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 31, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790221597925158914\"]', '172.25.112.1', '2024-05-15 17:30:12');
+INSERT INTO `sys_log` VALUES ('1790676068131078146', '1', 'admin', '菜单权限管理-获取所有菜单权限', 28, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:30:18');
+INSERT INTO `sys_log` VALUES ('1790676089735938049', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 27, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790669773055434753\"]', '172.25.112.1', '2024-05-15 17:30:24');
+INSERT INTO `sys_log` VALUES ('1790676127803441154', '1', 'admin', '菜单权限管理-更新菜单权限', 7, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-rate\",\"id\":\"1790669773055434753\",\"name\":\"流转卡管理\",\"orderNum\":100,\"perms\":\"\",\"pid\":\"1790669456553254913\",\"pidName\":\"流转卡管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715765432681,\"url\":\"/index/circulationCard\"}]', '172.25.112.1', '2024-05-15 17:30:33');
+INSERT INTO `sys_log` VALUES ('1790676128004767745', '1', 'admin', '菜单权限管理-获取所有菜单权限', 27, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:30:33');
+INSERT INTO `sys_log` VALUES ('1790676879212941313', '1', 'admin', '机构管理-树型组织列表', 10, 'cn.edu.lut.welder.controller.DeptController.getTree()', '[null]', '172.25.112.1', '2024-05-15 17:33:32');
+INSERT INTO `sys_log` VALUES ('1790676879242301442', '1', 'admin', '用户管理-分页获取用户列表', 20, 'cn.edu.lut.welder.controller.UserController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.25.112.1', '2024-05-15 17:33:32');
+INSERT INTO `sys_log` VALUES ('1790676884283854850', '1', 'admin', '菜单权限管理-获取所有菜单权限', 86, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:33:33');
+INSERT INTO `sys_log` VALUES ('1790676915447533570', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 62, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790669773055434753\"]', '172.25.112.1', '2024-05-15 17:33:40');
+INSERT INTO `sys_log` VALUES ('1790677052567719938', '1', 'admin', '菜单权限管理-更新菜单权限', 13, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-rate\",\"id\":\"1790669773055434753\",\"name\":\"流转卡管理\",\"orderNum\":100,\"perms\":\"\",\"pid\":\"1790669456553254913\",\"pidName\":\"流转卡管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715765653148,\"url\":\"index/circulationCard\"}]', '172.25.112.1', '2024-05-15 17:34:13');
+INSERT INTO `sys_log` VALUES ('1790677052827766785', '1', 'admin', '菜单权限管理-获取所有菜单权限', 57, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 17:34:13');
+INSERT INTO `sys_log` VALUES ('1790688678872289282', '1', 'admin', '菜单权限管理-获取所有菜单权限', 77, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.25.112.1', '2024-05-15 18:20:25');
+INSERT INTO `sys_log` VALUES ('1791391411978596353', '1', 'admin', '菜单权限管理-获取所有菜单权限', 82, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 16:52:50');
+INSERT INTO `sys_log` VALUES ('1791391963118559234', '1', 'admin', '菜单权限管理-获取所有菜单权限', 96, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 16:55:01');
+INSERT INTO `sys_log` VALUES ('1791392025349447681', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 62, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.28.240.1', '2024-05-17 16:55:16');
+INSERT INTO `sys_log` VALUES ('1791392135798054913', '1', 'admin', '菜单权限管理-新增菜单权限', 9, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1715936142275,\"deleted\":1,\"icon\":\"layui-icon-rate\",\"id\":\"1791392135730946050\",\"name\":\"外观管理\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"0\",\"pidName\":\"默认顶级菜单\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1715936142275,\"url\":\"\"}]', '172.28.240.1', '2024-05-17 16:55:42');
+INSERT INTO `sys_log` VALUES ('1791392136062296066', '1', 'admin', '菜单权限管理-获取所有菜单权限', 62, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 16:55:42');
+INSERT INTO `sys_log` VALUES ('1791392158921252865', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 59, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791109342357401601\"]', '172.28.240.1', '2024-05-17 16:55:48');
+INSERT INTO `sys_log` VALUES ('1791392245248417793', '1', 'admin', '菜单权限管理-更新菜单权限', 9, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-rate-solid\",\"id\":\"1791109342357401601\",\"name\":\"appearanceInspectionRecord\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791392135730946050\",\"pidName\":\"外观管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715936168382,\"url\":\"index/appearanceInspectionRecord\"}]', '172.28.240.1', '2024-05-17 16:56:08');
+INSERT INTO `sys_log` VALUES ('1791392245579767810', '1', 'admin', '菜单权限管理-获取所有菜单权限', 66, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 16:56:08');
+INSERT INTO `sys_log` VALUES ('1791392285014614018', '1', 'admin', '菜单权限管理-获取所有菜单权限', 49, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 16:56:18');
+INSERT INTO `sys_log` VALUES ('1791392292480475138', '1', 'admin', '角色管理-分页获取角色信息', 39, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.28.240.1', '2024-05-17 16:56:20');
+INSERT INTO `sys_log` VALUES ('1791392297526222849', '1', 'admin', '角色管理-查询角色详情', 66, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.28.240.1', '2024-05-17 16:56:21');
+INSERT INTO `sys_log` VALUES ('1791392322545246210', '1', 'admin', '菜单权限管理-获取所有菜单权限', 41, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 16:56:27');
+INSERT INTO `sys_log` VALUES ('1791392362982531073', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 44, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791109342357401601\"]', '172.28.240.1', '2024-05-17 16:56:36');
+INSERT INTO `sys_log` VALUES ('1791392424835932162', '1', 'admin', '菜单权限管理-更新菜单权限', 3, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-rate-solid\",\"id\":\"1791109342357401601\",\"name\":\"外观检查记录管理\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791392135730946050\",\"pidName\":\"外观管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715936211203,\"url\":\"index/appearanceInspectionRecord\"}]', '172.28.240.1', '2024-05-17 16:56:51');
+INSERT INTO `sys_log` VALUES ('1791392425028870146', '1', 'admin', '菜单权限管理-获取所有菜单权限', 34, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 16:56:51');
+INSERT INTO `sys_log` VALUES ('1791392867905421314', NULL, NULL, '用户管理-退出', 2, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.28.240.1', '2024-05-17 16:58:37');
+INSERT INTO `sys_log` VALUES ('1791393037938311169', '1', 'admin', '菜单权限管理-获取所有菜单权限', 68, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 16:59:17');
+INSERT INTO `sys_log` VALUES ('1791393949087940609', '1', 'admin', '菜单权限管理-获取所有菜单权限', 57, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 17:02:55');
+INSERT INTO `sys_log` VALUES ('1791398975306973185', '1', 'admin', '菜单权限管理-获取所有菜单权限', 94, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 17:22:53');
+INSERT INTO `sys_log` VALUES ('1791399012627890178', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 59, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791392135730946050\"]', '172.28.240.1', '2024-05-17 17:23:02');
+INSERT INTO `sys_log` VALUES ('1791399058832343041', '1', 'admin', '菜单权限管理-更新菜单权限', 8, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-rate\",\"id\":\"1791392135730946050\",\"name\":\"外观管理\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"0\",\"pidName\":\"默认顶级菜单\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1715937792868,\"url\":\"\"}]', '172.28.240.1', '2024-05-17 17:23:13');
+INSERT INTO `sys_log` VALUES ('1791399059163693057', '1', 'admin', '菜单权限管理-获取所有菜单权限', 64, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 17:23:13');
+INSERT INTO `sys_log` VALUES ('1791399099009581057', '1', 'admin', '菜单权限管理-获取所有菜单权限', 53, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 17:23:22');
+INSERT INTO `sys_log` VALUES ('1791399265724776450', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 55, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791109342357401601\"]', '172.28.240.1', '2024-05-17 17:24:02');
+INSERT INTO `sys_log` VALUES ('1791399285651914754', '1', 'admin', '菜单权限管理-更新菜单权限', 7, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-rate-solid\",\"id\":\"1791109342357401601\",\"name\":\"外观检查记录管理\",\"orderNum\":100,\"perms\":\"\",\"pid\":\"1791392135730946050\",\"pidName\":\"外观管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715937846949,\"url\":\"index/appearanceInspectionRecord\"}]', '172.28.240.1', '2024-05-17 17:24:07');
+INSERT INTO `sys_log` VALUES ('1791399285911961602', '1', 'admin', '菜单权限管理-获取所有菜单权限', 48, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 17:24:07');
+INSERT INTO `sys_log` VALUES ('1791399330266726401', '1', 'admin', '菜单权限管理-获取所有菜单权限', 45, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 17:24:18');
+INSERT INTO `sys_log` VALUES ('1791399336696594433', '1', 'admin', '角色管理-分页获取角色信息', 35, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.28.240.1', '2024-05-17 17:24:19');
+INSERT INTO `sys_log` VALUES ('1791399342472151042', '1', 'admin', '角色管理-查询角色详情', 62, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.28.240.1', '2024-05-17 17:24:21');
+INSERT INTO `sys_log` VALUES ('1791399381189771274', '1', 'admin', '角色管理-更新角色信息', 45, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1715937869702}]', '172.28.240.1', '2024-05-17 17:24:30');
+INSERT INTO `sys_log` VALUES ('1791399381319794690', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.28.240.1', '2024-05-17 17:24:30');
+INSERT INTO `sys_log` VALUES ('1791399388894707714', '1', 'admin', '角色管理-查询角色详情', 43, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.28.240.1', '2024-05-17 17:24:32');
+INSERT INTO `sys_log` VALUES ('1791399409044144130', '1', 'admin', '角色管理-更新角色信息', 24, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1715937876342}]', '172.28.240.1', '2024-05-17 17:24:36');
+INSERT INTO `sys_log` VALUES ('1791399409111252994', '1', 'admin', '角色管理-分页获取角色信息', 3, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.28.240.1', '2024-05-17 17:24:36');
+INSERT INTO `sys_log` VALUES ('1791401190071390210', '1', 'admin', '菜单权限管理-获取所有菜单权限', 110, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 17:31:41');
+INSERT INTO `sys_log` VALUES ('1791401217078513666', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 57, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1790328183004393474\"]', '172.28.240.1', '2024-05-17 17:31:47');
+INSERT INTO `sys_log` VALUES ('1791401283545649154', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 56, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.28.240.1', '2024-05-17 17:32:03');
+INSERT INTO `sys_log` VALUES ('1791401485870485506', '1', 'admin', '菜单权限管理-新增菜单权限', 8, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1715938371524,\"deleted\":1,\"icon\":\"\",\"id\":\"1791401485870485505\",\"name\":\"导入excel数据\",\"orderNum\":100,\"perms\":\"appearanceInspectionRecord:import_Data\",\"pid\":\"1791109342357401601\",\"pidName\":\"外观检查记录管理\",\"status\":1,\"target\":\"_self\",\"type\":3,\"updateTime\":1715938371524,\"url\":\"appearanceInspectionRecord/import_excel\"}]', '172.28.240.1', '2024-05-17 17:32:52');
+INSERT INTO `sys_log` VALUES ('1791401486134726658', '1', 'admin', '菜单权限管理-获取所有菜单权限', 50, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 17:32:52');
+INSERT INTO `sys_log` VALUES ('1791417608242372610', '1', 'admin', '菜单权限管理-获取所有菜单权限', 99, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 18:36:55');
+INSERT INTO `sys_log` VALUES ('1791417615683067906', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 66, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.28.240.1', '2024-05-17 18:36:57');
+INSERT INTO `sys_log` VALUES ('1791417685312708610', '1', 'admin', '角色管理-分页获取角色信息', 17, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.28.240.1', '2024-05-17 18:37:14');
+INSERT INTO `sys_log` VALUES ('1791417690425565185', '1', 'admin', '角色管理-查询角色详情', 81, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.28.240.1', '2024-05-17 18:37:15');
+INSERT INTO `sys_log` VALUES ('1791417710835048450', '1', 'admin', '角色管理-更新角色信息', 53, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1715942239809}]', '172.28.240.1', '2024-05-17 18:37:20');
+INSERT INTO `sys_log` VALUES ('1791417710969266178', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.28.240.1', '2024-05-17 18:37:20');
+INSERT INTO `sys_log` VALUES ('1791418001030561793', '1', 'admin', '菜单权限管理-获取所有菜单权限', 107, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 18:38:29');
+INSERT INTO `sys_log` VALUES ('1791418070572122113', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 67, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791401485870485505\"]', '172.28.240.1', '2024-05-17 18:38:46');
+INSERT INTO `sys_log` VALUES ('1791418119154745345', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 62, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791401485870485505\"]', '172.28.240.1', '2024-05-17 18:38:57');
+INSERT INTO `sys_log` VALUES ('1791418399032262658', '1', 'admin', '菜单权限管理-更新菜单权限', 13, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1791401485870485505\",\"name\":\"导入excel数据\",\"orderNum\":100,\"perms\":\"appearanceInspectionRecord:import_Data\",\"pid\":\"1791109342357401601\",\"pidName\":\"外观检查记录管理\",\"status\":1,\"target\":\"_self\",\"type\":3,\"updateTime\":1715942403924,\"url\":\"appearanceInspectionRecord/import_excel\"}]', '172.28.240.1', '2024-05-17 18:40:04');
+INSERT INTO `sys_log` VALUES ('1791418399288115201', '1', 'admin', '菜单权限管理-获取所有菜单权限', 57, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 18:40:04');
+INSERT INTO `sys_log` VALUES ('1791418443097620482', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 63, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791401485870485505\"]', '172.28.240.1', '2024-05-17 18:40:14');
+INSERT INTO `sys_log` VALUES ('1791418484130496514', NULL, NULL, '用户管理-退出', 3, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.28.240.1', '2024-05-17 18:40:24');
+INSERT INTO `sys_log` VALUES ('1791439666544328705', '1', 'admin', '菜单权限管理-获取所有菜单权限', 123, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 20:04:35');
+INSERT INTO `sys_log` VALUES ('1791439683044720642', '1', 'admin', '菜单权限管理-获取所有菜单权限', 62, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 20:04:38');
+INSERT INTO `sys_log` VALUES ('1791439687134167042', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 58, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.28.240.1', '2024-05-17 20:04:39');
+INSERT INTO `sys_log` VALUES ('1791439755732008963', '1', 'admin', '菜单权限管理-新增菜单权限', 8, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1715947495764,\"deleted\":1,\"icon\":\"layui-icon-home\",\"id\":\"1791439755732008962\",\"name\":\"委托管理\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"0\",\"pidName\":\"默认顶级菜单\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1715947495764,\"url\":\"\"}]', '172.28.240.1', '2024-05-17 20:04:56');
+INSERT INTO `sys_log` VALUES ('1791439756059164673', '1', 'admin', '菜单权限管理-获取所有菜单权限', 63, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 20:04:56');
+INSERT INTO `sys_log` VALUES ('1791439776766443522', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 50, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791438559361294337\"]', '172.28.240.1', '2024-05-17 20:05:01');
+INSERT INTO `sys_log` VALUES ('1791439905393164290', '1', 'admin', '菜单权限管理-更新菜单权限', 11, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-theme\",\"id\":\"1791438559361294337\",\"name\":\"RT委托\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791439755732008962\",\"pidName\":\"委托管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1715947531445,\"url\":\"index/nonDestructiveTestingOrder\"}]', '172.28.240.1', '2024-05-17 20:05:31');
+INSERT INTO `sys_log` VALUES ('1791439905653211138', '1', 'admin', '菜单权限管理-获取所有菜单权限', 46, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 20:05:32');
+INSERT INTO `sys_log` VALUES ('1791439930860978178', '1', 'admin', '菜单权限管理-获取所有菜单权限', 44, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.28.240.1', '2024-05-17 20:05:38');
+INSERT INTO `sys_log` VALUES ('1791439937613807618', '1', 'admin', '角色管理-分页获取角色信息', 35, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.28.240.1', '2024-05-17 20:05:39');
+INSERT INTO `sys_log` VALUES ('1791439943355809793', '1', 'admin', '角色管理-查询角色详情', 55, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.28.240.1', '2024-05-17 20:05:41');
+INSERT INTO `sys_log` VALUES ('1791439968483885088', '1', 'admin', '角色管理-更新角色信息', 42, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1715947546466}]', '172.28.240.1', '2024-05-17 20:05:47');
+INSERT INTO `sys_log` VALUES ('1791439968613908482', '1', 'admin', '角色管理-分页获取角色信息', 2, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.28.240.1', '2024-05-17 20:05:47');
+INSERT INTO `sys_log` VALUES ('1791439978948673538', '1', 'admin', '角色管理-查询角色详情', 44, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.28.240.1', '2024-05-17 20:05:49');
+INSERT INTO `sys_log` VALUES ('1791439995356790785', '1', 'admin', '角色管理-更新角色信息', 24, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1715947552869}]', '172.28.240.1', '2024-05-17 20:05:53');
+INSERT INTO `sys_log` VALUES ('1791439995423899649', '1', 'admin', '角色管理-分页获取角色信息', 2, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.28.240.1', '2024-05-17 20:05:53');
+INSERT INTO `sys_log` VALUES ('1791757787372384257', '1', 'admin', '菜单权限管理-获取所有菜单权限', 99, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 17:08:40');
+INSERT INTO `sys_log` VALUES ('1791757816275333122', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 84, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791438559361294337\"]', '172.24.0.1', '2024-05-18 17:08:47');
+INSERT INTO `sys_log` VALUES ('1791758379499057153', '1', 'admin', '菜单权限管理-更新菜单权限', 14, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-theme\",\"id\":\"1791438559361294337\",\"name\":\"委托管理\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791439755732008962\",\"pidName\":\"委托管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1716023461587,\"url\":\"index/nonDestructiveTestingOrder\"}]', '172.24.0.1', '2024-05-18 17:11:02');
+INSERT INTO `sys_log` VALUES ('1791758379826212866', '1', 'admin', '菜单权限管理-获取所有菜单权限', 67, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 17:11:02');
+INSERT INTO `sys_log` VALUES ('1791758446905716738', '1', 'admin', '菜单权限管理-获取所有菜单权限', 53, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 17:11:18');
+INSERT INTO `sys_log` VALUES ('1791758475372457985', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 47, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791439755732008962\"]', '172.24.0.1', '2024-05-18 17:11:24');
+INSERT INTO `sys_log` VALUES ('1791758500731219969', '1', 'admin', '菜单权限管理-更新菜单权限', 4, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-home\",\"id\":\"1791439755732008962\",\"name\":\"委托数据管理\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"0\",\"pidName\":\"\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1716023490494,\"url\":\"\"}]', '172.24.0.1', '2024-05-18 17:11:31');
+INSERT INTO `sys_log` VALUES ('1791758500995461122', '1', 'admin', '菜单权限管理-获取所有菜单权限', 46, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 17:11:31');
+INSERT INTO `sys_log` VALUES ('1791763093498306562', '1', 'admin', '菜单权限管理-获取所有菜单权限', 147, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 17:29:45');
+INSERT INTO `sys_log` VALUES ('1791763160762359810', '1', 'admin', '菜单权限管理-获取所有菜单权限', 79, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 17:30:02');
+INSERT INTO `sys_log` VALUES ('1791763192504852481', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 85, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791761708090343425\"]', '172.24.0.1', '2024-05-18 17:30:09');
+INSERT INTO `sys_log` VALUES ('1791763270904782850', '1', 'admin', '菜单权限管理-更新菜单权限', 8, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1791761708090343425\",\"name\":\"加工委托管理\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791439755732008962\",\"pidName\":\"委托数据管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1716024627793,\"url\":\"index/processingEntrustment\"}]', '172.24.0.1', '2024-05-18 17:30:28');
+INSERT INTO `sys_log` VALUES ('1791763271236132865', '1', 'admin', '菜单权限管理-获取所有菜单权限', 63, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 17:30:28');
+INSERT INTO `sys_log` VALUES ('1791763287191265282', '1', 'admin', '角色管理-分页获取角色信息', 10, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 17:30:32');
+INSERT INTO `sys_log` VALUES ('1791763292341870594', '1', 'admin', '角色管理-查询角色详情', 68, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.0.1', '2024-05-18 17:30:33');
+INSERT INTO `sys_log` VALUES ('1791763314752036866', '1', 'admin', '角色管理-更新角色信息', 44, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1716024638215}]', '172.24.0.1', '2024-05-18 17:30:38');
+INSERT INTO `sys_log` VALUES ('1791763314882060289', '1', 'admin', '角色管理-分页获取角色信息', 5, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 17:30:38');
+INSERT INTO `sys_log` VALUES ('1791763321202876418', '1', 'admin', '角色管理-查询角色详情', 60, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.0.1', '2024-05-18 17:30:40');
+INSERT INTO `sys_log` VALUES ('1791763339750088706', '1', 'admin', '角色管理-更新角色信息', 26, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1716024644180}]', '172.24.0.1', '2024-05-18 17:30:44');
+INSERT INTO `sys_log` VALUES ('1791763339817197569', '1', 'admin', '角色管理-分页获取角色信息', 3, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 17:30:44');
+INSERT INTO `sys_log` VALUES ('1791763370708246529', '1', 'admin', '菜单权限管理-获取所有菜单权限', 41, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 17:30:52');
+INSERT INTO `sys_log` VALUES ('1791763402442350593', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 39, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791761708090343425\"]', '172.24.0.1', '2024-05-18 17:30:59');
+INSERT INTO `sys_log` VALUES ('1791763433069158402', '1', 'admin', '菜单权限管理-更新菜单权限', 3, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-snowflake\",\"id\":\"1791761708090343425\",\"name\":\"加工委托管理\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791439755732008962\",\"pidName\":\"委托数据管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1716024666459,\"url\":\"index/processingEntrustment\"}]', '172.24.0.1', '2024-05-18 17:31:06');
+INSERT INTO `sys_log` VALUES ('1791763433262096385', '1', 'admin', '菜单权限管理-获取所有菜单权限', 35, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 17:31:07');
+INSERT INTO `sys_log` VALUES ('1791763563340046338', NULL, NULL, '用户管理-退出', 4, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.24.0.1', '2024-05-18 17:31:38');
+INSERT INTO `sys_log` VALUES ('1791784392748675074', '1', 'admin', '菜单权限管理-获取所有菜单权限', 141, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 18:54:24');
+INSERT INTO `sys_log` VALUES ('1791784435002093569', '1', 'admin', '菜单权限管理-获取所有菜单权限', 71, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 18:54:34');
+INSERT INTO `sys_log` VALUES ('1791784452232294401', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 76, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791783234189557761\"]', '172.24.0.1', '2024-05-18 18:54:38');
+INSERT INTO `sys_log` VALUES ('1791784577033809922', '1', 'admin', '菜单权限管理-更新菜单权限', 16, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-flag\",\"id\":\"1791783234189557761\",\"name\":\"弯曲委托\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791439755732008962\",\"pidName\":\"委托数据管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1716029707554,\"url\":\"index/bendCommission\"}]', '172.24.0.1', '2024-05-18 18:55:08');
+INSERT INTO `sys_log` VALUES ('1791784577360965633', '1', 'admin', '菜单权限管理-获取所有菜单权限', 63, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 18:55:08');
+INSERT INTO `sys_log` VALUES ('1791784593844580353', '1', 'admin', '角色管理-分页获取角色信息', 45, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 18:55:12');
+INSERT INTO `sys_log` VALUES ('1791784598470897666', '1', 'admin', '角色管理-查询角色详情', 84, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.0.1', '2024-05-18 18:55:13');
+INSERT INTO `sys_log` VALUES ('1791784629752016897', '1', 'admin', '角色管理-更新角色信息', 44, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1716029720111}]', '172.24.0.1', '2024-05-18 18:55:20');
+INSERT INTO `sys_log` VALUES ('1791784629877846017', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 18:55:20');
+INSERT INTO `sys_log` VALUES ('1791784637435981826', '1', 'admin', '角色管理-查询角色详情', 54, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.0.1', '2024-05-18 18:55:22');
+INSERT INTO `sys_log` VALUES ('1791784675818057729', '1', 'admin', '角色管理-更新角色信息', 23, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"1791783234189557761\",\"1791783234189557762\",\"1791783234189557763\",\"1791783234189557764\",\"1791783234189557765\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1716029731098}]', '172.24.0.1', '2024-05-18 18:55:31');
+INSERT INTO `sys_log` VALUES ('1791784675885166593', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 18:55:31');
+INSERT INTO `sys_log` VALUES ('1791784950796533762', NULL, NULL, '用户管理-退出', 5, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.24.0.1', '2024-05-18 18:56:37');
+INSERT INTO `sys_log` VALUES ('1791787770866237441', '1', 'admin', '菜单权限管理-获取所有菜单权限', 154, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 19:07:49');
+INSERT INTO `sys_log` VALUES ('1791787838792990721', '1', 'admin', '菜单权限管理-获取所有菜单权限', 82, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 19:08:05');
+INSERT INTO `sys_log` VALUES ('1791787867087765506', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 85, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791786404361953281\"]', '172.24.0.1', '2024-05-18 19:08:12');
+INSERT INTO `sys_log` VALUES ('1791787947727454209', '1', 'admin', '菜单权限管理-更新菜单权限', 12, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-username\",\"id\":\"1791786404361953281\",\"name\":\"宏观委托\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791439755732008962\",\"pidName\":\"委托数据管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1716030511207,\"url\":\"index/macroCommission\"}]', '172.24.0.1', '2024-05-18 19:08:31');
+INSERT INTO `sys_log` VALUES ('1791787948050415617', '1', 'admin', '菜单权限管理-获取所有菜单权限', 60, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 19:08:31');
+INSERT INTO `sys_log` VALUES ('1791787978593337345', '1', 'admin', '菜单权限管理-获取所有菜单权限', 68, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 19:08:39');
+INSERT INTO `sys_log` VALUES ('1791787988437368833', '1', 'admin', '角色管理-分页获取角色信息', 39, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 19:08:41');
+INSERT INTO `sys_log` VALUES ('1791787993105629186', '1', 'admin', '角色管理-查询角色详情', 76, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.0.1', '2024-05-18 19:08:42');
+INSERT INTO `sys_log` VALUES ('1791788023141040130', '1', 'admin', '角色管理-更新角色信息', 43, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"1791783234189557761\",\"1791783234189557762\",\"1791783234189557763\",\"1791783234189557764\",\"1791783234189557765\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1716030529146}]', '172.24.0.1', '2024-05-18 19:08:49');
+INSERT INTO `sys_log` VALUES ('1791788023208148993', '1', 'admin', '角色管理-分页获取角色信息', 3, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 19:08:49');
+INSERT INTO `sys_log` VALUES ('1791788032376897538', '1', 'admin', '角色管理-查询角色详情', 54, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.0.1', '2024-05-18 19:08:51');
+INSERT INTO `sys_log` VALUES ('1791788053046427654', '1', 'admin', '角色管理-更新角色信息', 23, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"1791783234189557761\",\"1791783234189557762\",\"1791783234189557763\",\"1791783234189557764\",\"1791783234189557765\",\"1791786404361953281\",\"1791786404361953282\",\"1791786404361953283\",\"1791786404361953284\",\"1791786404361953285\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1716030536304}]', '172.24.0.1', '2024-05-18 19:08:56');
+INSERT INTO `sys_log` VALUES ('1791788053172256770', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 19:08:56');
+INSERT INTO `sys_log` VALUES ('1791788068510826498', NULL, NULL, '用户管理-退出', 3, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.24.0.1', '2024-05-18 19:09:00');
+INSERT INTO `sys_log` VALUES ('1791796461841612801', '1', 'admin', '菜单权限管理-获取所有菜单权限', 45, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 19:42:21');
+INSERT INTO `sys_log` VALUES ('1791796481571618817', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 40, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.24.0.1', '2024-05-18 19:42:26');
+INSERT INTO `sys_log` VALUES ('1791796570461503490', '1', 'admin', '菜单权限管理-新增菜单权限', 7, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1716032567018,\"deleted\":1,\"icon\":\"layui-icon-notice\",\"id\":\"1791796570398588930\",\"name\":\"外观检验记录\",\"orderNum\":1,\"perms\":\"\",\"pid\":\"0\",\"pidName\":\"默认顶级菜单\",\"status\":1,\"target\":\"_self\",\"type\":1,\"updateTime\":1716032567018,\"url\":\"\"}]', '172.24.0.1', '2024-05-18 19:42:47');
+INSERT INTO `sys_log` VALUES ('1791796570662830081', '1', 'admin', '菜单权限管理-获取所有菜单权限', 40, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 19:42:47');
+INSERT INTO `sys_log` VALUES ('1791796587507154945', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 40, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.24.0.1', '2024-05-18 19:42:51');
+INSERT INTO `sys_log` VALUES ('1791796621350993921', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 40, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791796173021839361\"]', '172.24.0.1', '2024-05-18 19:42:59');
+INSERT INTO `sys_log` VALUES ('1791796694583541762', '1', 'admin', '菜单权限管理-更新菜单权限', 7, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-face-smile\",\"id\":\"1791796173021839361\",\"name\":\"外观检验记录管理\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791796570398588930\",\"pidName\":\"外观检验记录\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1716032596622,\"url\":\"index/inspectionRecords\"}]', '172.24.0.1', '2024-05-18 19:43:17');
+INSERT INTO `sys_log` VALUES ('1791796694780674049', '1', 'admin', '菜单权限管理-获取所有菜单权限', 40, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 19:43:17');
+INSERT INTO `sys_log` VALUES ('1791796808807022594', '1', 'admin', '角色管理-分页获取角色信息', 2, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 19:43:44');
+INSERT INTO `sys_log` VALUES ('1791796813668220930', '1', 'admin', '角色管理-查询角色详情', 44, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.0.1', '2024-05-18 19:43:45');
+INSERT INTO `sys_log` VALUES ('1791796980467302402', '1', 'admin', '角色管理-更新角色信息', 22, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"1791783234189557761\",\"1791783234189557762\",\"1791783234189557763\",\"1791783234189557764\",\"1791783234189557765\",\"1791786404361953281\",\"1791786404361953282\",\"1791786404361953283\",\"1791786404361953284\",\"1791786404361953285\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1716032664756}]', '172.24.0.1', '2024-05-18 19:44:25');
+INSERT INTO `sys_log` VALUES ('1791796980534411266', '1', 'admin', '角色管理-分页获取角色信息', 2, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 19:44:25');
+INSERT INTO `sys_log` VALUES ('1791796990382637058', '1', 'admin', '角色管理-查询角色详情', 46, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.0.1', '2024-05-18 19:44:27');
+INSERT INTO `sys_log` VALUES ('1791797015925948417', '1', 'admin', '角色管理-更新角色信息', 24, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"1791783234189557761\",\"1791783234189557762\",\"1791783234189557763\",\"1791783234189557764\",\"1791783234189557765\",\"1791786404361953281\",\"1791786404361953282\",\"1791786404361953283\",\"1791786404361953284\",\"1791786404361953285\",\"1791796570398588930\",\"1791796173021839361\",\"1791796173021839362\",\"1791796173021839363\",\"1791796173021839364\",\"1791796173021839365\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1716032673214}]', '172.24.0.1', '2024-05-18 19:44:33');
+INSERT INTO `sys_log` VALUES ('1791797016055971841', '1', 'admin', '角色管理-分页获取角色信息', 5, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 19:44:33');
+INSERT INTO `sys_log` VALUES ('1791797035433656321', '1', 'admin', '菜单权限管理-获取所有菜单权限', 40, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 19:44:38');
+INSERT INTO `sys_log` VALUES ('1791797063418052610', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 41, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791109342357401601\"]', '172.24.0.1', '2024-05-18 19:44:45');
+INSERT INTO `sys_log` VALUES ('1791797145605439489', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 40, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791796173021839361\"]', '172.24.0.1', '2024-05-18 19:45:04');
+INSERT INTO `sys_log` VALUES ('1791797201679089666', '1', 'admin', '菜单权限管理-更新菜单权限', 7, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-face-smile\",\"id\":\"1791796173021839361\",\"name\":\"外观检验记录管理\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791392135730946050\",\"pidName\":\"外观管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1716032717525,\"url\":\"index/inspectionRecords\"}]', '172.24.0.1', '2024-05-18 19:45:18');
+INSERT INTO `sys_log` VALUES ('1791797201939136513', '1', 'admin', '菜单权限管理-获取所有菜单权限', 45, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 19:45:18');
+INSERT INTO `sys_log` VALUES ('1791797233757126657', '1', 'admin', '菜单权限管理-删除菜单权限', 11, 'cn.edu.lut.welder.controller.PermissionController.deleted()', '[\"1791796570398588930\"]', '172.24.0.1', '2024-05-18 19:45:25');
+INSERT INTO `sys_log` VALUES ('1791797234159779842', '1', 'admin', '菜单权限管理-获取所有菜单权限', 43, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 19:45:25');
+INSERT INTO `sys_log` VALUES ('1791797373343563778', '1', 'admin', '菜单权限管理-获取所有菜单权限', 45, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 19:45:58');
+INSERT INTO `sys_log` VALUES ('1791797406298210305', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 44, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791109342357401601\"]', '172.24.0.1', '2024-05-18 19:46:06');
+INSERT INTO `sys_log` VALUES ('1791797448924921857', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 52, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1791796173021839361\"]', '172.24.0.1', '2024-05-18 19:46:16');
+INSERT INTO `sys_log` VALUES ('1791797478037585921', '1', 'admin', '菜单权限管理-更新菜单权限', 7, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"layui-icon-face-smile\",\"id\":\"1791796173021839361\",\"name\":\"外观检验记录表管理\",\"orderNum\":10,\"perms\":\"\",\"pid\":\"1791392135730946050\",\"pidName\":\"外观管理\",\"status\":1,\"target\":\"_self\",\"type\":2,\"updateTime\":1716032783408,\"url\":\"index/inspectionRecords\"}]', '172.24.0.1', '2024-05-18 19:46:23');
+INSERT INTO `sys_log` VALUES ('1791797478238912513', '1', 'admin', '菜单权限管理-获取所有菜单权限', 40, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 19:46:23');
+INSERT INTO `sys_log` VALUES ('1791797513030664194', NULL, NULL, '用户管理-退出', 1, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.24.0.1', '2024-05-18 19:46:32');
+INSERT INTO `sys_log` VALUES ('1791802563585060865', '1', 'admin', '菜单权限管理-获取所有菜单权限', 105, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.24.0.1', '2024-05-18 20:06:36');
+INSERT INTO `sys_log` VALUES ('1791802575194894338', '1', 'admin', '角色管理-分页获取角色信息', 13, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 20:06:39');
+INSERT INTO `sys_log` VALUES ('1791802579447918594', '1', 'admin', '角色管理-查询角色详情', 93, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.0.1', '2024-05-18 20:06:40');
+INSERT INTO `sys_log` VALUES ('1791802608757714945', '1', 'admin', '角色管理-更新角色信息', 49, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791796173021839361\",\"1791796173021839362\",\"1791796173021839363\",\"1791796173021839364\",\"1791796173021839365\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"1791783234189557761\",\"1791783234189557762\",\"1791783234189557763\",\"1791783234189557764\",\"1791783234189557765\",\"1791786404361953281\",\"1791786404361953282\",\"1791786404361953283\",\"1791786404361953284\",\"1791786404361953285\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1716034006624}]', '172.24.0.1', '2024-05-18 20:06:47');
+INSERT INTO `sys_log` VALUES ('1791802608820629505', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 20:06:47');
+INSERT INTO `sys_log` VALUES ('1791802623907540994', '1', 'admin', '角色管理-查询角色详情', 71, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.0.1', '2024-05-18 20:06:50');
+INSERT INTO `sys_log` VALUES ('1791802660272156682', '1', 'admin', '角色管理-更新角色信息', 30, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"1791783234189557761\",\"1791783234189557762\",\"1791783234189557763\",\"1791783234189557764\",\"1791783234189557765\",\"1791786404361953281\",\"1791786404361953282\",\"1791786404361953283\",\"1791786404361953284\",\"1791786404361953285\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1716034018932}]', '172.24.0.1', '2024-05-18 20:06:59');
+INSERT INTO `sys_log` VALUES ('1791802660406374401', '1', 'admin', '角色管理-分页获取角色信息', 5, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 20:06:59');
+INSERT INTO `sys_log` VALUES ('1791802668564295682', '1', 'admin', '角色管理-查询角色详情', 61, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.24.0.1', '2024-05-18 20:07:01');
+INSERT INTO `sys_log` VALUES ('1791802691922374657', '1', 'admin', '角色管理-更新角色信息', 29, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791796173021839361\",\"1791796173021839362\",\"1791796173021839363\",\"1791796173021839364\",\"1791796173021839365\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"1791783234189557761\",\"1791783234189557762\",\"1791783234189557763\",\"1791783234189557764\",\"1791783234189557765\",\"1791786404361953281\",\"1791786404361953282\",\"1791786404361953283\",\"1791786404361953284\",\"1791786404361953285\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1716034026473}]', '172.24.0.1', '2024-05-18 20:07:07');
+INSERT INTO `sys_log` VALUES ('1791802692052398081', '1', 'admin', '角色管理-分页获取角色信息', 3, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.24.0.1', '2024-05-18 20:07:07');
+INSERT INTO `sys_log` VALUES ('1792905279162540033', '1', 'admin', '菜单权限管理-获取所有菜单权限', 113, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '192.168.160.1', '2024-05-21 21:08:24');
+INSERT INTO `sys_log` VALUES ('1792905340302909442', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 71, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '192.168.160.1', '2024-05-21 21:08:38');
+INSERT INTO `sys_log` VALUES ('1792909324409364482', '1', 'admin', '菜单权限管理-新增菜单权限', 10, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1716297868233,\"deleted\":1,\"icon\":\"\",\"id\":\"1792909324342255617\",\"name\":\"生成检验记录表\",\"orderNum\":100,\"perms\":\"inspectionRecords:generateInspectionTable\",\"pid\":\"1791796173021839361\",\"pidName\":\"外观检验记录表管理\",\"status\":1,\"target\":\"_self\",\"type\":3,\"updateTime\":1716297868233,\"url\":\"inspectionRecords/generateInspectionTable\"}]', '192.168.160.1', '2024-05-21 21:24:28');
+INSERT INTO `sys_log` VALUES ('1792909324807823361', '1', 'admin', '菜单权限管理-获取所有菜单权限', 91, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '192.168.160.1', '2024-05-21 21:24:28');
+INSERT INTO `sys_log` VALUES ('1792910432427040769', '1', 'admin', '菜单权限管理-获取所有菜单权限', 62, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '192.168.160.1', '2024-05-21 21:28:52');
+INSERT INTO `sys_log` VALUES ('1792910578409791490', '1', 'admin', '菜单权限管理-获取所有菜单权限', 60, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '192.168.160.1', '2024-05-21 21:29:27');
+INSERT INTO `sys_log` VALUES ('1792910580322394114', '1', 'admin', '角色管理-分页获取角色信息', 11, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '192.168.160.1', '2024-05-21 21:29:28');
+INSERT INTO `sys_log` VALUES ('1792910585380724737', '1', 'admin', '角色管理-查询角色详情', 74, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '192.168.160.1', '2024-05-21 21:29:29');
+INSERT INTO `sys_log` VALUES ('1792910609938374657', '1', 'admin', '角色管理-更新角色信息', 51, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791796173021839361\",\"1791796173021839362\",\"1791796173021839363\",\"1791796173021839364\",\"1791796173021839365\",\"1792909324342255617\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"1791783234189557761\",\"1791783234189557762\",\"1791783234189557763\",\"1791783234189557764\",\"1791783234189557765\",\"1791786404361953281\",\"1791786404361953282\",\"1791786404361953283\",\"1791786404361953284\",\"1791786404361953285\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1716298174697}]', '192.168.160.1', '2024-05-21 21:29:35');
+INSERT INTO `sys_log` VALUES ('1792910610068398081', '1', 'admin', '角色管理-分页获取角色信息', 3, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '192.168.160.1', '2024-05-21 21:29:35');
+INSERT INTO `sys_log` VALUES ('1792910774099230721', NULL, NULL, '用户管理-退出', 4, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '192.168.160.1', '2024-05-21 21:30:14');
+INSERT INTO `sys_log` VALUES ('1793250434810949633', '1', 'admin', '菜单权限管理-获取所有菜单权限', 129, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.29.0.1', '2024-05-22 19:59:55');
+INSERT INTO `sys_log` VALUES ('1793250460496867330', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 81, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '172.29.0.1', '2024-05-22 20:00:01');
+INSERT INTO `sys_log` VALUES ('1793251201395503106', '1', 'admin', '菜单权限管理-新增菜单权限', 8, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1716379378058,\"deleted\":1,\"icon\":\"\",\"id\":\"1793251201336782850\",\"name\":\"demo\",\"orderNum\":100,\"perms\":\"examinationLedger:demo\",\"pid\":\"1790221597925158914\",\"pidName\":\"考试台账管理\",\"status\":1,\"target\":\"_self\",\"type\":3,\"updateTime\":1716379378058,\"url\":\"examinationLedger/demo\"}]', '172.29.0.1', '2024-05-22 20:02:58');
+INSERT INTO `sys_log` VALUES ('1793251201835905025', '1', 'admin', '菜单权限管理-获取所有菜单权限', 99, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.29.0.1', '2024-05-22 20:02:58');
+INSERT INTO `sys_log` VALUES ('1793251219275821058', '1', 'admin', '菜单权限管理-获取所有菜单权限', 68, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.29.0.1', '2024-05-22 20:03:02');
+INSERT INTO `sys_log` VALUES ('1793251255053234177', '1', 'admin', '角色管理-分页获取角色信息', 11, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.29.0.1', '2024-05-22 20:03:11');
+INSERT INTO `sys_log` VALUES ('1793251260090593281', '1', 'admin', '角色管理-查询角色详情', 91, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '172.29.0.1', '2024-05-22 20:03:12');
+INSERT INTO `sys_log` VALUES ('1793251296614592513', '1', 'admin', '角色管理-更新角色信息', 48, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1793251201336782850\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791796173021839361\",\"1791796173021839362\",\"1791796173021839363\",\"1791796173021839364\",\"1791796173021839365\",\"1792909324342255617\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"1791783234189557761\",\"1791783234189557762\",\"1791783234189557763\",\"1791783234189557764\",\"1791783234189557765\",\"1791786404361953281\",\"1791786404361953282\",\"1791786404361953283\",\"1791786404361953284\",\"1791786404361953285\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1716379400734}]', '172.29.0.1', '2024-05-22 20:03:21');
+INSERT INTO `sys_log` VALUES ('1793251296740421634', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '172.29.0.1', '2024-05-22 20:03:21');
+INSERT INTO `sys_log` VALUES ('1793251842108968962', '1', 'admin', '菜单权限管理-获取所有菜单权限', 141, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.29.0.1', '2024-05-22 20:05:31');
+INSERT INTO `sys_log` VALUES ('1793251872005967874', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 105, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"1793251201336782850\"]', '172.29.0.1', '2024-05-22 20:05:38');
+INSERT INTO `sys_log` VALUES ('1793251900661452801', '1', 'admin', '菜单权限管理-更新菜单权限', 12, 'cn.edu.lut.welder.controller.PermissionController.updatePermission()', '[{\"icon\":\"\",\"id\":\"1793251201336782850\",\"name\":\"demo\",\"orderNum\":100,\"perms\":\"examinationLedger:demo\",\"pid\":\"1790221597925158914\",\"pidName\":\"考试台账管理\",\"status\":1,\"target\":\"_self\",\"type\":3,\"updateTime\":1716379544771,\"url\":\"examinationLedger/demo\"}]', '172.29.0.1', '2024-05-22 20:05:45');
+INSERT INTO `sys_log` VALUES ('1793251901043134465', '1', 'admin', '菜单权限管理-获取所有菜单权限', 80, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.29.0.1', '2024-05-22 20:05:45');
+INSERT INTO `sys_log` VALUES ('1793251921733636098', NULL, NULL, '用户管理-退出', 3, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '172.29.0.1', '2024-05-22 20:05:50');
+INSERT INTO `sys_log` VALUES ('1793254676376371201', '1', 'admin', '菜单权限管理-获取所有菜单权限', 109, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.29.0.1', '2024-05-22 20:16:47');
+INSERT INTO `sys_log` VALUES ('1793254710824189953', '1', 'admin', '菜单权限管理-删除菜单权限', 26, 'cn.edu.lut.welder.controller.PermissionController.deleted()', '[\"1793251201336782850\"]', '172.29.0.1', '2024-05-22 20:16:55');
+INSERT INTO `sys_log` VALUES ('1793254711155539970', '1', 'admin', '菜单权限管理-获取所有菜单权限', 72, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '172.29.0.1', '2024-05-22 20:16:55');
+INSERT INTO `sys_log` VALUES ('1796089360160935937', '1', 'admin', '菜单权限管理-获取所有菜单权限', 110, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '192.168.63.1', '2024-05-30 16:00:48');
+INSERT INTO `sys_log` VALUES ('1796090035682955266', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 71, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '192.168.63.1', '2024-05-30 16:03:29');
+INSERT INTO `sys_log` VALUES ('1796090284447125506', '1', 'admin', '菜单权限管理-新增菜单权限', 4, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1717056268214,\"deleted\":1,\"icon\":\"\",\"id\":\"1796090284447125505\",\"name\":\"委托报告生成\",\"orderNum\":100,\"perms\":\"nonDestructiveTestingOrder:generateReport\",\"pid\":\"1791438559361294337\",\"pidName\":\"委托管理\",\"status\":1,\"target\":\"_self\",\"type\":3,\"updateTime\":1717056268214,\"url\":\"nonDestructiveTestingOrder/generateReport\"}]', '192.168.63.1', '2024-05-30 16:04:28');
+INSERT INTO `sys_log` VALUES ('1796090284849778689', '1', 'admin', '菜单权限管理-获取所有菜单权限', 86, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '192.168.63.1', '2024-05-30 16:04:28');
+INSERT INTO `sys_log` VALUES ('1796090320484585474', '1', 'admin', '菜单权限管理-获取所有菜单权限', 58, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '192.168.63.1', '2024-05-30 16:04:37');
+INSERT INTO `sys_log` VALUES ('1796090330492194818', '1', 'admin', '角色管理-分页获取角色信息', 11, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '192.168.63.1', '2024-05-30 16:04:39');
+INSERT INTO `sys_log` VALUES ('1796090338188742657', '1', 'admin', '角色管理-查询角色详情', 80, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '192.168.63.1', '2024-05-30 16:04:41');
+INSERT INTO `sys_log` VALUES ('1796090365858566146', '1', 'admin', '角色管理-更新角色信息', 54, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791796173021839361\",\"1791796173021839362\",\"1791796173021839363\",\"1791796173021839364\",\"1791796173021839365\",\"1792909324342255617\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1796090284447125505\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"1791783234189557761\",\"1791783234189557762\",\"1791783234189557763\",\"1791783234189557764\",\"1791783234189557765\",\"1791786404361953281\",\"1791786404361953282\",\"1791786404361953283\",\"1791786404361953284\",\"1791786404361953285\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1717056287579}]', '192.168.63.1', '2024-05-30 16:04:48');
+INSERT INTO `sys_log` VALUES ('1796090365988589569', '1', 'admin', '角色管理-分页获取角色信息', 3, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '192.168.63.1', '2024-05-30 16:04:48');
+INSERT INTO `sys_log` VALUES ('1796090402239959041', NULL, NULL, '用户管理-退出', 2, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '192.168.63.1', '2024-05-30 16:04:56');
+INSERT INTO `sys_log` VALUES ('1796096267642826753', '1', 'admin', '菜单权限管理-获取所有菜单权限', 104, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '192.168.63.1', '2024-05-30 16:28:15');
+INSERT INTO `sys_log` VALUES ('1796096275939160065', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 72, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '192.168.63.1', '2024-05-30 16:28:17');
+INSERT INTO `sys_log` VALUES ('1796096527932944386', '1', 'admin', '菜单权限管理-新增菜单权限', 7, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1717057756780,\"deleted\":1,\"icon\":\"\",\"id\":\"1796096527932944385\",\"name\":\"宏观报告生成\",\"orderNum\":100,\"perms\":\"macroCommission:generateReport\",\"pid\":\"1791786404361953281\",\"pidName\":\"宏观委托\",\"status\":1,\"target\":\"_self\",\"type\":3,\"updateTime\":1717057756780,\"url\":\"macroCommission/generateReport\"}]', '192.168.63.1', '2024-05-30 16:29:17');
+INSERT INTO `sys_log` VALUES ('1796096528264294401', '1', 'admin', '菜单权限管理-获取所有菜单权限', 63, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '192.168.63.1', '2024-05-30 16:29:17');
+INSERT INTO `sys_log` VALUES ('1796096537118470146', '1', 'admin', '菜单权限管理-获取所有目录菜单树', 57, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermissionTree()', '[\"\"]', '192.168.63.1', '2024-05-30 16:29:19');
+INSERT INTO `sys_log` VALUES ('1796096805344210945', '1', 'admin', '菜单权限管理-新增菜单权限', 6, 'cn.edu.lut.welder.controller.PermissionController.addPermission()', '[{\"createTime\":1717057822915,\"deleted\":1,\"icon\":\"\",\"id\":\"1796096805277102082\",\"name\":\"弯曲报告生成\",\"orderNum\":100,\"perms\":\"bendCommission:generateReport\",\"pid\":\"1791783234189557761\",\"pidName\":\"弯曲委托\",\"status\":1,\"target\":\"_self\",\"type\":3,\"updateTime\":1717057822915,\"url\":\"bendCommission/generateReport\"}]', '192.168.63.1', '2024-05-30 16:30:23');
+INSERT INTO `sys_log` VALUES ('1796096805612646402', '1', 'admin', '菜单权限管理-获取所有菜单权限', 57, 'cn.edu.lut.welder.controller.PermissionController.getAllMenusPermission()', NULL, '192.168.63.1', '2024-05-30 16:30:23');
+INSERT INTO `sys_log` VALUES ('1796096838051393538', '1', 'admin', '角色管理-分页获取角色信息', 11, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '192.168.63.1', '2024-05-30 16:30:31');
+INSERT INTO `sys_log` VALUES ('1796096848990138370', '1', 'admin', '角色管理-查询角色详情', 67, 'cn.edu.lut.welder.controller.RoleController.detailInfo()', '[\"1\"]', '192.168.63.1', '2024-05-30 16:30:33');
+INSERT INTO `sys_log` VALUES ('1796096889804910593', '1', 'admin', '角色管理-更新角色信息', 49, 'cn.edu.lut.welder.controller.RoleController.updateDept()', '[{\"description\":\"拥有所有权限-不能删除\",\"id\":\"1\",\"name\":\"超级管理员\",\"permissions\":[\"51\",\"11\",\"17\",\"26\",\"40\",\"43\",\"44\",\"53\",\"3\",\"19\",\"36\",\"1311115974068449281\",\"13\",\"39\",\"24\",\"10\",\"23\",\"25\",\"42\",\"52\",\"56\",\"57\",\"41\",\"5\",\"9\",\"12\",\"22\",\"38\",\"1790296429132517378\",\"1790221597925158914\",\"1790221597925158915\",\"1790221597925158916\",\"1790221597925158917\",\"1790221597925158918\",\"1790328183004393474\",\"1790669456553254913\",\"1790669773055434753\",\"1790669773055434754\",\"1790669773055434755\",\"1790669773055434756\",\"1790669773055434757\",\"1791392135730946050\",\"1791796173021839361\",\"1791796173021839362\",\"1791796173021839363\",\"1791796173021839364\",\"1791796173021839365\",\"1792909324342255617\",\"1791109342357401601\",\"1791109342357401602\",\"1791109342357401603\",\"1791109342357401604\",\"1791109342357401605\",\"1791401485870485505\",\"1791439755732008962\",\"1791438559361294337\",\"1791438559361294338\",\"1791438559361294339\",\"1791438559361294340\",\"1791438559361294341\",\"1796090284447125505\",\"1791761708090343425\",\"1791761708090343426\",\"1791761708090343427\",\"1791761708090343428\",\"1791761708090343429\",\"1791783234189557761\",\"1791783234189557762\",\"1791783234189557763\",\"1791783234189557764\",\"1791783234189557765\",\"1796096805277102082\",\"1791786404361953281\",\"1791786404361953282\",\"1791786404361953283\",\"1791786404361953284\",\"1791786404361953285\",\"1796096527932944385\",\"54\",\"15\",\"1\",\"4\",\"16\",\"20\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"45\",\"46\",\"47\",\"48\",\"49\",\"59\",\"60\",\"61\",\"62\",\"63\",\"55\",\"18\",\"14\",\"8\",\"7\",\"58\",\"21\",\"50\",\"2\",\"6\"],\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"},\"status\":1,\"updateTime\":1717057843025}]', '192.168.63.1', '2024-05-30 16:30:43');
+INSERT INTO `sys_log` VALUES ('1796096889939128321', '1', 'admin', '角色管理-分页获取角色信息', 4, 'cn.edu.lut.welder.controller.RoleController.pageInfo()', '[{\"name\":\"\",\"queryPage\":{\"current\":\"1\",\"hitCount\":false,\"optimizeCountSql\":true,\"orders\":[],\"pages\":\"0\",\"records\":[],\"searchCount\":true,\"size\":\"10\",\"total\":\"0\"}}]', '192.168.63.1', '2024-05-30 16:30:43');
+INSERT INTO `sys_log` VALUES ('1796096985166561282', NULL, NULL, '用户管理-退出', 4, 'cn.edu.lut.welder.controller.UserController.logout()', NULL, '192.168.63.1', '2024-05-30 16:31:06');
+
+-- ----------------------------
+-- Table structure for sys_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_permission`;
+CREATE TABLE `sys_permission`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  `name` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单权限名称',
+  `perms` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '授权(多个用逗号分隔，如：sys:user:add,sys:user:edit)',
+  `icon` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标',
+  `url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '访问地址URL',
+  `target` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'a target属性:_self _blank',
+  `pid` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父级菜单权限名称',
+  `order_num` int(11) NULL DEFAULT NULL COMMENT '排序',
+  `type` tinyint(4) NULL DEFAULT NULL COMMENT '菜单权限类型(1:目录;2:菜单;3:按钮)',
+  `status` tinyint(4) NULL DEFAULT NULL COMMENT '状态1:正常 0：禁用',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(4) NULL DEFAULT NULL COMMENT '是否删除(1未删除；0已删除)',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统权限' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of sys_permission
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES ('1', '删除', 'sysGenerator:delete', NULL, 'sysGenerator/delete', NULL, '15', 1, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('10', '赋予角色', 'sys:user:role:update', NULL, 'sys/user/roles/*', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('11', '菜单权限管理', NULL, NULL, 'index/menus', '_self', '51', 98, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('12', '列表', 'sys:dept:list', NULL, 'sys/depts', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('13', '删除', 'sys:role:deleted', NULL, 'sys/role/*', NULL, '53', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('1311115974068449281', '数据权限', 'sys:role:bindDept', '', 'sys/role/bindDept', '_self', '53', 5, 3, 1, '2020-09-30 09:29:42', NULL, 1);
+INSERT INTO `sys_permission` VALUES ('14', '定时任务立即执行', 'sysJob:run', NULL, 'sysJob/run', '_self', '59', 5, 3, 1, '2020-04-22 15:47:54', NULL, 1);
+INSERT INTO `sys_permission` VALUES ('15', '代码生成', NULL, NULL, 'index/sysGenerator', '_self', '54', 1, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('16', '列表', 'sysGenerator:list', NULL, 'sysGenerator/listByPage', NULL, '15', 1, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('17', '详情', 'sys:permission:detail', NULL, 'sys/permission/*', NULL, '11', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('1790221597925158914', '考试台账管理', '', 'layui-icon-home', 'index/examinationLedger', '_self', '1790296429132517378', 100, 2, 1, NULL, '2024-05-15 17:21:06', 1);
+INSERT INTO `sys_permission` VALUES ('1790221597925158915', '新增', 'examinationLedger:add', NULL, 'examinationLedger/add', NULL, '1790221597925158914', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1790221597925158916', '修改', 'examinationLedger:update', NULL, 'examinationLedger/update', NULL, '1790221597925158914', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1790221597925158917', '删除', 'examinationLedger:delete', NULL, 'examinationLedger/delete', NULL, '1790221597925158914', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1790221597925158918', '列表', 'examinationLedger:list', '', 'examinationLedger/listByPage', NULL, '1790221597925158914', 100, 3, 1, NULL, '2024-05-15 16:26:13', 1);
+INSERT INTO `sys_permission` VALUES ('1790296429132517378', '台账管理', '', 'layui-icon-home', '', '_self', '0', 1, 1, 1, '2024-05-14 16:21:45', '2024-05-14 16:21:45', 1);
+INSERT INTO `sys_permission` VALUES ('1790328183004393474', '导入数据', 'examinationLedger:import_Data', '', 'examinationLedger/import_excel', '_self', '1790221597925158914', 100, 3, 1, '2024-05-14 18:27:56', '2024-05-14 18:28:21', 1);
+INSERT INTO `sys_permission` VALUES ('1790657146417815554', 'examinationLedger', NULL, NULL, 'index/examinationLedger', '_self', '21', 10, 2, 1, NULL, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('1790657146417815555', '新增', 'examinationLedger:add', NULL, 'examinationLedger/add', NULL, '1790657146417815554', NULL, 3, 1, NULL, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('1790657146417815556', '修改', 'examinationLedger:update', NULL, 'examinationLedger/update', NULL, '1790657146417815554', NULL, 3, 1, NULL, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('1790657146417815557', '删除', 'examinationLedger:delete', NULL, 'examinationLedger/delete', NULL, '1790657146417815554', NULL, 3, 1, NULL, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('1790657146417815558', '列表', 'examinationLedger:list', NULL, 'examinationLedger/listByPage', NULL, '1790657146417815554', NULL, 3, 1, NULL, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('1790665164387758081', '流转卡', '', 'layui-icon-home', 'index/circulationCard', '_self', '1790667306649473026', 10, 2, 1, NULL, '2024-05-15 16:56:08', 0);
+INSERT INTO `sys_permission` VALUES ('1790665164387758082', '新增', 'circulationCard:add', NULL, 'circulationCard/add', NULL, '1790665164387758081', NULL, 3, 1, NULL, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('1790665164387758083', '修改', 'circulationCard:update', NULL, 'circulationCard/update', NULL, '1790665164387758081', NULL, 3, 1, NULL, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('1790665164387758084', '删除', 'circulationCard:delete', NULL, 'circulationCard/delete', NULL, '1790665164387758081', NULL, 3, 1, NULL, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('1790665164387758085', '列表', 'circulationCard:list', NULL, 'circulationCard/listByPage', NULL, '1790665164387758081', NULL, 3, 1, NULL, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('1790667306649473026', '流转卡管理', '', '', '', '_self', '0', 1, 1, 1, '2024-05-15 16:55:30', '2024-05-15 17:03:15', 0);
+INSERT INTO `sys_permission` VALUES ('1790669456553254913', '流转卡管理', '', 'layui-icon-home', '', '_self', '0', 1, 1, 1, '2024-05-15 17:04:02', '2024-05-15 17:09:01', 1);
+INSERT INTO `sys_permission` VALUES ('1790669773055434753', '流转卡管理', '', 'layui-icon-rate', 'index/circulationCard', '_self', '1790669456553254913', 100, 2, 1, NULL, '2024-05-15 17:34:13', 1);
+INSERT INTO `sys_permission` VALUES ('1790669773055434754', '新增', 'circulationCard:add', NULL, 'circulationCard/add', NULL, '1790669773055434753', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1790669773055434755', '修改', 'circulationCard:update', NULL, 'circulationCard/update', NULL, '1790669773055434753', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1790669773055434756', '删除', 'circulationCard:delete', NULL, 'circulationCard/delete', NULL, '1790669773055434753', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1790669773055434757', '列表', 'circulationCard:list', '', 'circulationCard/listByPage', NULL, '1790669773055434753', 100, 3, 1, NULL, '2024-05-15 17:12:13', 1);
+INSERT INTO `sys_permission` VALUES ('1790674640377413633', '流转卡', '', '', 'index/circulationCard', '_self', '1790296429132517378', 100, 2, 1, '2024-05-15 17:24:38', '2024-05-15 17:25:09', 0);
+INSERT INTO `sys_permission` VALUES ('1791109342357401601', '外观检查记录管理', '', 'layui-icon-rate-solid', 'index/appearanceInspectionRecord', '_self', '1791392135730946050', 100, 2, 1, NULL, '2024-05-17 17:24:07', 1);
+INSERT INTO `sys_permission` VALUES ('1791109342357401602', '新增', 'appearanceInspectionRecord:add', NULL, 'appearanceInspectionRecord/add', NULL, '1791109342357401601', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791109342357401603', '修改', 'appearanceInspectionRecord:update', NULL, 'appearanceInspectionRecord/update', NULL, '1791109342357401601', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791109342357401604', '删除', 'appearanceInspectionRecord:delete', NULL, 'appearanceInspectionRecord/delete', NULL, '1791109342357401601', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791109342357401605', '列表', 'appearanceInspectionRecord:list', NULL, 'appearanceInspectionRecord/listByPage', NULL, '1791109342357401601', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791392135730946050', '外观管理', '', 'layui-icon-rate', '', '_self', '0', 1, 1, 1, '2024-05-17 16:55:42', '2024-05-17 17:23:13', 1);
+INSERT INTO `sys_permission` VALUES ('1791401485870485505', '导入excel数据', 'appearanceInspectionRecord:import_Data', '', 'appearanceInspectionRecord/import_excel', '_self', '1791109342357401601', 100, 3, 1, '2024-05-17 17:32:52', '2024-05-17 18:40:04', 1);
+INSERT INTO `sys_permission` VALUES ('1791438559361294337', '委托管理', '', 'layui-icon-theme', 'index/nonDestructiveTestingOrder', '_self', '1791439755732008962', 10, 2, 1, NULL, '2024-05-18 17:11:02', 1);
+INSERT INTO `sys_permission` VALUES ('1791438559361294338', '新增', 'nonDestructiveTestingOrder:add', NULL, 'nonDestructiveTestingOrder/add', NULL, '1791438559361294337', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791438559361294339', '修改', 'nonDestructiveTestingOrder:update', NULL, 'nonDestructiveTestingOrder/update', NULL, '1791438559361294337', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791438559361294340', '删除', 'nonDestructiveTestingOrder:delete', NULL, 'nonDestructiveTestingOrder/delete', NULL, '1791438559361294337', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791438559361294341', '列表', 'nonDestructiveTestingOrder:list', NULL, 'nonDestructiveTestingOrder/listByPage', NULL, '1791438559361294337', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791439755732008962', '委托数据管理', '', 'layui-icon-home', '', '_self', '0', 1, 1, 1, '2024-05-17 20:04:56', '2024-05-18 17:11:30', 1);
+INSERT INTO `sys_permission` VALUES ('1791761708090343425', '加工委托管理', '', 'layui-icon-snowflake', 'index/processingEntrustment', '_self', '1791439755732008962', 10, 2, 1, NULL, '2024-05-18 17:31:06', 1);
+INSERT INTO `sys_permission` VALUES ('1791761708090343426', '新增', 'processingEntrustment:add', NULL, 'processingEntrustment/add', NULL, '1791761708090343425', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791761708090343427', '修改', 'processingEntrustment:update', NULL, 'processingEntrustment/update', NULL, '1791761708090343425', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791761708090343428', '删除', 'processingEntrustment:delete', NULL, 'processingEntrustment/delete', NULL, '1791761708090343425', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791761708090343429', '列表', 'processingEntrustment:list', NULL, 'processingEntrustment/listByPage', NULL, '1791761708090343425', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791783234189557761', '弯曲委托', '', 'layui-icon-flag', 'index/bendCommission', '_self', '1791439755732008962', 10, 2, 1, NULL, '2024-05-18 18:55:08', 1);
+INSERT INTO `sys_permission` VALUES ('1791783234189557762', '新增', 'bendCommission:add', NULL, 'bendCommission/add', NULL, '1791783234189557761', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791783234189557763', '修改', 'bendCommission:update', NULL, 'bendCommission/update', NULL, '1791783234189557761', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791783234189557764', '删除', 'bendCommission:delete', NULL, 'bendCommission/delete', NULL, '1791783234189557761', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791783234189557765', '列表', 'bendCommission:list', NULL, 'bendCommission/listByPage', NULL, '1791783234189557761', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791786404361953281', '宏观委托', '', 'layui-icon-username', 'index/macroCommission', '_self', '1791439755732008962', 10, 2, 1, NULL, '2024-05-18 19:08:31', 1);
+INSERT INTO `sys_permission` VALUES ('1791786404361953282', '新增', 'macroCommission:add', NULL, 'macroCommission/add', NULL, '1791786404361953281', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791786404361953283', '修改', 'macroCommission:update', NULL, 'macroCommission/update', NULL, '1791786404361953281', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791786404361953284', '删除', 'macroCommission:delete', NULL, 'macroCommission/delete', NULL, '1791786404361953281', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791786404361953285', '列表', 'macroCommission:list', NULL, 'macroCommission/listByPage', NULL, '1791786404361953281', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791796173021839361', '外观检验记录表管理', '', 'layui-icon-face-smile', 'index/inspectionRecords', '_self', '1791392135730946050', 10, 2, 1, NULL, '2024-05-18 19:46:23', 1);
+INSERT INTO `sys_permission` VALUES ('1791796173021839362', '新增', 'inspectionRecords:add', NULL, 'inspectionRecords/add', NULL, '1791796173021839361', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791796173021839363', '修改', 'inspectionRecords:update', NULL, 'inspectionRecords/update', NULL, '1791796173021839361', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791796173021839364', '删除', 'inspectionRecords:delete', NULL, 'inspectionRecords/delete', NULL, '1791796173021839361', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791796173021839365', '列表', 'inspectionRecords:list', NULL, 'inspectionRecords/listByPage', NULL, '1791796173021839361', NULL, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('1791796570398588930', '外观检验记录', '', 'layui-icon-notice', '', '_self', '0', 1, 1, 1, '2024-05-18 19:42:47', '2024-05-18 19:42:47', 0);
+INSERT INTO `sys_permission` VALUES ('1792909324342255617', '生成检验记录表', 'inspectionRecords:generateInspectionTable', '', 'inspectionRecords/generateInspectionTable', '_self', '1791796173021839361', 100, 3, 1, '2024-05-21 21:24:28', '2024-05-21 21:24:28', 1);
+INSERT INTO `sys_permission` VALUES ('1793251201336782850', 'demo', 'examinationLedger:demo', '', 'examinationLedger/demo', '_self', '1790221597925158914', 100, 3, 1, '2024-05-22 20:02:58', '2024-05-22 20:05:45', 0);
+INSERT INTO `sys_permission` VALUES ('1796090284447125505', '委托报告生成', 'nonDestructiveTestingOrder:generateReport', '', 'nonDestructiveTestingOrder/generateReport', '_self', '1791438559361294337', 100, 3, 1, '2024-05-30 16:04:28', '2024-05-30 16:04:28', 1);
+INSERT INTO `sys_permission` VALUES ('1796096527932944385', '宏观报告生成', 'macroCommission:generateReport', '', 'macroCommission/generateReport', '_self', '1791786404361953281', 100, 3, 1, '2024-05-30 16:29:17', '2024-05-30 16:29:17', 1);
+INSERT INTO `sys_permission` VALUES ('1796096805277102082', '弯曲报告生成', 'bendCommission:generateReport', '', 'bendCommission/generateReport', '_self', '1791783234189557761', 100, 3, 1, '2024-05-30 16:30:23', '2024-05-30 16:30:23', 1);
+INSERT INTO `sys_permission` VALUES ('18', '定时任务恢复', 'sysJob:resume', NULL, 'sysJob/resume', '_self', '59', 4, 3, 1, '2020-04-22 15:48:40', NULL, 1);
+INSERT INTO `sys_permission` VALUES ('19', '列表', 'sys:role:list', NULL, 'sys/roles', NULL, '53', 0, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('2', 'SQL 监控', '', '', 'druid/sql.html', '_self', '21', 98, 2, 1, '2020-03-19 13:29:40', '2020-05-07 13:36:59', 1);
+INSERT INTO `sys_permission` VALUES ('20', '修改', 'sysGenerator:update', NULL, 'sysGenerator/update', NULL, '15', 1, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('21', '其他', NULL, 'layui-icon-list', NULL, NULL, '0', 200, 1, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('22', '详情', 'sys:dept:detail', NULL, 'sys/dept/*', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('23', '列表', 'sys:user:list', NULL, 'sys/users', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('24', '用户管理', NULL, NULL, 'index/users', '_self', '51', 100, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('25', '详情', 'sys:user:detail', NULL, 'sys/user/*', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('26', '删除', 'sys:permission:deleted', NULL, 'sys/permission/*', NULL, '11', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('27', '文件管理', '', '', 'index/sysFiles', '_self', '54', 10, 2, 1, NULL, '2020-06-15 16:00:29', 1);
+INSERT INTO `sys_permission` VALUES ('28', '列表', 'sysFiles:list', NULL, 'sysFiles/listByPage', NULL, '27', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('29', '新增', 'sysFiles:add', NULL, 'sysFiles/add', NULL, '27', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('3', '新增', 'sys:role:add', NULL, 'sys/role', NULL, '53', 0, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('30', '删除', 'sysFiles:delete', NULL, 'sysFiles/delete', NULL, '27', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('31', '文章管理', NULL, NULL, 'index/sysContent', '_self', '54', 10, 2, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('32', '列表', 'sysContent:list', NULL, 'sysContent/listByPage', NULL, '31', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('33', '新增', 'sysContent:add', NULL, 'sysContent/add', NULL, '31', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('34', '修改', 'sysContent:update', NULL, 'sysContent/update', NULL, '31', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('35', '删除', 'sysContent:delete', NULL, 'sysContent/delete', NULL, '31', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('36', '更新', 'sys:role:update', NULL, 'sys/role', NULL, '53', 0, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('38', '更新', 'sys:dept:update', NULL, 'sys/dept', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('39', '详情', 'sys:role:detail', NULL, 'sys/role/*', NULL, '53', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('4', '添加', 'sysGenerator:add', NULL, 'sysGenerator/add', NULL, '15', 1, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('40', '编辑', 'sys:permission:update', NULL, 'sys/permission', NULL, '11', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('41', '部门管理', NULL, NULL, 'index/depts', '_self', '51', 100, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('42', '新增', 'sys:user:add', NULL, 'sys/user', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('43', '列表', 'sys:permission:list', NULL, 'sys/permissions', NULL, '11', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('44', '新增', 'sys:permission:add', NULL, 'sys/permission', NULL, '11', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('45', '字典管理', NULL, '', 'index/sysDict', NULL, '54', 10, 2, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('46', '列表', 'sysDict:list', NULL, 'sysDict/listByPage', NULL, '45', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('47', '新增', 'sysDict:add', NULL, 'sysDict/add', NULL, '45', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('48', '修改', 'sysDict:update', NULL, 'sysDict/update', NULL, '45', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('49', '删除', 'sysDict:delete', NULL, 'sysDict/delete', NULL, '45', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('5', '删除', 'sys:dept:deleted', NULL, 'sys/dept/*', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('50', '表单构建', '', '', 'index/build', '_self', '21', 1, 2, 1, '2020-04-22 13:09:41', '2020-05-07 13:36:47', 1);
+INSERT INTO `sys_permission` VALUES ('51', '组织管理', NULL, 'layui-icon-user', NULL, NULL, '0', 1, 1, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('52', '拥有角色', 'sys:user:role:detail', NULL, 'sys/user/roles/*', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('53', '角色管理', NULL, NULL, 'index/roles', '_self', '51', 99, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('54', '系统管理', NULL, 'layui-icon-set-fill', NULL, NULL, '0', 98, 1, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('55', '定时任务暂停', 'sysJob:pause', NULL, 'sysJob/pause', '_self', '59', 1, 3, 1, '2020-04-22 15:48:18', NULL, 1);
+INSERT INTO `sys_permission` VALUES ('56', '更新', 'sys:user:update', NULL, 'sys/user', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('57', '删除', 'sys:user:deleted', NULL, 'sys/user', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('58', '删除', 'sys:log:deleted', NULL, 'sys/logs', NULL, '8', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('59', '定时任务', NULL, NULL, 'index/sysJob', '_self', '54', 10, 2, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('6', '接口管理', '', '', 'doc.html', '_blank', '21', 100, 2, 1, '2020-03-19 13:29:40', '2020-05-07 13:36:02', 1);
+INSERT INTO `sys_permission` VALUES ('60', '列表', 'sysJob:list', NULL, 'sysJob/listByPage', NULL, '59', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('61', '新增', 'sysJob:add', NULL, 'sysJob/add', NULL, '59', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('62', '修改', 'sysJob:update', NULL, 'sysJob/update', NULL, '59', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('63', '删除', 'sysJob:delete', NULL, 'sysJob/delete', NULL, '59', 0, 3, 1, NULL, NULL, 1);
+INSERT INTO `sys_permission` VALUES ('7', '列表', 'sys:log:list', NULL, 'sys/logs', NULL, '8', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('8', '日志管理', NULL, NULL, 'index/logs', '_self', '54', 97, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+INSERT INTO `sys_permission` VALUES ('9', '新增', 'sys:dept:add', NULL, 'sys/dept', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
+
+-- ----------------------------
+-- Table structure for sys_role
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role`;
+CREATE TABLE `sys_role`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色名称',
+  `description` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `status` tinyint(4) NULL DEFAULT NULL COMMENT '状态(1:正常0:弃用)',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(4) NULL DEFAULT NULL COMMENT '是否删除(1未删除；0已删除)',
+  `data_scope` int(11) NULL DEFAULT NULL COMMENT '数据范围（1：所有 2：自定义 3： 本部门及以下部门 4：仅本部门 5:自己）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统角色' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_role
+-- ----------------------------
+INSERT INTO `sys_role` VALUES ('1', '超级管理员', '拥有所有权限-不能删除', 1, '2019-11-01 19:26:29', '2024-05-30 16:30:43', 1, 1);
+
+-- ----------------------------
+-- Table structure for sys_role_dept
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_dept`;
+CREATE TABLE `sys_role_dept`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  `role_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色id',
+  `dept_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门id',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色部门' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of sys_role_dept
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_role_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_permission`;
+CREATE TABLE `sys_role_permission`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  `role_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色id',
+  `permission_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单权限id',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_role_permission
+-- ----------------------------
+INSERT INTO `sys_role_permission` VALUES ('1796096889670692866', '1', '51', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801729', '1', '11', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801730', '1', '17', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801731', '1', '26', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801732', '1', '40', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801733', '1', '43', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801734', '1', '44', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801735', '1', '53', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801736', '1', '3', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801737', '1', '19', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801738', '1', '36', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801739', '1', '1311115974068449281', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801740', '1', '13', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801741', '1', '39', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801742', '1', '24', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801743', '1', '10', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801744', '1', '23', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801745', '1', '25', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801746', '1', '42', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801747', '1', '52', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801748', '1', '56', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801749', '1', '57', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801750', '1', '41', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801751', '1', '5', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801752', '1', '9', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801753', '1', '12', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801754', '1', '22', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801755', '1', '38', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801756', '1', '1790296429132517378', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801757', '1', '1790221597925158914', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801758', '1', '1790221597925158915', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801759', '1', '1790221597925158916', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801760', '1', '1790221597925158917', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801761', '1', '1790221597925158918', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801762', '1', '1790328183004393474', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801763', '1', '1790669456553254913', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801764', '1', '1790669773055434753', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801765', '1', '1790669773055434754', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801766', '1', '1790669773055434755', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801767', '1', '1790669773055434756', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801768', '1', '1790669773055434757', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801769', '1', '1791392135730946050', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801770', '1', '1791796173021839361', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801771', '1', '1791796173021839362', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801772', '1', '1791796173021839363', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801773', '1', '1791796173021839364', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801774', '1', '1791796173021839365', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801775', '1', '1792909324342255617', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801776', '1', '1791109342357401601', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801777', '1', '1791109342357401602', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801778', '1', '1791109342357401603', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801779', '1', '1791109342357401604', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801780', '1', '1791109342357401605', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801781', '1', '1791401485870485505', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801782', '1', '1791439755732008962', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801783', '1', '1791438559361294337', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801784', '1', '1791438559361294338', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801785', '1', '1791438559361294339', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801786', '1', '1791438559361294340', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801787', '1', '1791438559361294341', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801788', '1', '1796090284447125505', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801789', '1', '1791761708090343425', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801790', '1', '1791761708090343426', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801791', '1', '1791761708090343427', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801792', '1', '1791761708090343428', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801793', '1', '1791761708090343429', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801794', '1', '1791783234189557761', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801795', '1', '1791783234189557762', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801796', '1', '1791783234189557763', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801797', '1', '1791783234189557764', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801798', '1', '1791783234189557765', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801799', '1', '1796096805277102082', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801800', '1', '1791786404361953281', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801801', '1', '1791786404361953282', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801802', '1', '1791786404361953283', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801803', '1', '1791786404361953284', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801804', '1', '1791786404361953285', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801805', '1', '1796096527932944385', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801806', '1', '54', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801807', '1', '15', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801808', '1', '1', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801809', '1', '4', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801810', '1', '16', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801811', '1', '20', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801812', '1', '27', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801813', '1', '28', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801814', '1', '29', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801815', '1', '30', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801816', '1', '31', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801817', '1', '32', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801818', '1', '33', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801819', '1', '34', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801820', '1', '35', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801821', '1', '45', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801822', '1', '46', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801823', '1', '47', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801824', '1', '48', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801825', '1', '49', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801826', '1', '59', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801827', '1', '60', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801828', '1', '61', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801829', '1', '62', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801830', '1', '63', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801831', '1', '55', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801832', '1', '18', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801833', '1', '14', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801834', '1', '8', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801835', '1', '7', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801836', '1', '58', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801837', '1', '21', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801838', '1', '50', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801839', '1', '2', '2024-05-30 16:30:43');
+INSERT INTO `sys_role_permission` VALUES ('1796096889737801840', '1', '6', '2024-05-30 16:30:43');
+
+-- ----------------------------
+-- Table structure for sys_user
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user`;
+CREATE TABLE `sys_user`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户id',
+  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账户名称',
+  `salt` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '加密盐值',
+  `password` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户密码密文',
+  `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机号码',
+  `dept_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门id',
+  `real_name` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '真实名称',
+  `nick_name` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '昵称',
+  `email` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱(唯一)',
+  `status` tinyint(4) NULL DEFAULT NULL COMMENT '账户状态(1.正常 0.锁定 )',
+  `sex` tinyint(4) NULL DEFAULT NULL COMMENT '性别(1.男 2.女)',
+  `deleted` tinyint(4) NULL DEFAULT NULL COMMENT '是否删除(1未删除；0已删除)',
+  `create_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `update_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `create_where` tinyint(4) NULL DEFAULT NULL COMMENT '创建来源(1.web 2.android 3.ios )',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_user
+-- ----------------------------
+INSERT INTO `sys_user` VALUES ('1', 'admin', '324ce32d86224b00a02b', '2102b59a75ab87616b62d0b9432569d0', '13888888888', '1', '爱糖宝', '爱糖宝', 'xxxxxx@163.com', 1, 2, 1, '1', '1', 3, '2019-09-22 19:38:05', '2020-03-18 09:15:22');
+
+-- ----------------------------
+-- Table structure for sys_user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_role`;
+CREATE TABLE `sys_user_role`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户id',
+  `user_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `role_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色id',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户角色' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_user_role
+-- ----------------------------
+INSERT INTO `sys_user_role` VALUES ('1', '1', '1', '2020-03-19 02:23:13');
+
+-- ----------------------------
+-- Table structure for test_order
+-- ----------------------------
+DROP TABLE IF EXISTS `test_order`;
+CREATE TABLE `test_order`  (
+  `id` int(11) NOT NULL,
+  `principal_id` int(11) NULL DEFAULT NULL,
+  `request_unit` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `sample_delivery_time` datetime NULL DEFAULT NULL,
+  `client` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `number_samples` int(11) NULL DEFAULT NULL,
+  `product_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `specification` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `report_form` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `submit_customer_reports` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `drawing` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `according_standard` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `sample_specifications` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `pilot_projects` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `planned_completion_date` datetime NULL DEFAULT NULL,
+  `material` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `specifications` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `inspection_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of test_order
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for welding_consumables
+-- ----------------------------
+DROP TABLE IF EXISTS `welding_consumables`;
+CREATE TABLE `welding_consumables`  (
+  `id` bigint(11) NOT NULL,
+  `material` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `specification` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `warehouse_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `num` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of welding_consumables
+-- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;
-
-
--- 角色权限关联
-DROP TABLE IF EXISTS sys_role_permission;
-CREATE TABLE sys_role_permission (
-  id varchar(64) NOT NULL COMMENT '主键',
-  role_id varchar(64) DEFAULT NULL COMMENT '角色id',
-  permission_id varchar(64) DEFAULT NULL COMMENT '菜单权限id',
-  create_time datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- 用户表
-DROP TABLE IF EXISTS sys_user;
-CREATE TABLE sys_user (
-  id varchar(64) NOT NULL COMMENT '用户id',
-  username varchar(50) NOT NULL COMMENT '账户名称',
-  salt varchar(20) DEFAULT NULL COMMENT '加密盐值',
-  password varchar(200) NOT NULL COMMENT '用户密码密文',
-  phone varchar(20) DEFAULT NULL COMMENT '手机号码',
-  dept_id varchar(64) DEFAULT NULL COMMENT '部门id',
-  real_name varchar(60) DEFAULT NULL COMMENT '真实名称',
-  nick_name varchar(60) DEFAULT NULL COMMENT '昵称',
-  email varchar(50) DEFAULT NULL COMMENT '邮箱(唯一)',
-  status tinyint(4) COMMENT '账户状态(1.正常 0.锁定 )',
-  sex tinyint(4) COMMENT '性别(1.男 2.女)',
-  deleted tinyint(4)  COMMENT '是否删除(1未删除；0已删除)',
-  create_id varchar(64) DEFAULT NULL COMMENT '创建人',
-  update_id varchar(64) DEFAULT NULL COMMENT '更新人',
-  create_where tinyint(4) COMMENT '创建来源(1.web 2.android 3.ios )',
-  create_time datetime DEFAULT NULL COMMENT '创建时间',
-  update_time datetime DEFAULT NULL,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统用户';
-
--- 用户角色关联表
-DROP TABLE IF EXISTS sys_user_role;
-CREATE TABLE sys_user_role (
-  id varchar(64) NOT NULL COMMENT '用户id',
-  user_id varchar(64) DEFAULT NULL,
-  role_id varchar(64) DEFAULT NULL COMMENT '角色id',
-  create_time datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统用户角色';
-
--- 数据字典表
-DROP TABLE IF EXISTS sys_dict;
-CREATE TABLE sys_dict  (
-  id varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  name varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典名称',
-  remark varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
-  create_time datetime NULL DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (id) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典表' ROW_FORMAT = Compact;
-
-SET FOREIGN_KEY_CHECKS = 1;
-
-
-
--- 数据字典详情
-DROP TABLE IF EXISTS sys_dict_detail;
-CREATE TABLE sys_dict_detail  (
-  id varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  label varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典标签',
-  value varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典值',
-  sort smallint(6) NULL DEFAULT NULL COMMENT '排序',
-  dict_id varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典id',
-  create_time datetime NULL DEFAULT NULL COMMENT '创建日期',
-  PRIMARY KEY (id) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典详情' ROW_FORMAT = Compact;
-
-SET FOREIGN_KEY_CHECKS = 1;
-
--- 定时任务
-DROP TABLE IF EXISTS sys_job;
-CREATE TABLE sys_job  (
-  id varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务id',
-  bean_name varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
-  params varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数',
-  cron_expression varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'cron表达式',
-  status tinyint(4) NULL DEFAULT NULL COMMENT '任务状态  0：正常  1：暂停',
-  remark varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  create_time datetime NULL DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (id) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务' ROW_FORMAT = Compact;
-
-
-
-
--- 定时任务日志
-DROP TABLE IF EXISTS sys_job_log;
-CREATE TABLE sys_job_log  (
-  id varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务日志id',
-  job_id varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '任务id',
-  bean_name varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
-  params varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '参数',
-  status tinyint(4) NOT NULL COMMENT '任务状态    0：成功    1：失败',
-  error varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '失败信息',
-  times int(11) NOT NULL COMMENT '耗时(单位：毫秒)',
-  create_time datetime NULL DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (id) USING BTREE,
-  INDEX job_id(job_id) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务日志' ROW_FORMAT = Compact;
-
--- 2020.5.27添加文章管理
-DROP TABLE IF EXISTS sys_content;
-CREATE TABLE sys_content  (
-  id varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '主键',
-  title varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '标题',
-  one_img varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '单图url',
-  multiple_img varchar(500) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '多图url',
-  keywords varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '关键字',
-  type int(11)  DEFAULT NULL COMMENT '文章类型',
-  content longtext CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '内容',
-  create_time datetime NULL DEFAULT NULL COMMENT '创建时间',
-  create_id varchar(50) NULL DEFAULT NULL COMMENT '创建人',
-  PRIMARY KEY (id) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '文章管理' ROW_FORMAT = Compact;
-
--- 2020.6.15添加文件管理
-DROP TABLE IF EXISTS sys_files;
-CREATE TABLE sys_files  (
-  id varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  url varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'URL地址',
-  create_date datetime NULL DEFAULT NULL COMMENT '创建时间',
-  file_name varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件名称',
-  file_path varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (id) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '文件上传' ROW_FORMAT = Compact;
-
-
--- 初始数据
-INSERT INTO sys_dept(id, dept_no, name, pid, status, relation_code, dept_manager_id, manager_name, phone, deleted) VALUES ('1', 'D000001', '总公司', '0', 1, 'D000001', NULL, '小李', '13888888888', 1);
-INSERT INTO sys_permission VALUES ('1', '删除', 'sysGenerator:delete', NULL, 'sysGenerator/delete', NULL, '15', 1, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('10', '赋予角色', 'sys:user:role:update', NULL, 'sys/user/roles/*', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('11', '菜单权限管理', NULL, NULL, 'index/menus', '_self', '51', 98, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('12', '列表', 'sys:dept:list', NULL, 'sys/depts', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('13', '删除', 'sys:role:deleted', NULL, 'sys/role/*', NULL, '53', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('1311115974068449281', '数据权限', 'sys:role:bindDept', '', 'sys/role/bindDept', '_self', '53', 5, 3, 1, '2020-09-30 09:29:42', NULL, 1);
-INSERT INTO sys_permission VALUES ('14', '定时任务立即执行', 'sysJob:run', NULL, 'sysJob/run', '_self', '59', 5, 3, 1, '2020-04-22 15:47:54', NULL, 1);
-INSERT INTO sys_permission VALUES ('15', '代码生成', NULL, NULL, 'index/sysGenerator', '_self', '54', 1, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('16', '列表', 'sysGenerator:list', NULL, 'sysGenerator/listByPage', NULL, '15', 1, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('17', '详情', 'sys:permission:detail', NULL, 'sys/permission/*', NULL, '11', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('18', '定时任务恢复', 'sysJob:resume', NULL, 'sysJob/resume', '_self', '59', 4, 3, 1, '2020-04-22 15:48:40', NULL, 1);
-INSERT INTO sys_permission VALUES ('19', '列表', 'sys:role:list', NULL, 'sys/roles', NULL, '53', 0, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('2', 'SQL 监控', '', '', 'druid/sql.html', '_self', '21', 98, 2, 1, '2020-03-19 13:29:40', '2020-05-07 13:36:59', 1);
-INSERT INTO sys_permission VALUES ('20', '修改', 'sysGenerator:update', NULL, 'sysGenerator/update', NULL, '15', 1, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('21', '其他', NULL, 'layui-icon-list', NULL, NULL, '0', 200, 1, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('22', '详情', 'sys:dept:detail', NULL, 'sys/dept/*', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('23', '列表', 'sys:user:list', NULL, 'sys/users', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('24', '用户管理', NULL, NULL, 'index/users', '_self', '51', 100, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('25', '详情', 'sys:user:detail', NULL, 'sys/user/*', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('26', '删除', 'sys:permission:deleted', NULL, 'sys/permission/*', NULL, '11', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('27', '文件管理', '', '', 'index/sysFiles', '_self', '54', 10, 2, 1, NULL, '2020-06-15 16:00:29', 1);
-INSERT INTO sys_permission VALUES ('28', '列表', 'sysFiles:list', NULL, 'sysFiles/listByPage', NULL, '27', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('29', '新增', 'sysFiles:add', NULL, 'sysFiles/add', NULL, '27', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('3', '新增', 'sys:role:add', NULL, 'sys/role', NULL, '53', 0, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('30', '删除', 'sysFiles:delete', NULL, 'sysFiles/delete', NULL, '27', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('31', '文章管理', NULL, NULL, 'index/sysContent', '_self', '54', 10, 2, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('32', '列表', 'sysContent:list', NULL, 'sysContent/listByPage', NULL, '31', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('33', '新增', 'sysContent:add', NULL, 'sysContent/add', NULL, '31', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('34', '修改', 'sysContent:update', NULL, 'sysContent/update', NULL, '31', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('35', '删除', 'sysContent:delete', NULL, 'sysContent/delete', NULL, '31', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('36', '更新', 'sys:role:update', NULL, 'sys/role', NULL, '53', 0, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('38', '更新', 'sys:dept:update', NULL, 'sys/dept', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('39', '详情', 'sys:role:detail', NULL, 'sys/role/*', NULL, '53', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('4', '添加', 'sysGenerator:add', NULL, 'sysGenerator/add', NULL, '15', 1, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('40', '编辑', 'sys:permission:update', NULL, 'sys/permission', NULL, '11', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('41', '部门管理', NULL, NULL, 'index/depts', '_self', '51', 100, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('42', '新增', 'sys:user:add', NULL, 'sys/user', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('43', '列表', 'sys:permission:list', NULL, 'sys/permissions', NULL, '11', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('44', '新增', 'sys:permission:add', NULL, 'sys/permission', NULL, '11', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('45', '字典管理', NULL, '', 'index/sysDict', NULL, '54', 10, 2, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('46', '列表', 'sysDict:list', NULL, 'sysDict/listByPage', NULL, '45', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('47', '新增', 'sysDict:add', NULL, 'sysDict/add', NULL, '45', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('48', '修改', 'sysDict:update', NULL, 'sysDict/update', NULL, '45', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('49', '删除', 'sysDict:delete', NULL, 'sysDict/delete', NULL, '45', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('5', '删除', 'sys:dept:deleted', NULL, 'sys/dept/*', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('50', '表单构建', '', '', 'index/build', '_self', '21', 1, 2, 1, '2020-04-22 13:09:41', '2020-05-07 13:36:47', 1);
-INSERT INTO sys_permission VALUES ('51', '组织管理', NULL, 'layui-icon-user', NULL, NULL, '0', 1, 1, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('52', '拥有角色', 'sys:user:role:detail', NULL, 'sys/user/roles/*', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('53', '角色管理', NULL, NULL, 'index/roles', '_self', '51', 99, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('54', '系统管理', NULL, 'layui-icon-set-fill', NULL, NULL, '0', 98, 1, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('55', '定时任务暂停', 'sysJob:pause', NULL, 'sysJob/pause', '_self', '59', 1, 3, 1, '2020-04-22 15:48:18', NULL, 1);
-INSERT INTO sys_permission VALUES ('56', '更新', 'sys:user:update', NULL, 'sys/user', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('57', '删除', 'sys:user:deleted', NULL, 'sys/user', NULL, '24', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('58', '删除', 'sys:log:deleted', NULL, 'sys/logs', NULL, '8', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('59', '定时任务', NULL, NULL, 'index/sysJob', '_self', '54', 10, 2, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('6', '接口管理', '', '', 'doc.html', '_blank', '21', 100, 2, 1, '2020-03-19 13:29:40', '2020-05-07 13:36:02', 1);
-INSERT INTO sys_permission VALUES ('60', '列表', 'sysJob:list', NULL, 'sysJob/listByPage', NULL, '59', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('61', '新增', 'sysJob:add', NULL, 'sysJob/add', NULL, '59', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('62', '修改', 'sysJob:update', NULL, 'sysJob/update', NULL, '59', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('63', '删除', 'sysJob:delete', NULL, 'sysJob/delete', NULL, '59', 0, 3, 1, NULL, NULL, 1);
-INSERT INTO sys_permission VALUES ('7', '列表', 'sys:log:list', NULL, 'sys/logs', NULL, '8', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('8', '日志管理', NULL, NULL, 'index/logs', '_self', '54', 97, 2, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_permission VALUES ('9', '新增', 'sys:dept:add', NULL, 'sys/dept', NULL, '41', 100, 3, 1, '2020-03-19 13:29:40', '2020-03-19 13:29:40', 1);
-INSERT INTO sys_role(id, name, description, status, create_time, update_time, deleted) VALUES ('1', '超级管理员', '拥有所有权限-不能删除', 1, '2019-11-01 19:26:29', '2020-03-19 13:29:51', 1);
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('1', '1', '1', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('10', '1', '10', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('11', '1', '11', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('12', '1', '12', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('13', '1', '13', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('14', '1', '14', '2020-05-26 17:04:21');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('15', '1', '15', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('16', '1', '16', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('17', '1', '17', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('18', '1', '18', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('19', '1', '19', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('2', '1', '2', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('20', '1', '20', '2020-05-26 17:04:21');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('21', '1', '21', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('22', '1', '22', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('23', '1', '23', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('24', '1', '24', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('25', '1', '25', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('26', '1', '26', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('27', '1', '27', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('28', '1', '28', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('29', '1', '29', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('3', '1', '3', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('30', '1', '30', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('31', '1', '31', '2020-05-26 17:04:21');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('32', '1', '32', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('33', '1', '33', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('34', '1', '34', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('35', '1', '35', '2020-05-26 17:04:21');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('36', '1', '36', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('38', '1', '38', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('39', '1', '39', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('4', '1', '4', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('40', '1', '40', '2020-06-15 15:21:17');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('41', '1', '41', '2020-06-15 15:21:17');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('42', '1', '42', '2020-06-15 15:21:17');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('43', '1', '43', '2020-06-15 15:21:17');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('44', '1', '44', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('45', '1', '45', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('46', '1', '46', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('47', '1', '47', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('48', '1', '48', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('49', '1', '49', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('5', '1', '5', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('50', '1', '50', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('51', '1', '51', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('52', '1', '52', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('53', '1', '53', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('54', '1', '54', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('55', '1', '55', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('56', '1', '56', '2020-05-26 17:04:21');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('57', '1', '57', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('58', '1', '58', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('59', '1', '59', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('6', '1', '6', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('60', '1', '60', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('61', '1', '61', '2020-05-26 14:21:56');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('62', '1', '62', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('63', '1', '63', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('7', '1', '7', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('8', '1', '8', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('9', '1', '9', '2020-04-22 15:48:47');
-INSERT INTO sys_role_permission(id, role_id, permission_id, create_time) VALUES ('1311116066716430339', '1', '1311115974068449281', '2020-09-30 09:30:04');
-
-INSERT INTO sys_user(id, username, salt, password, phone, dept_id, real_name, nick_name, email, status, sex, deleted, create_id, update_id, create_where, create_time, update_time) VALUES ('1', 'admin', '324ce32d86224b00a02b', '2102b59a75ab87616b62d0b9432569d0', '13888888888', '1', '爱糖宝', '爱糖宝', 'xxxxxx@163.com', 1, 2, 1, '1', '1', 3, '2019-09-22 19:38:05', '2020-03-18 09:15:22');
-INSERT INTO sys_user_role(id, user_id, role_id, create_time) VALUES ('1', '1', '1', '2020-03-19 02:23:13');
-INSERT INTO sys_dict(id, name, remark, create_time) VALUES ('1255790029680242690', 'sex', '性别', '2020-04-30 17:24:09');
-INSERT INTO sys_dict(id, name, remark, create_time) VALUES ('1255790029680242691', 'content_keyword', '关键字', '2020-04-30 17:24:09');
-INSERT INTO sys_dict(id, name, remark, create_time) VALUES ('1282504369620430849', 'content_type', '文章类型略略略', '2020-07-13 10:37:24');
-INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1255790073535885314', '男', '1', 1, '1255790029680242690', '2020-04-30 17:24:19');
-INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1255790100115189761', '女', '2', 2, '1255790029680242690', '2020-04-30 17:24:25');
-INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282504475715350530', '诗词', '1', 1, '1282504369620430849', '2020-07-13 10:37:49');
-INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282504651729317889', '散文', '2', 2, '1282504369620430849', '2020-07-13 10:38:31');
-INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282846022950842369', '剧本', '3', 3, '1282504369620430849', '2020-07-14 09:15:01');
-INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282846022950842370', 'java', '1', 1, '1255790029680242691', '2020-07-14 09:15:01');
-INSERT INTO sys_dict_detail(id, label, value, sort, dict_id, create_time) VALUES ('1282846022950842371', 'mysql', '2', 2, '1255790029680242691', '2020-07-14 09:15:01');
-INSERT INTO sys_job(id, bean_name, params, cron_expression, status, remark, create_time) VALUES ('1252884495040782337', 'testTask', '1', '0 */1 * * * ?', 0, '1', '2020-04-22 16:58:35');
