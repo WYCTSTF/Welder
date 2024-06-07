@@ -7,10 +7,10 @@ spring:
       primary: master #设置默认的数据源或者数据源组,默认值即为master
       datasource:
         master:
-          username: zh
-          password: vxusy0kfc9ChojeI8z
+          username: root
+          password: root
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://cq.vps.bllxl.com:23306/zh?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2b8
+          url: jdbc:mysql://127.0.0.1:3306/welder_examination_materials?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2b8
 #        oracle:
 #          username: root
 #          password: 123456
@@ -22,10 +22,10 @@ spring:
 #          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 #          url: jdbc:sqlserver://localhost:1433;databaseName=company_project
   redis:
-    host: cq.vps.bllxl.com # Redis服务器地址
+    host: localhost # Redis服务器地址
     database: 0 # Redis数据库索引（默认为0）
-    port: 26379 # Redis服务器连接端口
-    password: BCZ5nrrh7FlLxWWTZ3 # Redis服务器连接密码（默认为空）
+    port: 6379 # Redis服务器连接端口
+    password: # Redis服务器连接密码（默认为空）
     jedis:
       pool:
         max-active: 8 # 连接池最大连接数（使用负值表示没有限制）

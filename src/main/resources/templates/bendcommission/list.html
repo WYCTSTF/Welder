@@ -29,7 +29,7 @@
       <div class="layui-form-item">
       <label class="layui-form-label">送样时间</label>
       <div class="layui-input-block">
-        <input type="sampleDeliveryTime" name="sampleDeliveryTime" placeholder="请输入送样时间" autocomplete="off" class="layui-input disabled">
+        <input type="sampleDeliveryTime" name="sampleDeliveryTime" id="sampleDeliveryTime" placeholder="请输入送样时间" autocomplete="off" class="layui-input disabled">
       </div>
     </div>
       <div class="layui-form-item">
@@ -77,7 +77,7 @@
       <div class="layui-form-item">
       <label class="layui-form-label">计划完成日期</label>
       <div class="layui-input-block">
-        <input type="plannedCompletion" name="plannedCompletion" placeholder="请输入计划完成日期" autocomplete="off" class="layui-input disabled">
+        <input type="plannedCompletion" name="plannedCompletion" id="plannedCompletion" placeholder="请输入计划完成日期" autocomplete="off" class="layui-input disabled">
       </div>
     </div>
       <div class="layui-form-item">
@@ -107,13 +107,13 @@
       <div class="layui-form-item">
       <label class="layui-form-label">接收日期</label>
       <div class="layui-input-block">
-        <input type="receiveDate" name="receiveDate" placeholder="请输入接收日期" autocomplete="off" class="layui-input disabled">
+        <input type="receiveDate" name="receiveDate" id="receiveDate" placeholder="请输入接收日期" autocomplete="off" class="layui-input disabled">
       </div>
     </div>
       <div class="layui-form-item">
       <label class="layui-form-label">委托日期</label>
       <div class="layui-input-block">
-        <input type="clientDate" name="clientDate" placeholder="请输入委托日期" autocomplete="off" class="layui-input disabled">
+        <input type="clientDate" name="clientDate" id="clientDate" placeholder="请输入委托日期" autocomplete="off" class="layui-input disabled">
       </div>
     </div>
   <div class="layui-form-item">
@@ -149,7 +149,8 @@
   <div class="layui-btn-container oper">
     <button class="layui-btn layui-btn-sm" lay-event="add"  shiro:hasPermission="bendCommission:add">添加</button>
     <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="bendCommission:delete">删除</button>
-    <button class="layui-btn layui-btn-danger" lay-event="generateReport" shiro:hasPermission="bendCommission:generateReport">弯曲报告生成</button>
+    <button class="layui-btn layui-btn-danger" lay-event="bendCommissionUpdate" shiro:hasPermission="bendCommission:autoTransferDataToBendCommission">弯曲委托数据更新</button>
+    <button class="layui-btn layui-btn-danger" lay-event="generateBendReport" shiro:hasPermission="bendCommission:generateReport">弯曲报告生成</button>
 
   </div>
 </script>
@@ -179,6 +180,33 @@
   var laydate = layui.laydate;
 
   layui.use(['table', 'layer', 'laydate'], function () {
+
+    laydate.render({
+      elem:'#processingTime',
+      type: 'datetime'
+    });
+
+    laydate.render({
+      elem:'#sampleDeliveryTime',
+      type: 'datetime'
+    });
+
+    laydate.render({
+      elem:'#clientDate',
+      type: 'datetime'
+    });
+
+    laydate.render({
+      elem:'#receiveDate',
+      type: 'datetime'
+    });
+
+
+    laydate.render({
+      elem:'#plannedCompletion',
+      type: 'datetime'
+    });
+
 
     //加载table
     tableIns1 = table.render({
@@ -269,8 +297,59 @@
             });
           }, 200);
           break;
+        case 'generateBendReport':
+          generateBendReport();
+          break;
+        case 'bendCommissionUpdate':
+          bendCommissionUpdate();
+          break;
       };
     });
+
+    function bendCommissionUpdate()
+    {
+      CoreUtil.sendPost(ctx + "bendCommission/autoTransferDataToBendCommission",function (res) {
+        layer.msg(res.msg, {time:1000},function () {
+          search();
+        });
+      });
+    }
+
+
+    function generateBendReport()
+    {
+      var method = 'get';//请求方法
+      var url = ctx + "bendCommission/generateReport";//请求url
+      var xhr = new XMLHttpRequest();//定义一个XMLHttpRequest对象
+      xhr.open(method, url, true);
+      xhr.responseType = 'blob';//设置ajax的响应类型为blob
+      xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+      xhr.setRequestHeader("authorization", CoreUtil.getData("access_token"));
+      xhr.onload = function ()//当请求完成，响应就绪进入
+      {
+        if (this.status == 200)//当响应状态码为200时进入
+        {
+          var blob = this.response;//获取响应返回的blob对象
+          //这一段用来判断是否是IE浏览器，因为下面有些代码不支持IE
+          if (typeof window.navigator.msSaveBlob !== 'undefined')
+          {
+            window.navigator.msSaveBlob(blob, "test.xlsx");
+            return;
+          }
+          var a = document.createElement('a');//在dom树上创建一个a标签
+          var url = window.URL.createObjectURL(blob);//我的理解是生成一个相对于浏览器的虚拟url，用于指向传入的blob对象，让浏览器可以通过这个url找到这个blob对象
+          a.href = url;//将url赋值给a标签的href属性
+          a.download = 'NPI_PROJECT.xlsx';//设置设置下载文件的名称
+          a.click();//主动触发a标签点击事件
+        }
+      };
+      xhr.send(JSON.stringify({
+        name: '',
+        status: ''
+      }));//附带参数发送请求
+
+    }
+
     //列操作
     table.on('tool(showTable)',function (obj) {
       var data = obj.data;

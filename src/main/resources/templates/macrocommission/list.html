@@ -149,7 +149,8 @@
   <div class="layui-btn-container oper">
     <button class="layui-btn layui-btn-sm" lay-event="add"  shiro:hasPermission="macroCommission:add">添加</button>
     <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="macroCommission:delete">删除</button>
-    <button class="layui-btn layui-btn-danger" lay-event="generateReport" id="ID-generate" shiro:hasPermission="macroCommission:generateReport">宏观报告生成</button>
+    <button class="layui-btn layui-btn-sm" lay-event="updateDetection" shiro:hasPermission="macroCommission:updateDetection">宏观委托数据更新</button>
+    <button class="layui-btn layui-btn-danger" lay-event="generateMacroReport" id="ID-generate" shiro:hasPermission="macroCommission:generateReport">宏观报告生成</button>
 
   </div>
 </script>
@@ -269,8 +270,56 @@
             });
           }, 200);
           break;
+        case 'generateMacroReport':
+          generateMacroReport();
+          break;
+        case 'updateDetection':
+          updateDetection();
       };
     });
+
+    function updateDetection(){
+      CoreUtil.sendGet(ctx + "macroCommission/updateDetection",function (res) {
+        layer.msg(res.msg, {time:1000},function () {
+          search();
+        });
+      });
+    }
+
+
+    function generateMacroReport()
+    {
+      var method = 'get';//请求方法
+      var url = ctx + "macroCommission/generateReport";//请求url
+      var xhr = new XMLHttpRequest();//定义一个XMLHttpRequest对象
+      xhr.open(method, url, true);
+      xhr.responseType = 'blob';//设置ajax的响应类型为blob
+      xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+      xhr.setRequestHeader("authorization", CoreUtil.getData("access_token"));
+      xhr.onload = function ()//当请求完成，响应就绪进入
+      {
+        if (this.status == 200)//当响应状态码为200时进入
+        {
+          var blob = this.response;//获取响应返回的blob对象
+          //这一段用来判断是否是IE浏览器，因为下面有些代码不支持IE
+          if (typeof window.navigator.msSaveBlob !== 'undefined')
+          {
+            window.navigator.msSaveBlob(blob, "test.xlsx");
+            return;
+          }
+          var a = document.createElement('a');//在dom树上创建一个a标签
+          var url = window.URL.createObjectURL(blob);//我的理解是生成一个相对于浏览器的虚拟url，用于指向传入的blob对象，让浏览器可以通过这个url找到这个blob对象
+          a.href = url;//将url赋值给a标签的href属性
+          a.download = 'NPI_PROJECT.xlsx';//设置设置下载文件的名称
+          a.click();//主动触发a标签点击事件
+        }
+      };
+      xhr.send(JSON.stringify({
+        name: '',
+        status: ''
+      }));//附带参数发送请求
+
+    }
     //列操作
     table.on('tool(showTable)',function (obj) {
       var data = obj.data;

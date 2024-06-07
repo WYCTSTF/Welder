@@ -102,7 +102,7 @@ public class BendCommissionEntity extends BaseEntity implements Serializable {
 	 * 检件编号
 	 */
 	@TableField("inspection_num")
-	private Integer inspectionNum;
+	private String inspectionNum;
 
 	/**
 	 * 材质
@@ -128,5 +128,11 @@ public class BendCommissionEntity extends BaseEntity implements Serializable {
 	@TableField("client_date")
 	private Long clientDate;
 
+
+	/**
+	 * 考试台账ID
+	 */
+	@TableField("examination_ledger_id")
+	private Long ExaminationLedgerID;
 
 }

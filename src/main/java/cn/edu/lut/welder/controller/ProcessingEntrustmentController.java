@@ -1,9 +1,15 @@
 package cn.edu.lut.welder.controller;
 
 import cn.edu.lut.welder.common.utils.DataResult;
+import cn.edu.lut.welder.entity.BendCommissionEntity;
+import cn.edu.lut.welder.entity.ExaminationLedgerEntity;
+import cn.edu.lut.welder.entity.NonDestructiveTestingOrderEntity;
 import cn.edu.lut.welder.entity.ProcessingEntrustmentEntity;
+import cn.edu.lut.welder.service.ExaminationLedgerService;
+import cn.edu.lut.welder.service.MacroCommissionService;
 import cn.edu.lut.welder.service.ProcessingEntrustmentService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +37,8 @@ import java.util.List;
 public class ProcessingEntrustmentController {
     @Autowired
     private ProcessingEntrustmentService processingEntrustmentService;
+    @Autowired
+    private ExaminationLedgerService examinationLedgerService;
 
 
     /**
@@ -73,12 +81,57 @@ public class ProcessingEntrustmentController {
     @RequiresPermissions("processingEntrustment:list")
     @ResponseBody
     public DataResult findListByPage(@RequestBody ProcessingEntrustmentEntity processingEntrustment){
-        LambdaQueryWrapper<ProcessingEntrustmentEntity> queryWrapper = Wrappers.lambdaQuery();
-        //查询条件示例
-        queryWrapper.eq(ProcessingEntrustmentEntity::getId, processingEntrustment.getId());
-        queryWrapper.orderByDesc(ProcessingEntrustmentEntity::getId);
-        IPage<ProcessingEntrustmentEntity> iPage = processingEntrustmentService.page(processingEntrustment.getQueryPage(), queryWrapper);
+//        LambdaQueryWrapper<ProcessingEntrustmentEntity> queryWrapper = Wrappers.lambdaQuery();
+//        //查询条件示例
+//        queryWrapper.eq(ProcessingEntrustmentEntity::getId, processingEntrustment.getId());
+//        queryWrapper.orderByDesc(ProcessingEntrustmentEntity::getId);
+        IPage<ProcessingEntrustmentEntity> iPage = processingEntrustmentService.page(processingEntrustment.getQueryPage(), null);
         return DataResult.success(iPage);
+    }
+
+
+
+    @ApiOperation(value = "更新加工委托数据")
+    @PostMapping("processingEntrustment/updateProcessingEntrust")
+    @RequiresPermissions("processingEntrustment:updateProcessingEntrust")
+    @ResponseBody
+    public DataResult updateProcessingEntrust(){
+
+//        ①根据考试台账，自动识别“F”、“FG”只做宏观金相四件；
+//        ②堆焊（N）的做侧弯二件；
+//        ③不管是管材还是板材只要厚度≥10mm只做侧弯二件，其余厚度做面弯一件、背弯一件。
+
+        try {
+            QueryWrapper<ExaminationLedgerEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.like("forensic_projects", "F").or().like("forensic_projects", "FG");
+            List<ExaminationLedgerEntity> examinationLedgerEntities = examinationLedgerService.list(queryWrapper);
+
+            for (ExaminationLedgerEntity entity : examinationLedgerEntities) {
+
+                ProcessingEntrustmentEntity processingEntrustmentEntity = new ProcessingEntrustmentEntity();
+                processingEntrustmentEntity.setMaterial(entity.getMaterial());
+                processingEntrustmentEntity.setSpecification(entity.getSpecification());
+                processingEntrustmentEntity.setExaminationLedgerId(entity.getId());
+
+                QueryWrapper<ProcessingEntrustmentEntity> queryWrapper2 = new QueryWrapper<ProcessingEntrustmentEntity>();
+                queryWrapper2.eq("examination_ledger_id", entity.getId());
+                ProcessingEntrustmentEntity processingEntrustmentEntity1 = processingEntrustmentService.getOne(queryWrapper2);
+                if (processingEntrustmentEntity1 != null)
+                {
+                    QueryWrapper<ProcessingEntrustmentEntity> queryWrapper1 = new QueryWrapper<ProcessingEntrustmentEntity>();
+                    queryWrapper1.eq("examination_ledger_id", entity.getId());
+                    processingEntrustmentService.update(processingEntrustmentEntity, queryWrapper1);
+                }else{
+                    // 如果记录不存在,则执行插入操作
+                    processingEntrustmentService.save(processingEntrustmentEntity);
+                    System.out.println("Inserted record with examination_ledger_id=" + entity.getId());
+                }
+            }
+        }catch(Exception e){
+            return DataResult.fail("更新加工委托数据失败！");
+        }
+
+        return DataResult.success("更新加工委托数据成功！");
     }
 
 }

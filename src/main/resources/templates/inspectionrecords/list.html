@@ -592,11 +592,39 @@
       return false;
     });
   });
+  /*生成检测记录表*/
   function generateInspectionTable()
   {
-    CoreUtil.sendGet(ctx + "inspectionRecords/generateInspectionTable",function (res) {
+    var method = 'get';//请求方法
+    var url = ctx + "inspectionRecords/generateInspectionTable";//请求url
+    var xhr = new XMLHttpRequest();//定义一个XMLHttpRequest对象
+    xhr.open(method, url, true);
+    xhr.responseType = 'blob';//设置ajax的响应类型为blob
+    xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+    xhr.setRequestHeader("authorization", CoreUtil.getData("access_token"));
+    xhr.onload = function ()//当请求完成，响应就绪进入
+    {
+      if (this.status == 200)//当响应状态码为200时进入
+      {
+        var blob = this.response;//获取响应返回的blob对象
+        //这一段用来判断是否是IE浏览器，因为下面有些代码不支持IE
+        if (typeof window.navigator.msSaveBlob !== 'undefined')
+        {
+          window.navigator.msSaveBlob(blob, "test.xlsx");
+          return;
+        }
+        var a = document.createElement('a');//在dom树上创建一个a标签
+        var url = window.URL.createObjectURL(blob);//我的理解是生成一个相对于浏览器的虚拟url，用于指向传入的blob对象，让浏览器可以通过这个url找到这个blob对象
+        a.href = url;//将url赋值给a标签的href属性
+        a.download = 'NPI_PROJECT.xlsx';//设置设置下载文件的名称
+        a.click();//主动触发a标签点击事件
+      }
+    };
+    xhr.send(JSON.stringify({
+      name: '',
+      status: ''
+    }));//附带参数发送请求
 
-    });
   }
 
 

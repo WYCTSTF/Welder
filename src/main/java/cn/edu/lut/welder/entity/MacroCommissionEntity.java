@@ -36,6 +36,24 @@ public class MacroCommissionEntity extends BaseEntity implements Serializable {
 	private String principalID;
 
 	/**
+	 * 身份证
+	 */
+	@TableField("id_card")
+	private String idCard;
+
+	/**
+	 * 取证项目
+	 */
+	@TableField("forensic_projects")
+	private String forensicProjects;
+
+	/**
+	 * 是否做宏观委托
+	 */
+	@TableField("detection_method")
+	private String detection_method;
+
+	/**
 	 * 委托单位
 	 */
 	@TableField("requester")
@@ -88,6 +106,12 @@ public class MacroCommissionEntity extends BaseEntity implements Serializable {
 	 */
 	@TableField("pilot_projects")
 	private String pilotProjects;
+
+	/**
+	 * 编号
+	 */
+	@TableField("code")
+	private String code;
 
 	/**
 	 * 计划完成日期

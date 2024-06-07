@@ -15,6 +15,18 @@
 <form class="layui-form " action="" lay-filter="info">
   <input name="id" hidden/>
     <div class="layui-form-item">
+      <label class="layui-form-label">试件编号</label>
+      <div class="layui-input-block">
+        <input type="testPieceNum" name="testPieceNum" placeholder="请输入试件编号" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">台账编号id</label>
+      <div class="layui-input-block">
+        <input type="examinationLedgerId" name="examinationLedgerId" placeholder="请输入台账编号id" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
       <label class="layui-form-label">项目名称</label>
       <div class="layui-input-block">
         <input type="projectName" name="projectName" placeholder="请输入项目名称" autocomplete="off" class="layui-input disabled">
@@ -23,13 +35,19 @@
       <div class="layui-form-item">
       <label class="layui-form-label">加工时间</label>
       <div class="layui-input-block">
-        <input type="processingTime" name="processingTime" placeholder="请输入加工时间" autocomplete="off" class="layui-input disabled">
+        <input type="processingTime" name="processingTime" id="processingTime" placeholder="请输入加工时间" autocomplete="off" class="layui-input disabled">
       </div>
     </div>
       <div class="layui-form-item">
-      <label class="layui-form-label">试件编号</label>
+      <label class="layui-form-label">委托时间</label>
       <div class="layui-input-block">
-        <input type="testPieceNum" name="testPieceNum" placeholder="请输入试件编号" autocomplete="off" class="layui-input disabled">
+        <input type="entrustmentTime" name="entrustmentTime" id="entrustmentTime" placeholder="请输入委托时间" autocomplete="off" class="layui-input disabled">
+      </div>
+    </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">完成时间</label>
+      <div class="layui-input-block">
+        <input type="finishTime" name="finishTime" id="finishTime" placeholder="请输入完成时间" autocomplete="off" class="layui-input disabled">
       </div>
     </div>
       <div class="layui-form-item">
@@ -107,6 +125,7 @@
   <div class="layui-btn-container oper">
     <button class="layui-btn layui-btn-sm" lay-event="add"  shiro:hasPermission="processingEntrustment:add">添加</button>
     <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="processingEntrustment:delete">删除</button>
+    <button class="layui-btn layui-btn-sm" lay-event="updateProcessingEntrust" shiro:hasPermission="processingEntrustment:updateProcessingEntrust">更新加工委托数据</button>
   </div>
 </script>
 <script type="text/html" id="tool">
@@ -136,6 +155,22 @@
 
   layui.use(['table', 'layer', 'laydate'], function () {
 
+    laydate.render({
+      elem:'#entrustmentTime',
+      type: 'datetime'
+    });
+
+    laydate.render({
+      elem:'#finishTime',
+      type: 'datetime'
+    });
+
+    laydate.render({
+      elem:'#processingTime',
+      type: 'datetime'
+    });
+
+
     //加载table
     tableIns1 = table.render({
       elem: '#showTable'
@@ -155,10 +190,13 @@
       , cols: [
         [
           {type: 'checkbox', fixed: 'left'},
-          {field: 'id', title: 'ID', sort: true},
+          {field: 'id', title: '', sort: true},
+          {field: 'testPieceNum', title: '试件编号', sort: true},
+          {field: 'examinationLedgerId', title: '台账编号id', sort: true},
           {field: 'projectName', title: '项目名称', sort: true},
           {field: 'processingTime', title: '加工时间', sort: true},
-          {field: 'testPieceNum', title: '试件编号', sort: true},
+          {field: 'entrustmentTime', title: '委托时间', sort: true},
+          {field: 'finishTime', title: '完成时间', sort: true},
           {field: 'material', title: '材质', sort: true},
           {field: 'specification', title: '规格', sort: true},
           {field: 'onePieceFaceCurvature', title: '面弯一件', sort: true},
@@ -198,9 +236,12 @@
             form.val('info', {
               "test": "test"
               , "id": ""
+              , "testPieceNum": ""
+              , "examinationLedgerId": ""
               , "projectName": ""
               , "processingTime": ""
-              , "testPieceNum": ""
+              , "entrustmentTime": ""
+              , "finishTime": ""
               , "material": ""
               , "specification": ""
               , "onePieceFaceCurvature": ""
@@ -211,8 +252,22 @@
             });
           }, 200);
           break;
+
+        case 'updateProcessingEntrust':
+          updateProcessingEntrust();
       };
     });
+    function updateProcessingEntrust()
+    {
+      CoreUtil.sendPost(ctx + "processingEntrustment/updateProcessingEntrust",function (res) {
+        layer.msg(res.msg, {time:1000},function () {
+          search();
+        });
+      });
+    }
+
+
+
     //列操作
     table.on('tool(showTable)',function (obj) {
       var data = obj.data;
@@ -313,9 +368,12 @@
       form.val('info', {
         "test": "test"
         , "id": data.id
+        , "testPieceNum": data.testPieceNum
+        , "examinationLedgerId": data.examinationLedgerId
         , "projectName": data.projectName
         , "processingTime": data.processingTime
-        , "testPieceNum": data.testPieceNum
+        , "entrustmentTime": data.entrustmentTime
+        , "finishTime": data.finishTime
         , "material": data.material
         , "specification": data.specification
         , "onePieceFaceCurvature": data.onePieceFaceCurvature

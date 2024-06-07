@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 @Service("nonDestructiveTestingOrderService")
 public class NonDestructiveTestingOrderServiceImpl extends ServiceImpl<NonDestructiveTestingOrderMapper, NonDestructiveTestingOrderEntity> implements NonDestructiveTestingOrderService {
-    @Autowired
+
     private NonDestructiveTestingOrderMapper nonDestructiveTestingOrderMapper;
 
     @Override

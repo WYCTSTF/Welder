@@ -24,10 +24,22 @@ public class ProcessingEntrustmentEntity extends BaseEntity implements Serializa
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
-	@TableId(value = "id", type = IdType.AUTO)
+	@TableId("id")
 	private Long id;
+
+	/**
+	 * 试件编号
+	 */
+	@TableField("test_piece_num")
+	private Integer testPieceNum;
+
+	/**
+	 * 台账编号id
+	 */
+	@TableField("examination_ledger_id")
+	private Long examinationLedgerId;
 
 	/**
 	 * 项目名称
@@ -42,10 +54,16 @@ public class ProcessingEntrustmentEntity extends BaseEntity implements Serializa
 	private Date processingTime;
 
 	/**
-	 * 试件编号
+	 * 委托时间
 	 */
-	@TableField("test_piece_num")
-	private Integer testPieceNum;
+	@TableField("entrustment_time")
+	private Date entrustmentTime;
+
+	/**
+	 * 完成时间
+	 */
+	@TableField("finish_time")
+	private Date finishTime;
 
 	/**
 	 * 材质
@@ -88,6 +106,5 @@ public class ProcessingEntrustmentEntity extends BaseEntity implements Serializa
 	 */
 	@TableField("remark")
 	private String remark;
-
 
 }

@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @date 2024-05-18 19:02:23
  */
 public interface MacroCommissionService extends IService<MacroCommissionEntity> {
-
+    void updataDetectionForDataContainingFAndFG();
+    void updataDetectionForDataContainingDiameterLessThan76();
 }
 

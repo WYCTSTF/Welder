@@ -6,6 +6,7 @@
   <title>Title</title>
   <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
   <link rel="stylesheet" th:href="@{/css/custom.form.css}">
+
     <style id="layuimini-bg-color">
     </style>
 <body>
@@ -107,7 +108,7 @@
       <div class="layui-form-item">
       <label class="layui-form-label">委托日期</label>
       <div class="layui-input-block">
-        <input type="clientDate" name="clientDate" placeholder="请输入委托日期" autocomplete="off" class="layui-input disabled">
+        <input type="text" name="clientDate" id="clientDate" placeholder="请输入委托日期" autocomplete="off" class="layui-input"/>
       </div>
     </div>
       <div class="layui-form-item">
@@ -119,7 +120,7 @@
       <div class="layui-form-item">
       <label class="layui-form-label">接收日期</label>
       <div class="layui-input-block">
-        <input type="receiverDate" name="receiverDate" placeholder="请输入接收日期" autocomplete="off" class="layui-input disabled">
+        <input type="text" name="receiverDate" id="receiverDate" placeholder="请输入接收日期" autocomplete="off" class="layui-input"/>
       </div>
     </div>
   <div class="layui-form-item">
@@ -155,7 +156,9 @@
   <div class="layui-btn-container oper">
     <button class="layui-btn layui-btn-sm" lay-event="add"  shiro:hasPermission="nonDestructiveTestingOrder:add">添加</button>
     <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="nonDestructiveTestingOrder:delete">删除</button>
-    <button class="layui-btn layui-btn-danger" lay-event="generateReport" id="ID-generate" shiro:hasPermission="nonDestructiveTestingOrder:generateReport">委托报告生成</button>
+    <button class="layui-btn layui-btn-sm" lay-event="updateDetection" shiro:hasPermission="nonDestructiveTestingOrder:updateDetection">更新无损检测委托数据</button>
+    <button class="layui-btn layui-btn-danger" lay-event="generateReportRT" id="ID-generate" value="RT" shiro:hasPermission="nonDestructiveTestingOrder:generateReport">RT委托报告生成</button>
+    <button class="layui-btn layui-btn-danger" lay-event="generateReportPT" id="ID-generate" value="PT" shiro:hasPermission="nonDestructiveTestingOrder:generateReport">PT委托报告生成</button>
   </div>
 </script>
 <script type="text/html" id="tool">
@@ -170,6 +173,7 @@
   var ctx = '[[@{/}]]'.replaceAll("\"", "").replace('//', '/');
 </script>
 <script th:src="@{/layui/layui.all.js}"></script>
+<script th:src="@{/laydate/laydate.js}"></script>
 <script th:src="@{/js/core.util.js}"></script>
 <script>
   //获取token
@@ -184,7 +188,14 @@
   var laydate = layui.laydate;
 
   layui.use(['table', 'layer', 'laydate'], function () {
-
+    laydate.render({
+      elem:'#receiverDate',
+      type: 'datetime'
+    });
+    laydate.render({
+      elem:'#clientDate',
+      type:'datetime'
+    });
     //加载table
     tableIns1 = table.render({
       elem: '#showTable'
@@ -228,7 +239,6 @@
       ]
       , toolbar: '#toolbar'
     });
-
 
     //表头工具
     table.on('toolbar(showTable)', function(obj){
@@ -276,34 +286,98 @@
             });
           }, 200);
           break;
-          case 'generateReport':
-            generateReport();
+        case 'generateReportRT':
+            generateReportRT();
             break;
+        case 'generateReportPT':
+          generateReportPT();
+          break;
+        case 'updateDetection':
+          updateDetection();
+          break;
       };
     });
-    function generateReport() {
-      var upload = layui.upload;
-      var element = layui.element;
-      var uploadInst = upload.render({
-        elem: '#ID-report',
-        url: ctx + 'nonDestructiveTestingOrder/generateReport',
-        size: 2000, //限制文件大小，单位 KB
-        accept: 'file',
-        method: 'get',
-        headers: {"authorization": token},
-        exts: 'xls|xlsx',
-        done: function(res, index){
-          // //如果上传失败
-          if(res.code > 0){
-            return layer.msg('数据导入失败');
-          }
-          //上传成功
-          return layer.msg(res.msg);
-        },
+    /*更新无损检测*/
+    function updateDetection()
+    {
+      CoreUtil.sendGet(ctx + "nonDestructiveTestingOrder/updateDetection",function (res) {
+        layer.msg(res.msg, {time:1000},function () {
+          search();
+        });
       });
+    }
+
+
+
+    /*RT、PT委托*/
+    function generateReportPT() {
+      var url = ctx + 'nonDestructiveTestingOrder/generateReport?RPT=PT';//请求url
+      var method = 'get';//请求方法
+      var xhr = new XMLHttpRequest();//定义一个XMLHttpRequest对象
+      xhr.open(method, url, true);
+      xhr.responseType = 'blob';//设置ajax的响应类型为blob
+      xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+      xhr.setRequestHeader("authorization", CoreUtil.getData("access_token"));
+      xhr.onload = function ()//当请求完成，响应就绪进入
+      {
+        if (this.status == 200)//当响应状态码为200时进入
+        {
+          var blob = this.response;//获取响应返回的blob对象
+          //这一段用来判断是否是IE浏览器，因为下面有些代码不支持IE
+          if (typeof window.navigator.msSaveBlob !== 'undefined')
+          {
+            window.navigator.msSaveBlob(blob, "test.xlsx");
+            return;
+          }
+          var a = document.createElement('a');//在dom树上创建一个a标签
+          var url = window.URL.createObjectURL(blob);//我的理解是生成一个相对于浏览器的虚拟url，用于指向传入的blob对象，让浏览器可以通过这个url找到这个blob对象
+          a.href = url;//将url赋值给a标签的href属性
+          a.download = 'NPI_PROJECT.xlsx';//设置设置下载文件的名称
+          a.click();//主动触发a标签点击事件
+        }
+      };
+      xhr.send(JSON.stringify({
+        name: '',
+        status: ''
+      }));//附带参数发送请求
+
 
     }
 
+
+    function generateReportRT() {
+      var url = ctx + 'nonDestructiveTestingOrder/generateReport?RPT=RT';//请求url
+      var method = 'get';//请求方法
+      var xhr = new XMLHttpRequest();//定义一个XMLHttpRequest对象
+      xhr.open(method, url, true);
+      xhr.responseType = 'blob';//设置ajax的响应类型为blob
+      xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+      xhr.setRequestHeader("authorization", CoreUtil.getData("access_token"));
+      xhr.onload = function ()//当请求完成，响应就绪进入
+      {
+        if (this.status == 200)//当响应状态码为200时进入
+        {
+          var blob = this.response;//获取响应返回的blob对象
+          //这一段用来判断是否是IE浏览器，因为下面有些代码不支持IE
+          if (typeof window.navigator.msSaveBlob !== 'undefined')
+          {
+            window.navigator.msSaveBlob(blob, "test.xlsx");
+            return;
+          }
+          var a = document.createElement('a');//在dom树上创建一个a标签
+          var url = window.URL.createObjectURL(blob);//我的理解是生成一个相对于浏览器的虚拟url，用于指向传入的blob对象，让浏览器可以通过这个url找到这个blob对象
+          a.href = url;//将url赋值给a标签的href属性
+          a.download = 'NPI_PROJECT.xlsx';//设置设置下载文件的名称
+          a.click();//主动触发a标签点击事件
+        }
+      };
+      xhr.send(JSON.stringify({
+        name: '',
+        status: ''
+      }));//附带参数发送请求
+
+
+    }
     //列操作
     table.on('tool(showTable)',function (obj) {
       var data = obj.data;

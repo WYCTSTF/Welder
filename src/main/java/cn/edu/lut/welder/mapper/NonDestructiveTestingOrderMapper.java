@@ -9,11 +9,10 @@ import org.apache.ibatis.annotations.Update;
 /**
  * 
  * 
- * @author wenbin
+ * @author 焦国宁
  * @email *****@mail.com
  * @date 2024-05-17 20:00:10
  */
-@Mapper
 public interface NonDestructiveTestingOrderMapper extends BaseMapper<NonDestructiveTestingOrderEntity> {
     //需求4 PT委托，考试项目中带堆焊N的项目，更新检测方法为PT
     @Update("UPDATE non_destructive_testing_order SET detection_method = 'PT' WHERE forensic_projects LIKE '%M%' ")
